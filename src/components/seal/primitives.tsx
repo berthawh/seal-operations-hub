@@ -116,13 +116,13 @@ export function Metric({
   }[tone];
   return (
     <div>
-      <p className="text-[11px] font-semibold tracking-widest text-muted-foreground uppercase">
+      <p className="text-[11px] font-medium tracking-[0.08em] text-muted-foreground uppercase">
         {label}
       </p>
-      <p className={cn("mt-1 text-2xl font-bold tracking-tight tabular-nums", toneClass)}>
+      <p className={cn("mt-1 text-xl font-semibold tracking-tight tabular-nums", toneClass)}>
         {value}
       </p>
-      {hint ? <p className="mt-0.5 text-xs text-muted-foreground">{hint}</p> : null}
+      {hint ? <p className="mt-0.5 text-[11px] text-muted-foreground">{hint}</p> : null}
     </div>
   );
 }
