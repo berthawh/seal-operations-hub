@@ -219,7 +219,7 @@ function GlobalSearch() {
     <>
       <button
         onClick={() => setOpen(true)}
-        className="flex h-9 w-full max-w-md items-center gap-2 rounded-xl border border-border bg-surface px-3 text-sm text-muted-foreground shadow-card transition-colors hover:border-seal/40"
+        className="bar flex h-8.5 w-full max-w-sm items-center gap-2 px-2.5 text-[13px] text-muted-foreground transition-colors hover:border-foreground/20"
       >
         <Search className="size-4" />
         <span className="flex-1 text-left">Search sessions, people, certificates…</span>
