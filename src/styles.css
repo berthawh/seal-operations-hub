@@ -253,15 +253,28 @@
 
 @utility text-display {
   font-family: var(--font-display);
-  font-weight: 400;
-  letter-spacing: -0.015em;
+  font-weight: 600;
+  letter-spacing: -0.02em;
 }
 
 @utility surface-card {
   background-color: var(--surface);
-  border: 1px solid var(--border);
-  border-radius: var(--radius-2xl);
+  border: 1px solid color-mix(in oklab, var(--border) 70%, transparent);
+  border-radius: 1rem;
   box-shadow: var(--shadow-card);
+}
+
+@utility panel {
+  background-color: var(--surface);
+  border: 1px solid color-mix(in oklab, var(--border) 70%, transparent);
+  border-radius: 1rem;
+  box-shadow: var(--shadow-card);
+}
+
+@utility bar {
+  background-color: var(--surface);
+  border: 1px solid color-mix(in oklab, var(--border) 70%, transparent);
+  border-radius: 0.625rem;
 }
 
 @utility bg-gradient-seal {
