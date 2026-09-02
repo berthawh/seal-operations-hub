@@ -140,32 +140,34 @@ function NavList({ onNavigate }: { onNavigate?: (() => void) | undefined }) {
 
 function SidebarInner({ onNavigate }: { onNavigate?: (() => void) | undefined }) {
   return (
-    <div className="flex h-full flex-col bg-sidebar py-5">
-      <Link to="/" onClick={onNavigate} className="mb-6 flex items-center gap-3 px-6">
-        <span className="grid size-9 place-items-center rounded-xl bg-gradient-seal text-sm font-bold text-seal-foreground shadow-seal">
+    <div className="flex h-full flex-col bg-sidebar py-4">
+      <Link to="/" onClick={onNavigate} className="mb-5 flex items-center gap-2.5 px-5">
+        <span className="grid size-8 place-items-center rounded-lg bg-gradient-seal text-[13px] font-semibold text-seal-foreground">
           S
         </span>
         <span>
-          <span className="block text-display text-lg leading-none text-sidebar-accent-foreground">
+          <span className="block text-[15px] font-semibold tracking-tight text-sidebar-accent-foreground">
             Seal
           </span>
-          <span className="block text-[10px] tracking-[0.2em] text-sidebar-foreground/50 uppercase">
+          <span className="block text-[10px] tracking-[0.14em] text-sidebar-foreground/50 uppercase">
             Training ops
           </span>
         </span>
       </Link>
       <NavList onNavigate={onNavigate} />
       <div className="mt-6 px-3">
-        <div className="rounded-2xl border border-sidebar-border/70 bg-sidebar-accent/50 p-4">
+        <div className="rounded-xl border border-sidebar-border/70 bg-sidebar-accent/60 px-3 py-3">
           <div className="flex items-center gap-2 text-sidebar-accent-foreground">
-            <LifeBuoy className="size-4" />
-            <p className="text-xs font-semibold">Compliance health</p>
+            <LifeBuoy className="size-3.5" />
+            <p className="text-[11px] font-semibold">Compliance health</p>
           </div>
-          <p className="mt-2 text-2xl font-bold text-sidebar-accent-foreground tabular-nums">82%</p>
-          <div className="mt-2 h-1.5 overflow-hidden rounded-full bg-sidebar-border">
-            <div className="h-full w-[82%] rounded-full bg-gradient-seal transition-all duration-700" />
+          <p className="mt-1.5 text-xl font-semibold text-sidebar-accent-foreground tabular-nums">
+            82%
+          </p>
+          <div className="mt-2 h-1 overflow-hidden rounded-full bg-sidebar-border">
+            <div className="h-full w-[82%] rounded-full bg-seal transition-all duration-700" />
           </div>
-          <p className="mt-2 text-[11px] text-sidebar-foreground/60">
+          <p className="mt-2 text-[11px] text-sidebar-foreground/70">
             6 items need attention this week
           </p>
         </div>
