@@ -100,27 +100,23 @@ function Dashboard() {
           }
         />
 
-        <section className="grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
+        <Panel className="grid grid-cols-2 divide-border/70 sm:divide-x xl:grid-cols-4">
           {kpis.map((kpi, i) => (
-            <Panel
+            <div
               key={kpi.label}
-              className="hover-lift p-5"
+              className="flex items-start justify-between gap-3 px-5 py-4"
               style={{ animation: `rise 0.5s cubic-bezier(0.22,1,0.36,1) ${i * 60}ms both` }}
             >
-              <div className="flex items-start justify-between">
-                <Metric
-                  label={kpi.label}
-                  value={kpi.value}
-                  hint={kpi.hint}
-                  tone={"tone" in kpi ? (kpi.tone as "seal" | "warning") : "default"}
-                />
-                <span className="grid size-10 place-items-center rounded-xl bg-muted text-muted-foreground">
-                  <kpi.icon className="size-[18px]" />
-                </span>
-              </div>
-            </Panel>
+              <Metric
+                label={kpi.label}
+                value={kpi.value}
+                hint={kpi.hint}
+                tone={"tone" in kpi ? (kpi.tone as "seal" | "warning") : "default"}
+              />
+              <kpi.icon className="mt-0.5 size-4 shrink-0 text-muted-foreground/70" />
+            </div>
           ))}
-        </section>
+        </Panel>
 
         <section className="grid gap-5 xl:grid-cols-3">
           <Panel className="xl:col-span-2">

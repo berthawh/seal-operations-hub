@@ -90,10 +90,10 @@ function NavList({ onNavigate }: { onNavigate?: (() => void) | undefined }) {
         to={entry.to}
         onClick={onNavigate}
         className={cn(
-          "group relative flex items-center gap-3 rounded-xl px-3 py-2.5 text-sm font-medium transition-all duration-200",
+          "group relative flex items-center gap-2.5 rounded-lg px-3 py-2 text-[13px] font-medium transition-all duration-200",
           isActive
-            ? "bg-sidebar-accent text-sidebar-accent-foreground shadow-[inset_0_1px_0_oklch(1_0_0/0.06)]"
-            : "text-sidebar-foreground/70 hover:bg-sidebar-accent/60 hover:text-sidebar-accent-foreground",
+            ? "bg-sidebar-accent text-sidebar-accent-foreground"
+            : "text-sidebar-foreground hover:bg-sidebar-accent/70 hover:text-sidebar-accent-foreground",
         )}
       >
         <span
@@ -102,15 +102,15 @@ function NavList({ onNavigate }: { onNavigate?: (() => void) | undefined }) {
             isActive ? "opacity-100" : "scale-y-0 opacity-0",
           )}
         />
-        <entry.icon className="size-[18px] shrink-0 opacity-90" />
+        <entry.icon className="size-4 shrink-0 opacity-80" />
         <span className="flex-1 truncate">{entry.label}</span>
         {entry.badge ? (
           <span
             className={cn(
-              "rounded-full px-1.5 py-0.5 text-[10px] font-bold",
+              "rounded-full px-1.5 py-0.5 text-[10px] font-semibold",
               entry.badge === "!"
                 ? "bg-seal text-seal-foreground"
-                : "bg-sidebar-border/70 text-sidebar-foreground",
+                : "bg-muted text-muted-foreground",
             )}
           >
             {entry.badge}
@@ -140,32 +140,34 @@ function NavList({ onNavigate }: { onNavigate?: (() => void) | undefined }) {
 
 function SidebarInner({ onNavigate }: { onNavigate?: (() => void) | undefined }) {
   return (
-    <div className="flex h-full flex-col bg-sidebar py-5">
-      <Link to="/" onClick={onNavigate} className="mb-6 flex items-center gap-3 px-6">
-        <span className="grid size-9 place-items-center rounded-xl bg-gradient-seal text-sm font-bold text-seal-foreground shadow-seal">
+    <div className="flex h-full flex-col bg-sidebar py-4">
+      <Link to="/" onClick={onNavigate} className="mb-5 flex items-center gap-2.5 px-5">
+        <span className="grid size-8 place-items-center rounded-lg bg-gradient-seal text-[13px] font-semibold text-seal-foreground">
           S
         </span>
         <span>
-          <span className="block text-display text-lg leading-none text-sidebar-accent-foreground">
+          <span className="block text-[15px] font-semibold tracking-tight text-sidebar-accent-foreground">
             Seal
           </span>
-          <span className="block text-[10px] tracking-[0.2em] text-sidebar-foreground/50 uppercase">
+          <span className="block text-[10px] tracking-[0.14em] text-sidebar-foreground/50 uppercase">
             Training ops
           </span>
         </span>
       </Link>
       <NavList onNavigate={onNavigate} />
       <div className="mt-6 px-3">
-        <div className="rounded-2xl border border-sidebar-border/70 bg-sidebar-accent/50 p-4">
+        <div className="rounded-xl border border-sidebar-border/70 bg-sidebar-accent/60 px-3 py-3">
           <div className="flex items-center gap-2 text-sidebar-accent-foreground">
-            <LifeBuoy className="size-4" />
-            <p className="text-xs font-semibold">Compliance health</p>
+            <LifeBuoy className="size-3.5" />
+            <p className="text-[11px] font-semibold">Compliance health</p>
           </div>
-          <p className="mt-2 text-2xl font-bold text-sidebar-accent-foreground tabular-nums">82%</p>
-          <div className="mt-2 h-1.5 overflow-hidden rounded-full bg-sidebar-border">
-            <div className="h-full w-[82%] rounded-full bg-gradient-seal transition-all duration-700" />
+          <p className="mt-1.5 text-xl font-semibold text-sidebar-accent-foreground tabular-nums">
+            82%
+          </p>
+          <div className="mt-2 h-1 overflow-hidden rounded-full bg-sidebar-border">
+            <div className="h-full w-[82%] rounded-full bg-seal transition-all duration-700" />
           </div>
-          <p className="mt-2 text-[11px] text-sidebar-foreground/60">
+          <p className="mt-2 text-[11px] text-sidebar-foreground/70">
             6 items need attention this week
           </p>
         </div>
@@ -217,7 +219,7 @@ function GlobalSearch() {
     <>
       <button
         onClick={() => setOpen(true)}
-        className="flex h-9 w-full max-w-md items-center gap-2 rounded-xl border border-border bg-surface px-3 text-sm text-muted-foreground shadow-card transition-colors hover:border-seal/40"
+        className="bar flex h-8.5 w-full max-w-sm items-center gap-2 px-2.5 text-[13px] text-muted-foreground transition-colors hover:border-foreground/20"
       >
         <Search className="size-4" />
         <span className="flex-1 text-left">Search sessions, people, certificates…</span>
@@ -261,13 +263,13 @@ export function AppShell({ children }: { children: React.ReactNode }) {
 
   return (
     <div className="min-h-screen bg-background">
-      <aside className="fixed inset-y-0 left-0 z-40 hidden w-[264px] border-r border-sidebar-border/60 lg:block">
+      <aside className="fixed inset-y-4 left-4 z-40 hidden w-[228px] overflow-hidden rounded-2xl border border-border/70 shadow-card lg:block">
         <SidebarInner />
       </aside>
 
-      <div className="lg:pl-[264px]">
-        <header className="sticky top-0 z-30 border-b border-border/70 bg-background/80 backdrop-blur-xl">
-          <div className="flex h-16 items-center gap-3 px-4 sm:px-6 lg:px-8">
+      <div className="lg:pl-[260px]">
+        <header className="sticky top-0 z-30 bg-background/85 backdrop-blur-xl">
+          <div className="flex h-14 items-center gap-3 px-4 sm:px-6 lg:pr-6 lg:pl-2">
             <Sheet open={mobileOpen} onOpenChange={setMobileOpen}>
               <SheetTrigger asChild>
                 <Button variant="ghost" size="icon" className="lg:hidden">
@@ -360,7 +362,9 @@ export function AppShell({ children }: { children: React.ReactNode }) {
           </div>
         </header>
 
-        <main className="mx-auto w-full max-w-[1400px] px-4 py-8 sm:px-6 lg:px-8">{children}</main>
+        <main className="mx-auto w-full max-w-[1320px] px-4 pt-2 pb-8 sm:px-6 lg:pr-6 lg:pl-2">
+          {children}
+        </main>
       </div>
     </div>
   );
