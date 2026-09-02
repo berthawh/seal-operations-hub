@@ -84,9 +84,9 @@ export function PageHeader({
       {crumbs ? <Crumbs items={crumbs} /> : null}
       <div className="mt-2 flex flex-wrap items-end justify-between gap-4">
         <div className="min-w-0">
-          <h1 className="text-display text-3xl leading-tight sm:text-4xl">{title}</h1>
+          <h1 className="text-display text-xl leading-tight sm:text-[22px]">{title}</h1>
           {description ? (
-            <p className="mt-1.5 max-w-2xl text-sm text-muted-foreground">{description}</p>
+            <p className="mt-1 max-w-2xl text-[13px] text-muted-foreground">{description}</p>
           ) : null}
           {meta ? <div className="mt-3 flex flex-wrap items-center gap-2">{meta}</div> : null}
         </div>
