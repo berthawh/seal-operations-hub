@@ -10,33 +10,248 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as CertificatesIndexRouteImport } from './routes/certificates.index'
+import { Route as CertificatesCertificateIdRouteImport } from './routes/certificates.$certificateId'
+import { Route as CertificatesNewRouteImport } from './routes/certificates.new'
+import { Route as CoursesIndexRouteImport } from './routes/courses.index'
+import { Route as CoursesCourseIdRouteImport } from './routes/courses.$courseId'
+import { Route as OrganisationsIndexRouteImport } from './routes/organisations.index'
+import { Route as OrganisationsOrgIdRouteImport } from './routes/organisations.$orgId'
+import { Route as PeopleIndexRouteImport } from './routes/people.index'
+import { Route as PeoplePersonIdRouteImport } from './routes/people.$personId'
+import { Route as SessionsIndexRouteImport } from './routes/sessions.index'
+import { Route as SessionsSessionIdRouteImport } from './routes/sessions.$sessionId'
+import { Route as SessionsNewRouteImport } from './routes/sessions.new'
+import { Route as SettingsIndexRouteImport } from './routes/settings.index'
+import { Route as TrackingIndexRouteImport } from './routes/tracking.index'
+import { Route as SettingsAutomationsIndexRouteImport } from './routes/settings.automations.index'
+import { Route as SettingsAutomationsAutomationIdRouteImport } from './routes/settings.automations.$automationId'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const CertificatesIndexRoute = CertificatesIndexRouteImport.update({
+  id: '/certificates/',
+  path: '/certificates/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const CertificatesCertificateIdRoute =
+  CertificatesCertificateIdRouteImport.update({
+    id: '/certificates/$certificateId',
+    path: '/certificates/$certificateId',
+    getParentRoute: () => rootRouteImport,
+  } as any)
+const CertificatesNewRoute = CertificatesNewRouteImport.update({
+  id: '/certificates/new',
+  path: '/certificates/new',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const CoursesIndexRoute = CoursesIndexRouteImport.update({
+  id: '/courses/',
+  path: '/courses/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const CoursesCourseIdRoute = CoursesCourseIdRouteImport.update({
+  id: '/courses/$courseId',
+  path: '/courses/$courseId',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const OrganisationsIndexRoute = OrganisationsIndexRouteImport.update({
+  id: '/organisations/',
+  path: '/organisations/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const OrganisationsOrgIdRoute = OrganisationsOrgIdRouteImport.update({
+  id: '/organisations/$orgId',
+  path: '/organisations/$orgId',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const PeopleIndexRoute = PeopleIndexRouteImport.update({
+  id: '/people/',
+  path: '/people/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const PeoplePersonIdRoute = PeoplePersonIdRouteImport.update({
+  id: '/people/$personId',
+  path: '/people/$personId',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const SessionsIndexRoute = SessionsIndexRouteImport.update({
+  id: '/sessions/',
+  path: '/sessions/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const SessionsSessionIdRoute = SessionsSessionIdRouteImport.update({
+  id: '/sessions/$sessionId',
+  path: '/sessions/$sessionId',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const SessionsNewRoute = SessionsNewRouteImport.update({
+  id: '/sessions/new',
+  path: '/sessions/new',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const SettingsIndexRoute = SettingsIndexRouteImport.update({
+  id: '/settings/',
+  path: '/settings/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const TrackingIndexRoute = TrackingIndexRouteImport.update({
+  id: '/tracking/',
+  path: '/tracking/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const SettingsAutomationsIndexRoute =
+  SettingsAutomationsIndexRouteImport.update({
+    id: '/settings/automations/',
+    path: '/settings/automations/',
+    getParentRoute: () => rootRouteImport,
+  } as any)
+const SettingsAutomationsAutomationIdRoute =
+  SettingsAutomationsAutomationIdRouteImport.update({
+    id: '/settings/automations/$automationId',
+    path: '/settings/automations/$automationId',
+    getParentRoute: () => rootRouteImport,
+  } as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/certificates/$certificateId': typeof CertificatesCertificateIdRoute
+  '/certificates/new': typeof CertificatesNewRoute
+  '/courses/$courseId': typeof CoursesCourseIdRoute
+  '/organisations/$orgId': typeof OrganisationsOrgIdRoute
+  '/people/$personId': typeof PeoplePersonIdRoute
+  '/sessions/$sessionId': typeof SessionsSessionIdRoute
+  '/sessions/new': typeof SessionsNewRoute
+  '/certificates/': typeof CertificatesIndexRoute
+  '/courses/': typeof CoursesIndexRoute
+  '/organisations/': typeof OrganisationsIndexRoute
+  '/people/': typeof PeopleIndexRoute
+  '/sessions/': typeof SessionsIndexRoute
+  '/settings/': typeof SettingsIndexRoute
+  '/tracking/': typeof TrackingIndexRoute
+  '/settings/automations/$automationId': typeof SettingsAutomationsAutomationIdRoute
+  '/settings/automations/': typeof SettingsAutomationsIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/certificates/$certificateId': typeof CertificatesCertificateIdRoute
+  '/certificates/new': typeof CertificatesNewRoute
+  '/courses/$courseId': typeof CoursesCourseIdRoute
+  '/organisations/$orgId': typeof OrganisationsOrgIdRoute
+  '/people/$personId': typeof PeoplePersonIdRoute
+  '/sessions/$sessionId': typeof SessionsSessionIdRoute
+  '/sessions/new': typeof SessionsNewRoute
+  '/certificates': typeof CertificatesIndexRoute
+  '/courses': typeof CoursesIndexRoute
+  '/organisations': typeof OrganisationsIndexRoute
+  '/people': typeof PeopleIndexRoute
+  '/sessions': typeof SessionsIndexRoute
+  '/settings': typeof SettingsIndexRoute
+  '/tracking': typeof TrackingIndexRoute
+  '/settings/automations/$automationId': typeof SettingsAutomationsAutomationIdRoute
+  '/settings/automations': typeof SettingsAutomationsIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/certificates/$certificateId': typeof CertificatesCertificateIdRoute
+  '/certificates/new': typeof CertificatesNewRoute
+  '/courses/$courseId': typeof CoursesCourseIdRoute
+  '/organisations/$orgId': typeof OrganisationsOrgIdRoute
+  '/people/$personId': typeof PeoplePersonIdRoute
+  '/sessions/$sessionId': typeof SessionsSessionIdRoute
+  '/sessions/new': typeof SessionsNewRoute
+  '/certificates/': typeof CertificatesIndexRoute
+  '/courses/': typeof CoursesIndexRoute
+  '/organisations/': typeof OrganisationsIndexRoute
+  '/people/': typeof PeopleIndexRoute
+  '/sessions/': typeof SessionsIndexRoute
+  '/settings/': typeof SettingsIndexRoute
+  '/tracking/': typeof TrackingIndexRoute
+  '/settings/automations/$automationId': typeof SettingsAutomationsAutomationIdRoute
+  '/settings/automations/': typeof SettingsAutomationsIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/'
+  fullPaths:
+    | '/'
+    | '/certificates/$certificateId'
+    | '/certificates/new'
+    | '/courses/$courseId'
+    | '/organisations/$orgId'
+    | '/people/$personId'
+    | '/sessions/$sessionId'
+    | '/sessions/new'
+    | '/certificates/'
+    | '/courses/'
+    | '/organisations/'
+    | '/people/'
+    | '/sessions/'
+    | '/settings/'
+    | '/tracking/'
+    | '/settings/automations/$automationId'
+    | '/settings/automations/'
   fileRoutesByTo: FileRoutesByTo
-  to: '/'
-  id: '__root__' | '/'
+  to:
+    | '/'
+    | '/certificates/$certificateId'
+    | '/certificates/new'
+    | '/courses/$courseId'
+    | '/organisations/$orgId'
+    | '/people/$personId'
+    | '/sessions/$sessionId'
+    | '/sessions/new'
+    | '/certificates'
+    | '/courses'
+    | '/organisations'
+    | '/people'
+    | '/sessions'
+    | '/settings'
+    | '/tracking'
+    | '/settings/automations/$automationId'
+    | '/settings/automations'
+  id:
+    | '__root__'
+    | '/'
+    | '/certificates/$certificateId'
+    | '/certificates/new'
+    | '/courses/$courseId'
+    | '/organisations/$orgId'
+    | '/people/$personId'
+    | '/sessions/$sessionId'
+    | '/sessions/new'
+    | '/certificates/'
+    | '/courses/'
+    | '/organisations/'
+    | '/people/'
+    | '/sessions/'
+    | '/settings/'
+    | '/tracking/'
+    | '/settings/automations/$automationId'
+    | '/settings/automations/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  CertificatesCertificateIdRoute: typeof CertificatesCertificateIdRoute
+  CertificatesNewRoute: typeof CertificatesNewRoute
+  CoursesCourseIdRoute: typeof CoursesCourseIdRoute
+  OrganisationsOrgIdRoute: typeof OrganisationsOrgIdRoute
+  PeoplePersonIdRoute: typeof PeoplePersonIdRoute
+  SessionsSessionIdRoute: typeof SessionsSessionIdRoute
+  SessionsNewRoute: typeof SessionsNewRoute
+  CertificatesIndexRoute: typeof CertificatesIndexRoute
+  CoursesIndexRoute: typeof CoursesIndexRoute
+  OrganisationsIndexRoute: typeof OrganisationsIndexRoute
+  PeopleIndexRoute: typeof PeopleIndexRoute
+  SessionsIndexRoute: typeof SessionsIndexRoute
+  SettingsIndexRoute: typeof SettingsIndexRoute
+  TrackingIndexRoute: typeof TrackingIndexRoute
+  SettingsAutomationsAutomationIdRoute: typeof SettingsAutomationsAutomationIdRoute
+  SettingsAutomationsIndexRoute: typeof SettingsAutomationsIndexRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -48,11 +263,139 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/certificates/': {
+      id: '/certificates/'
+      path: '/certificates'
+      fullPath: '/certificates/'
+      preLoaderRoute: typeof CertificatesIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/certificates/$certificateId': {
+      id: '/certificates/$certificateId'
+      path: '/certificates/$certificateId'
+      fullPath: '/certificates/$certificateId'
+      preLoaderRoute: typeof CertificatesCertificateIdRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/certificates/new': {
+      id: '/certificates/new'
+      path: '/certificates/new'
+      fullPath: '/certificates/new'
+      preLoaderRoute: typeof CertificatesNewRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/courses/': {
+      id: '/courses/'
+      path: '/courses'
+      fullPath: '/courses/'
+      preLoaderRoute: typeof CoursesIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/courses/$courseId': {
+      id: '/courses/$courseId'
+      path: '/courses/$courseId'
+      fullPath: '/courses/$courseId'
+      preLoaderRoute: typeof CoursesCourseIdRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/organisations/': {
+      id: '/organisations/'
+      path: '/organisations'
+      fullPath: '/organisations/'
+      preLoaderRoute: typeof OrganisationsIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/organisations/$orgId': {
+      id: '/organisations/$orgId'
+      path: '/organisations/$orgId'
+      fullPath: '/organisations/$orgId'
+      preLoaderRoute: typeof OrganisationsOrgIdRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/people/': {
+      id: '/people/'
+      path: '/people'
+      fullPath: '/people/'
+      preLoaderRoute: typeof PeopleIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/people/$personId': {
+      id: '/people/$personId'
+      path: '/people/$personId'
+      fullPath: '/people/$personId'
+      preLoaderRoute: typeof PeoplePersonIdRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/sessions/': {
+      id: '/sessions/'
+      path: '/sessions'
+      fullPath: '/sessions/'
+      preLoaderRoute: typeof SessionsIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/sessions/$sessionId': {
+      id: '/sessions/$sessionId'
+      path: '/sessions/$sessionId'
+      fullPath: '/sessions/$sessionId'
+      preLoaderRoute: typeof SessionsSessionIdRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/sessions/new': {
+      id: '/sessions/new'
+      path: '/sessions/new'
+      fullPath: '/sessions/new'
+      preLoaderRoute: typeof SessionsNewRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/settings/': {
+      id: '/settings/'
+      path: '/settings'
+      fullPath: '/settings/'
+      preLoaderRoute: typeof SettingsIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/tracking/': {
+      id: '/tracking/'
+      path: '/tracking'
+      fullPath: '/tracking/'
+      preLoaderRoute: typeof TrackingIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/settings/automations/': {
+      id: '/settings/automations/'
+      path: '/settings/automations'
+      fullPath: '/settings/automations/'
+      preLoaderRoute: typeof SettingsAutomationsIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/settings/automations/$automationId': {
+      id: '/settings/automations/$automationId'
+      path: '/settings/automations/$automationId'
+      fullPath: '/settings/automations/$automationId'
+      preLoaderRoute: typeof SettingsAutomationsAutomationIdRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  CertificatesCertificateIdRoute: CertificatesCertificateIdRoute,
+  CertificatesNewRoute: CertificatesNewRoute,
+  CoursesCourseIdRoute: CoursesCourseIdRoute,
+  OrganisationsOrgIdRoute: OrganisationsOrgIdRoute,
+  PeoplePersonIdRoute: PeoplePersonIdRoute,
+  SessionsSessionIdRoute: SessionsSessionIdRoute,
+  SessionsNewRoute: SessionsNewRoute,
+  CertificatesIndexRoute: CertificatesIndexRoute,
+  CoursesIndexRoute: CoursesIndexRoute,
+  OrganisationsIndexRoute: OrganisationsIndexRoute,
+  PeopleIndexRoute: PeopleIndexRoute,
+  SessionsIndexRoute: SessionsIndexRoute,
+  SettingsIndexRoute: SettingsIndexRoute,
+  TrackingIndexRoute: TrackingIndexRoute,
+  SettingsAutomationsAutomationIdRoute: SettingsAutomationsAutomationIdRoute,
+  SettingsAutomationsIndexRoute: SettingsAutomationsIndexRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
