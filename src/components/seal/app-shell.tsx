@@ -102,15 +102,15 @@ function NavList({ onNavigate }: { onNavigate?: (() => void) | undefined }) {
             isActive ? "opacity-100" : "scale-y-0 opacity-0",
           )}
         />
-        <entry.icon className="size-[18px] shrink-0 opacity-90" />
+        <entry.icon className="size-4 shrink-0 opacity-80" />
         <span className="flex-1 truncate">{entry.label}</span>
         {entry.badge ? (
           <span
             className={cn(
-              "rounded-full px-1.5 py-0.5 text-[10px] font-bold",
+              "rounded-full px-1.5 py-0.5 text-[10px] font-semibold",
               entry.badge === "!"
                 ? "bg-seal text-seal-foreground"
-                : "bg-sidebar-border/70 text-sidebar-foreground",
+                : "bg-muted text-muted-foreground",
             )}
           >
             {entry.badge}
