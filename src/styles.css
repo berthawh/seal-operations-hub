@@ -217,6 +217,11 @@
   --neutral-soft: oklch(0.3 0.02 264);
   --border: oklch(1 0 0 / 12%);
   --input: oklch(1 0 0 / 16%);
+  --sidebar: oklch(0.23 0.022 264);
+  --sidebar-foreground: oklch(0.8 0.012 264);
+  --sidebar-accent: oklch(0.29 0.026 264);
+  --sidebar-accent-foreground: oklch(0.97 0.008 264);
+  --sidebar-border: oklch(1 0 0 / 12%);
 }
 
 @layer base {
