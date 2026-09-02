@@ -22,6 +22,10 @@ import { Route as PeoplePersonIdRouteImport } from './routes/people.$personId'
 import { Route as SessionsIndexRouteImport } from './routes/sessions.index'
 import { Route as SessionsSessionIdRouteImport } from './routes/sessions.$sessionId'
 import { Route as SessionsNewRouteImport } from './routes/sessions.new'
+import { Route as SettingsIndexRouteImport } from './routes/settings.index'
+import { Route as TrackingIndexRouteImport } from './routes/tracking.index'
+import { Route as SettingsAutomationsIndexRouteImport } from './routes/settings.automations.index'
+import { Route as SettingsAutomationsAutomationIdRouteImport } from './routes/settings.automations.$automationId'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
@@ -89,6 +93,28 @@ const SessionsNewRoute = SessionsNewRouteImport.update({
   path: '/sessions/new',
   getParentRoute: () => rootRouteImport,
 } as any)
+const SettingsIndexRoute = SettingsIndexRouteImport.update({
+  id: '/settings/',
+  path: '/settings/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const TrackingIndexRoute = TrackingIndexRouteImport.update({
+  id: '/tracking/',
+  path: '/tracking/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const SettingsAutomationsIndexRoute =
+  SettingsAutomationsIndexRouteImport.update({
+    id: '/settings/automations/',
+    path: '/settings/automations/',
+    getParentRoute: () => rootRouteImport,
+  } as any)
+const SettingsAutomationsAutomationIdRoute =
+  SettingsAutomationsAutomationIdRouteImport.update({
+    id: '/settings/automations/$automationId',
+    path: '/settings/automations/$automationId',
+    getParentRoute: () => rootRouteImport,
+  } as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
@@ -104,6 +130,10 @@ export interface FileRoutesByFullPath {
   '/organisations/': typeof OrganisationsIndexRoute
   '/people/': typeof PeopleIndexRoute
   '/sessions/': typeof SessionsIndexRoute
+  '/settings/': typeof SettingsIndexRoute
+  '/tracking/': typeof TrackingIndexRoute
+  '/settings/automations/$automationId': typeof SettingsAutomationsAutomationIdRoute
+  '/settings/automations/': typeof SettingsAutomationsIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
@@ -119,6 +149,10 @@ export interface FileRoutesByTo {
   '/organisations': typeof OrganisationsIndexRoute
   '/people': typeof PeopleIndexRoute
   '/sessions': typeof SessionsIndexRoute
+  '/settings': typeof SettingsIndexRoute
+  '/tracking': typeof TrackingIndexRoute
+  '/settings/automations/$automationId': typeof SettingsAutomationsAutomationIdRoute
+  '/settings/automations': typeof SettingsAutomationsIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -135,6 +169,10 @@ export interface FileRoutesById {
   '/organisations/': typeof OrganisationsIndexRoute
   '/people/': typeof PeopleIndexRoute
   '/sessions/': typeof SessionsIndexRoute
+  '/settings/': typeof SettingsIndexRoute
+  '/tracking/': typeof TrackingIndexRoute
+  '/settings/automations/$automationId': typeof SettingsAutomationsAutomationIdRoute
+  '/settings/automations/': typeof SettingsAutomationsIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -152,6 +190,10 @@ export interface FileRouteTypes {
     | '/organisations/'
     | '/people/'
     | '/sessions/'
+    | '/settings/'
+    | '/tracking/'
+    | '/settings/automations/$automationId'
+    | '/settings/automations/'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
@@ -167,6 +209,10 @@ export interface FileRouteTypes {
     | '/organisations'
     | '/people'
     | '/sessions'
+    | '/settings'
+    | '/tracking'
+    | '/settings/automations/$automationId'
+    | '/settings/automations'
   id:
     | '__root__'
     | '/'
@@ -182,6 +228,10 @@ export interface FileRouteTypes {
     | '/organisations/'
     | '/people/'
     | '/sessions/'
+    | '/settings/'
+    | '/tracking/'
+    | '/settings/automations/$automationId'
+    | '/settings/automations/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -198,6 +248,10 @@ export interface RootRouteChildren {
   OrganisationsIndexRoute: typeof OrganisationsIndexRoute
   PeopleIndexRoute: typeof PeopleIndexRoute
   SessionsIndexRoute: typeof SessionsIndexRoute
+  SettingsIndexRoute: typeof SettingsIndexRoute
+  TrackingIndexRoute: typeof TrackingIndexRoute
+  SettingsAutomationsAutomationIdRoute: typeof SettingsAutomationsAutomationIdRoute
+  SettingsAutomationsIndexRoute: typeof SettingsAutomationsIndexRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -293,6 +347,34 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof SessionsNewRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/settings/': {
+      id: '/settings/'
+      path: '/settings'
+      fullPath: '/settings/'
+      preLoaderRoute: typeof SettingsIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/tracking/': {
+      id: '/tracking/'
+      path: '/tracking'
+      fullPath: '/tracking/'
+      preLoaderRoute: typeof TrackingIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/settings/automations/': {
+      id: '/settings/automations/'
+      path: '/settings/automations'
+      fullPath: '/settings/automations/'
+      preLoaderRoute: typeof SettingsAutomationsIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/settings/automations/$automationId': {
+      id: '/settings/automations/$automationId'
+      path: '/settings/automations/$automationId'
+      fullPath: '/settings/automations/$automationId'
+      preLoaderRoute: typeof SettingsAutomationsAutomationIdRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
@@ -310,6 +392,10 @@ const rootRouteChildren: RootRouteChildren = {
   OrganisationsIndexRoute: OrganisationsIndexRoute,
   PeopleIndexRoute: PeopleIndexRoute,
   SessionsIndexRoute: SessionsIndexRoute,
+  SettingsIndexRoute: SettingsIndexRoute,
+  TrackingIndexRoute: TrackingIndexRoute,
+  SettingsAutomationsAutomationIdRoute: SettingsAutomationsAutomationIdRoute,
+  SettingsAutomationsIndexRoute: SettingsAutomationsIndexRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)

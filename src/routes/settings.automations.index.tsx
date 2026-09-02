@@ -92,7 +92,7 @@ function AutomationsPage() {
                   <p className="text-xs text-muted-foreground">{a.workflow} workflow</p>
                 </div>
                 <Switch
-                  checked={state[a.id]}
+                  checked={state[a.id] ?? false}
                   onCheckedChange={(v) => {
                     setState((s) => ({ ...s, [a.id]: v }));
                     toast.success(`${a.name} ${v ? "enabled" : "paused"}`);
