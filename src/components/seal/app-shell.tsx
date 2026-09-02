@@ -263,13 +263,13 @@ export function AppShell({ children }: { children: React.ReactNode }) {
 
   return (
     <div className="min-h-screen bg-background">
-      <aside className="fixed inset-y-0 left-0 z-40 hidden w-[264px] border-r border-sidebar-border/60 lg:block">
+      <aside className="fixed inset-y-4 left-4 z-40 hidden w-[228px] overflow-hidden rounded-2xl border border-border/70 shadow-card lg:block">
         <SidebarInner />
       </aside>
 
-      <div className="lg:pl-[264px]">
-        <header className="sticky top-0 z-30 border-b border-border/70 bg-background/80 backdrop-blur-xl">
-          <div className="flex h-16 items-center gap-3 px-4 sm:px-6 lg:px-8">
+      <div className="lg:pl-[260px]">
+        <header className="sticky top-0 z-30 bg-background/85 backdrop-blur-xl">
+          <div className="flex h-14 items-center gap-3 px-4 sm:px-6 lg:pr-6 lg:pl-2">
             <Sheet open={mobileOpen} onOpenChange={setMobileOpen}>
               <SheetTrigger asChild>
                 <Button variant="ghost" size="icon" className="lg:hidden">
