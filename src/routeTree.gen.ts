@@ -26,6 +26,7 @@ import { Route as SettingsIndexRouteImport } from './routes/settings.index'
 import { Route as TrackingIndexRouteImport } from './routes/tracking.index'
 import { Route as SettingsAutomationsIndexRouteImport } from './routes/settings.automations.index'
 import { Route as SettingsAutomationsAutomationIdRouteImport } from './routes/settings.automations.$automationId'
+import { Route as SettingsStudioIndexRouteImport } from './routes/settings.studio.index'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
@@ -115,6 +116,11 @@ const SettingsAutomationsAutomationIdRoute =
     path: '/settings/automations/$automationId',
     getParentRoute: () => rootRouteImport,
   } as any)
+const SettingsStudioIndexRoute = SettingsStudioIndexRouteImport.update({
+  id: '/settings/studio/',
+  path: '/settings/studio/',
+  getParentRoute: () => rootRouteImport,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
@@ -134,6 +140,7 @@ export interface FileRoutesByFullPath {
   '/tracking/': typeof TrackingIndexRoute
   '/settings/automations/$automationId': typeof SettingsAutomationsAutomationIdRoute
   '/settings/automations/': typeof SettingsAutomationsIndexRoute
+  '/settings/studio/': typeof SettingsStudioIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
@@ -153,6 +160,7 @@ export interface FileRoutesByTo {
   '/tracking': typeof TrackingIndexRoute
   '/settings/automations/$automationId': typeof SettingsAutomationsAutomationIdRoute
   '/settings/automations': typeof SettingsAutomationsIndexRoute
+  '/settings/studio': typeof SettingsStudioIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -173,6 +181,7 @@ export interface FileRoutesById {
   '/tracking/': typeof TrackingIndexRoute
   '/settings/automations/$automationId': typeof SettingsAutomationsAutomationIdRoute
   '/settings/automations/': typeof SettingsAutomationsIndexRoute
+  '/settings/studio/': typeof SettingsStudioIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -194,6 +203,7 @@ export interface FileRouteTypes {
     | '/tracking/'
     | '/settings/automations/$automationId'
     | '/settings/automations/'
+    | '/settings/studio/'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
@@ -213,6 +223,7 @@ export interface FileRouteTypes {
     | '/tracking'
     | '/settings/automations/$automationId'
     | '/settings/automations'
+    | '/settings/studio'
   id:
     | '__root__'
     | '/'
@@ -232,6 +243,7 @@ export interface FileRouteTypes {
     | '/tracking/'
     | '/settings/automations/$automationId'
     | '/settings/automations/'
+    | '/settings/studio/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -252,6 +264,7 @@ export interface RootRouteChildren {
   TrackingIndexRoute: typeof TrackingIndexRoute
   SettingsAutomationsAutomationIdRoute: typeof SettingsAutomationsAutomationIdRoute
   SettingsAutomationsIndexRoute: typeof SettingsAutomationsIndexRoute
+  SettingsStudioIndexRoute: typeof SettingsStudioIndexRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -375,6 +388,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof SettingsAutomationsAutomationIdRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/settings/studio/': {
+      id: '/settings/studio/'
+      path: '/settings/studio'
+      fullPath: '/settings/studio/'
+      preLoaderRoute: typeof SettingsStudioIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
@@ -396,6 +416,7 @@ const rootRouteChildren: RootRouteChildren = {
   TrackingIndexRoute: TrackingIndexRoute,
   SettingsAutomationsAutomationIdRoute: SettingsAutomationsAutomationIdRoute,
   SettingsAutomationsIndexRoute: SettingsAutomationsIndexRoute,
+  SettingsStudioIndexRoute: SettingsStudioIndexRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
