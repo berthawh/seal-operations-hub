@@ -1,5 +1,5 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
-import { Bell, Building2, FileBadge, Users, Workflow } from "lucide-react";
+import { Bell, Building2, FileBadge, LockKeyhole, Users, Workflow } from "lucide-react";
 import { AppShell } from "@/components/seal/app-shell";
 import { Field, PageHeader, Panel, PanelHeader } from "@/components/seal/primitives";
 import { StatusChip } from "@/components/seal/status-chip";
@@ -59,6 +59,16 @@ function SettingsPage() {
               <Workflow className="size-4" /> Automations
               <StatusChip tone="seal" size="sm" dot={false} className="ml-auto">
                 {enabled}
+              </StatusChip>
+            </Link>
+            <div className="my-2 border-t border-border/70" />
+            <Link
+              to="/settings/studio"
+              className="flex w-full items-center gap-2.5 rounded-lg px-3 py-2 text-muted-foreground transition-colors hover:bg-muted/60"
+            >
+              <LockKeyhole className="size-4" /> CO Studio
+              <StatusChip tone="neutral" size="sm" dot={false} className="ml-auto">
+                Locked
               </StatusChip>
             </Link>
           </nav>

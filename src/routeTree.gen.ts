@@ -26,6 +26,10 @@ import { Route as SettingsIndexRouteImport } from './routes/settings.index'
 import { Route as TrackingIndexRouteImport } from './routes/tracking.index'
 import { Route as SettingsAutomationsIndexRouteImport } from './routes/settings.automations.index'
 import { Route as SettingsAutomationsAutomationIdRouteImport } from './routes/settings.automations.$automationId'
+import { Route as SettingsStudioIndexRouteImport } from './routes/settings.studio.index'
+import { Route as SettingsStudioCertificatesIndexRouteImport } from './routes/settings.studio.certificates.index'
+import { Route as SettingsStudioCertificatesCertificateIdRouteImport } from './routes/settings.studio.certificates.$certificateId'
+import { Route as SettingsStudioCoursesCourseIdRouteImport } from './routes/settings.studio.courses.$courseId'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
@@ -115,6 +119,29 @@ const SettingsAutomationsAutomationIdRoute =
     path: '/settings/automations/$automationId',
     getParentRoute: () => rootRouteImport,
   } as any)
+const SettingsStudioIndexRoute = SettingsStudioIndexRouteImport.update({
+  id: '/settings/studio/',
+  path: '/settings/studio/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const SettingsStudioCertificatesIndexRoute =
+  SettingsStudioCertificatesIndexRouteImport.update({
+    id: '/settings/studio/certificates/',
+    path: '/settings/studio/certificates/',
+    getParentRoute: () => rootRouteImport,
+  } as any)
+const SettingsStudioCertificatesCertificateIdRoute =
+  SettingsStudioCertificatesCertificateIdRouteImport.update({
+    id: '/settings/studio/certificates/$certificateId',
+    path: '/settings/studio/certificates/$certificateId',
+    getParentRoute: () => rootRouteImport,
+  } as any)
+const SettingsStudioCoursesCourseIdRoute =
+  SettingsStudioCoursesCourseIdRouteImport.update({
+    id: '/settings/studio/courses/$courseId',
+    path: '/settings/studio/courses/$courseId',
+    getParentRoute: () => rootRouteImport,
+  } as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
@@ -134,6 +161,10 @@ export interface FileRoutesByFullPath {
   '/tracking/': typeof TrackingIndexRoute
   '/settings/automations/$automationId': typeof SettingsAutomationsAutomationIdRoute
   '/settings/automations/': typeof SettingsAutomationsIndexRoute
+  '/settings/studio/': typeof SettingsStudioIndexRoute
+  '/settings/studio/certificates/$certificateId': typeof SettingsStudioCertificatesCertificateIdRoute
+  '/settings/studio/courses/$courseId': typeof SettingsStudioCoursesCourseIdRoute
+  '/settings/studio/certificates/': typeof SettingsStudioCertificatesIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
@@ -153,6 +184,10 @@ export interface FileRoutesByTo {
   '/tracking': typeof TrackingIndexRoute
   '/settings/automations/$automationId': typeof SettingsAutomationsAutomationIdRoute
   '/settings/automations': typeof SettingsAutomationsIndexRoute
+  '/settings/studio': typeof SettingsStudioIndexRoute
+  '/settings/studio/certificates/$certificateId': typeof SettingsStudioCertificatesCertificateIdRoute
+  '/settings/studio/courses/$courseId': typeof SettingsStudioCoursesCourseIdRoute
+  '/settings/studio/certificates': typeof SettingsStudioCertificatesIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -173,6 +208,10 @@ export interface FileRoutesById {
   '/tracking/': typeof TrackingIndexRoute
   '/settings/automations/$automationId': typeof SettingsAutomationsAutomationIdRoute
   '/settings/automations/': typeof SettingsAutomationsIndexRoute
+  '/settings/studio/': typeof SettingsStudioIndexRoute
+  '/settings/studio/certificates/$certificateId': typeof SettingsStudioCertificatesCertificateIdRoute
+  '/settings/studio/courses/$courseId': typeof SettingsStudioCoursesCourseIdRoute
+  '/settings/studio/certificates/': typeof SettingsStudioCertificatesIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -194,6 +233,10 @@ export interface FileRouteTypes {
     | '/tracking/'
     | '/settings/automations/$automationId'
     | '/settings/automations/'
+    | '/settings/studio/'
+    | '/settings/studio/certificates/$certificateId'
+    | '/settings/studio/courses/$courseId'
+    | '/settings/studio/certificates/'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
@@ -213,6 +256,10 @@ export interface FileRouteTypes {
     | '/tracking'
     | '/settings/automations/$automationId'
     | '/settings/automations'
+    | '/settings/studio'
+    | '/settings/studio/certificates/$certificateId'
+    | '/settings/studio/courses/$courseId'
+    | '/settings/studio/certificates'
   id:
     | '__root__'
     | '/'
@@ -232,6 +279,10 @@ export interface FileRouteTypes {
     | '/tracking/'
     | '/settings/automations/$automationId'
     | '/settings/automations/'
+    | '/settings/studio/'
+    | '/settings/studio/certificates/$certificateId'
+    | '/settings/studio/courses/$courseId'
+    | '/settings/studio/certificates/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -252,6 +303,10 @@ export interface RootRouteChildren {
   TrackingIndexRoute: typeof TrackingIndexRoute
   SettingsAutomationsAutomationIdRoute: typeof SettingsAutomationsAutomationIdRoute
   SettingsAutomationsIndexRoute: typeof SettingsAutomationsIndexRoute
+  SettingsStudioIndexRoute: typeof SettingsStudioIndexRoute
+  SettingsStudioCertificatesCertificateIdRoute: typeof SettingsStudioCertificatesCertificateIdRoute
+  SettingsStudioCoursesCourseIdRoute: typeof SettingsStudioCoursesCourseIdRoute
+  SettingsStudioCertificatesIndexRoute: typeof SettingsStudioCertificatesIndexRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -375,6 +430,34 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof SettingsAutomationsAutomationIdRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/settings/studio/': {
+      id: '/settings/studio/'
+      path: '/settings/studio'
+      fullPath: '/settings/studio/'
+      preLoaderRoute: typeof SettingsStudioIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/settings/studio/certificates/': {
+      id: '/settings/studio/certificates/'
+      path: '/settings/studio/certificates'
+      fullPath: '/settings/studio/certificates/'
+      preLoaderRoute: typeof SettingsStudioCertificatesIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/settings/studio/certificates/$certificateId': {
+      id: '/settings/studio/certificates/$certificateId'
+      path: '/settings/studio/certificates/$certificateId'
+      fullPath: '/settings/studio/certificates/$certificateId'
+      preLoaderRoute: typeof SettingsStudioCertificatesCertificateIdRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/settings/studio/courses/$courseId': {
+      id: '/settings/studio/courses/$courseId'
+      path: '/settings/studio/courses/$courseId'
+      fullPath: '/settings/studio/courses/$courseId'
+      preLoaderRoute: typeof SettingsStudioCoursesCourseIdRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
@@ -396,6 +479,11 @@ const rootRouteChildren: RootRouteChildren = {
   TrackingIndexRoute: TrackingIndexRoute,
   SettingsAutomationsAutomationIdRoute: SettingsAutomationsAutomationIdRoute,
   SettingsAutomationsIndexRoute: SettingsAutomationsIndexRoute,
+  SettingsStudioIndexRoute: SettingsStudioIndexRoute,
+  SettingsStudioCertificatesCertificateIdRoute:
+    SettingsStudioCertificatesCertificateIdRoute,
+  SettingsStudioCoursesCourseIdRoute: SettingsStudioCoursesCourseIdRoute,
+  SettingsStudioCertificatesIndexRoute: SettingsStudioCertificatesIndexRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
