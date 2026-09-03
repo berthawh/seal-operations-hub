@@ -101,7 +101,7 @@ function CourseDetail() {
 
         <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
           <Panel className="p-5">
-            <Metric label="Duration" value={`${course.durationHours}h`} hint="per delivery" />
+            <Metric label="Classroom time" value="9am – 5pm" hint="incl. 1 hour break" />
           </Panel>
           <Panel className="p-5">
             <Metric
@@ -169,6 +169,7 @@ function CourseDetail() {
                 <Field label="Code" value={course.code} />
                 <Field label="Category" value={course.category} />
                 <Field label="Status" value={course.status} />
+                <Field label="Classroom time" value={classroomTime} />
                 <Field label="Certificate validity" value={`${course.validityMonths} months`} />
               </div>
             </Panel>
