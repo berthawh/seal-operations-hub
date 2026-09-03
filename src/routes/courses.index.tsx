@@ -1,6 +1,7 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { BookOpen, Clock, GraduationCap, Plus, ShieldCheck } from "lucide-react";
 import { AppShell } from "@/components/seal/app-shell";
+import { CourseTerms } from "@/components/seal/course-terms";
 import { EmptyState, Field, PageHeader, Panel } from "@/components/seal/primitives";
 import { StatusChip, type ChipTone } from "@/components/seal/status-chip";
 import { Button } from "@/components/ui/button";
