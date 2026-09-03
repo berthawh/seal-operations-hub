@@ -147,6 +147,8 @@ function CoursesPage() {
             )}
           </div>
         </Panel>
+
+        <CourseTerms />
       </div>
     </AppShell>
   );
