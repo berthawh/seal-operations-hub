@@ -15,7 +15,6 @@ import {
   Settings,
   ShieldCheck,
   Users,
-  Sparkles,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
@@ -52,7 +51,6 @@ const nav = [
 
 const secondary = [
   { label: "Settings", to: "/settings", icon: Settings },
-  { label: "Automations", to: "/settings/automations", icon: Sparkles },
 ];
 
 const notifications = [
@@ -350,9 +348,6 @@ export function AppShell({ children }: { children: React.ReactNode }) {
                   </DropdownMenuItem>
                   <DropdownMenuItem asChild>
                     <Link to="/settings">Workspace settings</Link>
-                  </DropdownMenuItem>
-                  <DropdownMenuItem asChild>
-                    <Link to="/settings/automations">Automations</Link>
                   </DropdownMenuItem>
                   <DropdownMenuSeparator />
                   <DropdownMenuItem>Sign out</DropdownMenuItem>
