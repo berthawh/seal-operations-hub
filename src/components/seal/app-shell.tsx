@@ -350,9 +350,6 @@ export function AppShell({ children }: { children: React.ReactNode }) {
                   <DropdownMenuItem asChild>
                     <Link to="/settings">Workspace settings</Link>
                   </DropdownMenuItem>
-                  <DropdownMenuItem asChild>
-                    <Link to="/settings/automations">Automations</Link>
-                  </DropdownMenuItem>
                   <DropdownMenuSeparator />
                   <DropdownMenuItem>Sign out</DropdownMenuItem>
                 </DropdownMenuContent>
