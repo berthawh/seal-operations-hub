@@ -52,7 +52,6 @@ const nav = [
 
 const secondary = [
   { label: "Settings", to: "/settings", icon: Settings },
-  { label: "Automations", to: "/settings/automations", icon: Sparkles },
 ];
 
 const notifications = [
