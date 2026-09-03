@@ -12,9 +12,11 @@ import {
 } from "@/components/seal/primitives";
 import { StatusChip, certificateTone, sessionTone } from "@/components/seal/status-chip";
 import { Button } from "@/components/ui/button";
+import { CourseTerms } from "@/components/seal/course-terms";
 import {
   certificateStatusLabel,
   certificates,
+  classroomTime,
   courses,
   orgOf,
   personOf,
