@@ -84,7 +84,7 @@ export const studioCourses: StudioCourse[] = CATALOGUE.map((entry, i) => {
 export const studioCertificateTypes: StudioCertificateType[] = studioCourses.map((c, i) => ({
   id: c.certificateId,
   code: c.code,
-  name: `${c.name.replace(" (placeholder)", "")} Certificate`,
+  name: `${c.name} Certificate`,
   courseId: c.id,
   accent: ACCENTS[i % ACCENTS.length]!,
   backAsset: `${c.code.toLowerCase()}-back.jpg`,
@@ -104,6 +104,6 @@ export function getStudioCertificate(id: string) {
 export const previewValues = {
   learner: "Jordan Ellis",
   completed: "12 August 2026",
-  validUntil: "12 August 2028",
+  validUntil: "12 August 2027",
   number: "SCTA-120826-014",
 };
