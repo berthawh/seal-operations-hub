@@ -48,6 +48,38 @@ export interface Course {
   summary: string;
 }
 
+/** Classroom time applies to every course in the catalogue. */
+export const classroomTime = "9:00am – 5:00pm, including a one hour break";
+
+/** Controlled small print carried by every course. */
+export const courseTerms: { title: string; body: string[] }[] = [
+  {
+    title: "Certificate of Attendance",
+    body: [
+      "*A certificate of attendance is issued and delivered by email within 24 hours of the course being completed.",
+    ],
+  },
+  {
+    title: "Course delivery",
+    body: [
+      "The training is delivered Face to Face On-Site. We can deliver customised training at your premises. Our Instructor Services team will help you tailor the programme to your organisation's needs.",
+    ],
+  },
+  {
+    title: "Training room rules",
+    body: [
+      "Smoking and drug use are strictly prohibited on-site. Offenders will be asked to leave, the session will be non-refundable, and they will incur a £100 fine.",
+      "Please keep the area tidy. Dispose of rubbish in the bins provided and return all equipment to its original location.",
+    ],
+  },
+  {
+    title: "Cancellation Policy",
+    body: ["At least 24 hours' notice required."],
+  },
+];
+
+
+
 export interface TrainingSession {
   id: string;
   reference: string;
@@ -236,7 +268,7 @@ export const courses: Course[] = [
     code: "SCTA-01",
     name: "Care Certificate",
     category: "Care essentials",
-    durationHours: 12,
+    durationHours: 7,
     validityMonths: 12,
     status: "active",
     sessions: 12,
@@ -249,7 +281,7 @@ export const courses: Course[] = [
     code: "SCTA-02",
     name: "Etac Training",
     category: "Moving & handling",
-    durationHours: 3,
+    durationHours: 7,
     validityMonths: 12,
     status: "active",
     sessions: 8,
@@ -261,7 +293,7 @@ export const courses: Course[] = [
     code: "SCTA-03",
     name: "First Aid Basic Life Support",
     category: "Clinical skills",
-    durationHours: 6,
+    durationHours: 7,
     validityMonths: 12,
     status: "active",
     sessions: 10,
@@ -273,7 +305,7 @@ export const courses: Course[] = [
     code: "SCTA-04",
     name: "Information and Governance Training",
     category: "Governance",
-    durationHours: 2,
+    durationHours: 7,
     validityMonths: 12,
     status: "active",
     sessions: 6,
@@ -285,7 +317,7 @@ export const courses: Course[] = [
     code: "SCTA-05",
     name: "Ligatures Training",
     category: "Clinical skills",
-    durationHours: 3,
+    durationHours: 7,
     validityMonths: 12,
     status: "active",
     sessions: 4,
@@ -297,7 +329,7 @@ export const courses: Course[] = [
     code: "SCTA-06",
     name: "Mandatory Training",
     category: "Care essentials",
-    durationHours: 8,
+    durationHours: 7,
     validityMonths: 12,
     status: "active",
     sessions: 14,
@@ -309,7 +341,7 @@ export const courses: Course[] = [
     code: "SCTA-07",
     name: "MAPA Training",
     category: "Behaviour & restraint",
-    durationHours: 12,
+    durationHours: 7,
     validityMonths: 12,
     status: "active",
     sessions: 7,
@@ -321,7 +353,7 @@ export const courses: Course[] = [
     code: "SCTA-08",
     name: "Medication Administration",
     category: "Clinical skills",
-    durationHours: 6,
+    durationHours: 7,
     validityMonths: 12,
     status: "active",
     sessions: 9,
@@ -333,7 +365,7 @@ export const courses: Course[] = [
     code: "SCTA-09",
     name: "Moving and Handling Training",
     category: "Moving & handling",
-    durationHours: 6,
+    durationHours: 7,
     validityMonths: 12,
     status: "active",
     sessions: 11,
@@ -357,7 +389,7 @@ export const courses: Course[] = [
     code: "SCTA-11",
     name: "PMVA Refresher Training",
     category: "Behaviour & restraint",
-    durationHours: 6,
+    durationHours: 7,
     validityMonths: 12,
     status: "active",
     sessions: 6,
@@ -369,7 +401,7 @@ export const courses: Course[] = [
     code: "SCTA-12",
     name: "PMVA Training Breakaway",
     category: "Behaviour & restraint",
-    durationHours: 4,
+    durationHours: 7,
     validityMonths: 12,
     status: "active",
     sessions: 4,
@@ -381,7 +413,7 @@ export const courses: Course[] = [
     code: "SCTA-13",
     name: "PMVA Training",
     category: "Behaviour & restraint",
-    durationHours: 15,
+    durationHours: 7,
     validityMonths: 12,
     status: "active",
     sessions: 5,
@@ -393,7 +425,7 @@ export const courses: Course[] = [
     code: "SCTA-14",
     name: "Positive Behaviour Support Training",
     category: "Behaviour & restraint",
-    durationHours: 6,
+    durationHours: 7,
     validityMonths: 12,
     status: "active",
     sessions: 4,
@@ -405,7 +437,7 @@ export const courses: Course[] = [
     code: "SCTA-15",
     name: "Safeguarding Training",
     category: "Safeguarding",
-    durationHours: 4,
+    durationHours: 7,
     validityMonths: 12,
     status: "active",
     sessions: 9,
@@ -417,7 +449,7 @@ export const courses: Course[] = [
     code: "SCTA-16",
     name: "Tracheostomy Care and Suctioning Training",
     category: "Clinical skills",
-    durationHours: 6,
+    durationHours: 7,
     validityMonths: 12,
     status: "active",
     sessions: 3,
