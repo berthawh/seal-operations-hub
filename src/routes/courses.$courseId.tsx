@@ -169,7 +169,7 @@ function CourseDetail() {
                 <Field label="Code" value={course.code} />
                 <Field label="Category" value={course.category} />
                 <Field label="Status" value={course.status} />
-                <Field label="Assessment" value="Placeholder — not supplied" />
+                <Field label="Certificate validity" value={`${course.validityMonths} months`} />
               </div>
             </Panel>
 

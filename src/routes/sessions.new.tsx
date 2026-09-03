@@ -309,10 +309,10 @@ function CreateSession() {
               </div>
             </Panel>
             <Panel className="bg-surface-sunken p-5">
-              <p className="text-sm font-semibold">Placeholder content</p>
+              <p className="text-sm font-semibold">Controlled catalogue</p>
               <p className="mt-1 text-xs text-muted-foreground">
-                Course names and validity periods shown here are placeholders until the real
-                catalogue is connected.
+                Courses are selected from the controlled catalogue of 16 types and cannot be edited
+                here. Every course issues certificates valid for 12 months.
               </p>
             </Panel>
           </aside>

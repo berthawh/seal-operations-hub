@@ -1,7 +1,7 @@
 /**
- * Placeholder dataset for the Seal UI design system.
- * Course, tracking and certificate content is intentionally labelled as
- * placeholder — no real course catalogue has been supplied.
+ * Working dataset for the Seal UI.
+ * The course catalogue is the real, controlled 16-type catalogue (12 months
+ * validity throughout). Sessions, people and organisations are sample records.
  */
 
 export type SessionStatus = "upcoming" | "in_progress" | "completed" | "attention" | "cancelled";

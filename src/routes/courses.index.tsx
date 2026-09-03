@@ -37,7 +37,7 @@ function CoursesPage() {
       <div className="space-y-6">
         <PageHeader
           title="Courses"
-          description="Your training catalogue. Course content shown here is placeholder data until the real catalogue is supplied."
+          description="The controlled catalogue of 16 course types. Every course carries 12 months certificate validity."
           crumbs={[{ label: "Seal", to: "/" }, { label: "Courses" }]}
           actions={
             <Button variant="seal">
