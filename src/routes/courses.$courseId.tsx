@@ -209,6 +209,8 @@ function CourseDetail() {
             </Panel>
           </aside>
         </div>
+
+        <CourseTerms />
       </div>
     </AppShell>
   );
