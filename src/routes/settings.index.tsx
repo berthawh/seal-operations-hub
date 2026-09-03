@@ -1,5 +1,5 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
-import { Bell, Building2, FileBadge, Users, Workflow } from "lucide-react";
+import { Bell, Building2, FileBadge, LockKeyhole, Users, Workflow } from "lucide-react";
 import { AppShell } from "@/components/seal/app-shell";
 import { Field, PageHeader, Panel, PanelHeader } from "@/components/seal/primitives";
 import { StatusChip } from "@/components/seal/status-chip";
