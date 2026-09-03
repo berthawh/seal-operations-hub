@@ -27,6 +27,7 @@ import { Route as TrackingIndexRouteImport } from './routes/tracking.index'
 import { Route as SettingsAutomationsIndexRouteImport } from './routes/settings.automations.index'
 import { Route as SettingsAutomationsAutomationIdRouteImport } from './routes/settings.automations.$automationId'
 import { Route as SettingsStudioIndexRouteImport } from './routes/settings.studio.index'
+import { Route as SettingsStudioCertificatesIndexRouteImport } from './routes/settings.studio.certificates.index'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
@@ -121,6 +122,12 @@ const SettingsStudioIndexRoute = SettingsStudioIndexRouteImport.update({
   path: '/settings/studio/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const SettingsStudioCertificatesIndexRoute =
+  SettingsStudioCertificatesIndexRouteImport.update({
+    id: '/settings/studio/certificates/',
+    path: '/settings/studio/certificates/',
+    getParentRoute: () => rootRouteImport,
+  } as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
@@ -141,6 +148,7 @@ export interface FileRoutesByFullPath {
   '/settings/automations/$automationId': typeof SettingsAutomationsAutomationIdRoute
   '/settings/automations/': typeof SettingsAutomationsIndexRoute
   '/settings/studio/': typeof SettingsStudioIndexRoute
+  '/settings/studio/certificates/': typeof SettingsStudioCertificatesIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
@@ -161,6 +169,7 @@ export interface FileRoutesByTo {
   '/settings/automations/$automationId': typeof SettingsAutomationsAutomationIdRoute
   '/settings/automations': typeof SettingsAutomationsIndexRoute
   '/settings/studio': typeof SettingsStudioIndexRoute
+  '/settings/studio/certificates': typeof SettingsStudioCertificatesIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -182,6 +191,7 @@ export interface FileRoutesById {
   '/settings/automations/$automationId': typeof SettingsAutomationsAutomationIdRoute
   '/settings/automations/': typeof SettingsAutomationsIndexRoute
   '/settings/studio/': typeof SettingsStudioIndexRoute
+  '/settings/studio/certificates/': typeof SettingsStudioCertificatesIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -204,6 +214,7 @@ export interface FileRouteTypes {
     | '/settings/automations/$automationId'
     | '/settings/automations/'
     | '/settings/studio/'
+    | '/settings/studio/certificates/'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
@@ -224,6 +235,7 @@ export interface FileRouteTypes {
     | '/settings/automations/$automationId'
     | '/settings/automations'
     | '/settings/studio'
+    | '/settings/studio/certificates'
   id:
     | '__root__'
     | '/'
@@ -244,6 +256,7 @@ export interface FileRouteTypes {
     | '/settings/automations/$automationId'
     | '/settings/automations/'
     | '/settings/studio/'
+    | '/settings/studio/certificates/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -265,6 +278,7 @@ export interface RootRouteChildren {
   SettingsAutomationsAutomationIdRoute: typeof SettingsAutomationsAutomationIdRoute
   SettingsAutomationsIndexRoute: typeof SettingsAutomationsIndexRoute
   SettingsStudioIndexRoute: typeof SettingsStudioIndexRoute
+  SettingsStudioCertificatesIndexRoute: typeof SettingsStudioCertificatesIndexRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -395,6 +409,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof SettingsStudioIndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/settings/studio/certificates/': {
+      id: '/settings/studio/certificates/'
+      path: '/settings/studio/certificates'
+      fullPath: '/settings/studio/certificates/'
+      preLoaderRoute: typeof SettingsStudioCertificatesIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
@@ -417,6 +438,7 @@ const rootRouteChildren: RootRouteChildren = {
   SettingsAutomationsAutomationIdRoute: SettingsAutomationsAutomationIdRoute,
   SettingsAutomationsIndexRoute: SettingsAutomationsIndexRoute,
   SettingsStudioIndexRoute: SettingsStudioIndexRoute,
+  SettingsStudioCertificatesIndexRoute: SettingsStudioCertificatesIndexRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
