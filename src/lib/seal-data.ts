@@ -48,6 +48,38 @@ export interface Course {
   summary: string;
 }
 
+/** Classroom time applies to every course in the catalogue. */
+export const classroomTime = "9:00am – 5:00pm, including a one hour break";
+
+/** Controlled small print carried by every course. */
+export const courseTerms: { title: string; body: string[] }[] = [
+  {
+    title: "Certificate of Attendance",
+    body: [
+      "*A certificate of attendance is issued and delivered by email within 24 hours of the course being completed.",
+    ],
+  },
+  {
+    title: "Course delivery",
+    body: [
+      "The training is delivered Face to Face On-Site. We can deliver customised training at your premises. Our Instructor Services team will help you tailor the programme to your organisation's needs.",
+    ],
+  },
+  {
+    title: "Training room rules",
+    body: [
+      "Smoking and drug use are strictly prohibited on-site. Offenders will be asked to leave, the session will be non-refundable, and they will incur a £100 fine.",
+      "Please keep the area tidy. Dispose of rubbish in the bins provided and return all equipment to its original location.",
+    ],
+  },
+  {
+    title: "Cancellation Policy",
+    body: ["At least 24 hours' notice required."],
+  },
+];
+
+
+
 export interface TrainingSession {
   id: string;
   reference: string;
