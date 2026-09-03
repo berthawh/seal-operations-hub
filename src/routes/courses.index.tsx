@@ -82,10 +82,10 @@ function CoursesPage() {
                 <p className="mt-1 line-clamp-2 text-xs text-muted-foreground">{c.summary}</p>
                 <div className="mt-4 grid grid-cols-2 gap-4">
                   <Field
-                    label="Duration"
+                    label="Classroom time"
                     value={
                       <span className="flex items-center gap-1.5">
-                        <Clock className="size-3.5 text-muted-foreground" /> {c.durationHours}h
+                        <Clock className="size-3.5 text-muted-foreground" /> 9am – 5pm
                       </span>
                     }
                   />
