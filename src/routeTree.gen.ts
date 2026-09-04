@@ -22,6 +22,7 @@ import { Route as OrganisationsOrgIdRouteImport } from './routes/organisations.$
 import { Route as PeopleIndexRouteImport } from './routes/people.index'
 import { Route as PeoplePersonIdRouteImport } from './routes/people.$personId'
 import { Route as PortalIndexRouteImport } from './routes/portal.index'
+import { Route as PortalBookRouteImport } from './routes/portal.book'
 import { Route as SessionsIndexRouteImport } from './routes/sessions.index'
 import { Route as SessionsSessionIdRouteImport } from './routes/sessions.$sessionId'
 import { Route as SessionsNewRouteImport } from './routes/sessions.new'
@@ -101,6 +102,11 @@ const PeoplePersonIdRoute = PeoplePersonIdRouteImport.update({
 const PortalIndexRoute = PortalIndexRouteImport.update({
   id: '/portal/',
   path: '/portal/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const PortalBookRoute = PortalBookRouteImport.update({
+  id: '/portal/book',
+  path: '/portal/book',
   getParentRoute: () => rootRouteImport,
 } as any)
 const SessionsIndexRoute = SessionsIndexRouteImport.update({
@@ -187,6 +193,7 @@ export interface FileRoutesByFullPath {
   '/courses/$courseId': typeof CoursesCourseIdRoute
   '/organisations/$orgId': typeof OrganisationsOrgIdRoute
   '/people/$personId': typeof PeoplePersonIdRoute
+  '/portal/book': typeof PortalBookRoute
   '/sessions/$sessionId': typeof SessionsSessionIdRoute
   '/sessions/new': typeof SessionsNewRoute
   '/settings/company': typeof SettingsCompanyRoute
@@ -216,6 +223,7 @@ export interface FileRoutesByTo {
   '/courses/$courseId': typeof CoursesCourseIdRoute
   '/organisations/$orgId': typeof OrganisationsOrgIdRoute
   '/people/$personId': typeof PeoplePersonIdRoute
+  '/portal/book': typeof PortalBookRoute
   '/sessions/$sessionId': typeof SessionsSessionIdRoute
   '/sessions/new': typeof SessionsNewRoute
   '/settings/company': typeof SettingsCompanyRoute
@@ -246,6 +254,7 @@ export interface FileRoutesById {
   '/courses/$courseId': typeof CoursesCourseIdRoute
   '/organisations/$orgId': typeof OrganisationsOrgIdRoute
   '/people/$personId': typeof PeoplePersonIdRoute
+  '/portal/book': typeof PortalBookRoute
   '/sessions/$sessionId': typeof SessionsSessionIdRoute
   '/sessions/new': typeof SessionsNewRoute
   '/settings/company': typeof SettingsCompanyRoute
@@ -277,6 +286,7 @@ export interface FileRouteTypes {
     | '/courses/$courseId'
     | '/organisations/$orgId'
     | '/people/$personId'
+    | '/portal/book'
     | '/sessions/$sessionId'
     | '/sessions/new'
     | '/settings/company'
@@ -306,6 +316,7 @@ export interface FileRouteTypes {
     | '/courses/$courseId'
     | '/organisations/$orgId'
     | '/people/$personId'
+    | '/portal/book'
     | '/sessions/$sessionId'
     | '/sessions/new'
     | '/settings/company'
@@ -335,6 +346,7 @@ export interface FileRouteTypes {
     | '/courses/$courseId'
     | '/organisations/$orgId'
     | '/people/$personId'
+    | '/portal/book'
     | '/sessions/$sessionId'
     | '/sessions/new'
     | '/settings/company'
@@ -365,6 +377,7 @@ export interface RootRouteChildren {
   CoursesCourseIdRoute: typeof CoursesCourseIdRoute
   OrganisationsOrgIdRoute: typeof OrganisationsOrgIdRoute
   PeoplePersonIdRoute: typeof PeoplePersonIdRoute
+  PortalBookRoute: typeof PortalBookRoute
   SessionsSessionIdRoute: typeof SessionsSessionIdRoute
   SessionsNewRoute: typeof SessionsNewRoute
   SettingsCompanyRoute: typeof SettingsCompanyRoute
@@ -480,6 +493,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof PortalIndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/portal/book': {
+      id: '/portal/book'
+      path: '/portal/book'
+      fullPath: '/portal/book'
+      preLoaderRoute: typeof PortalBookRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/sessions/': {
       id: '/sessions/'
       path: '/sessions'
@@ -589,6 +609,7 @@ const rootRouteChildren: RootRouteChildren = {
   CoursesCourseIdRoute: CoursesCourseIdRoute,
   OrganisationsOrgIdRoute: OrganisationsOrgIdRoute,
   PeoplePersonIdRoute: PeoplePersonIdRoute,
+  PortalBookRoute: PortalBookRoute,
   SessionsSessionIdRoute: SessionsSessionIdRoute,
   SessionsNewRoute: SessionsNewRoute,
   SettingsCompanyRoute: SettingsCompanyRoute,
