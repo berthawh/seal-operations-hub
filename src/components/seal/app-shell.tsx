@@ -8,6 +8,7 @@ import {
   CalendarDays,
   ChevronDown,
   GraduationCap,
+  Inbox,
   LayoutDashboard,
   LifeBuoy,
   Menu,
@@ -58,6 +59,7 @@ const nav = [
   { label: "Certificates", to: "/certificates", icon: ShieldCheck, badge: "2" },
   { label: "People", to: "/people", icon: Users },
   { label: "Organisations", to: "/organisations", icon: Building2 },
+  { label: "Bookings", to: "/bookings", icon: Inbox },
   { label: "Tracking", to: "/tracking", icon: Radar, badge: "!" },
 ];
 
