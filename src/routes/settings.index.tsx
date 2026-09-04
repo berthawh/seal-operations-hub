@@ -39,7 +39,6 @@ function SettingsPage() {
             {[
               { label: "Workspace", icon: Building2, active: true },
               { label: "Certificates", icon: FileBadge },
-              { label: "Team & access", icon: Users },
               { label: "Notifications", icon: Bell },
             ].map((s) => (
               <button
@@ -52,6 +51,12 @@ function SettingsPage() {
                 <s.icon className="size-4" /> {s.label}
               </button>
             ))}
+            <Link
+              to="/settings/team"
+              className="flex w-full items-center gap-2.5 rounded-lg px-3 py-2 text-muted-foreground transition-colors hover:bg-muted/60"
+            >
+              <Users className="size-4" /> Team & access
+            </Link>
             <Link
               to="/settings/automations"
               className="flex w-full items-center gap-2.5 rounded-lg px-3 py-2 text-muted-foreground transition-colors hover:bg-muted/60"

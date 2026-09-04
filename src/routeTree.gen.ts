@@ -10,6 +10,7 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as AuthRouteImport } from './routes/auth'
 import { Route as CertificatesIndexRouteImport } from './routes/certificates.index'
 import { Route as CertificatesCertificateIdRouteImport } from './routes/certificates.$certificateId'
 import { Route as CertificatesNewRouteImport } from './routes/certificates.new'
@@ -23,6 +24,7 @@ import { Route as SessionsIndexRouteImport } from './routes/sessions.index'
 import { Route as SessionsSessionIdRouteImport } from './routes/sessions.$sessionId'
 import { Route as SessionsNewRouteImport } from './routes/sessions.new'
 import { Route as SettingsIndexRouteImport } from './routes/settings.index'
+import { Route as SettingsTeamRouteImport } from './routes/settings.team'
 import { Route as TrackingIndexRouteImport } from './routes/tracking.index'
 import { Route as SettingsAutomationsIndexRouteImport } from './routes/settings.automations.index'
 import { Route as SettingsAutomationsAutomationIdRouteImport } from './routes/settings.automations.$automationId'
@@ -34,6 +36,11 @@ import { Route as SettingsStudioCoursesCourseIdRouteImport } from './routes/sett
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AuthRoute = AuthRouteImport.update({
+  id: '/auth',
+  path: '/auth',
   getParentRoute: () => rootRouteImport,
 } as any)
 const CertificatesIndexRoute = CertificatesIndexRouteImport.update({
@@ -102,6 +109,11 @@ const SettingsIndexRoute = SettingsIndexRouteImport.update({
   path: '/settings/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const SettingsTeamRoute = SettingsTeamRouteImport.update({
+  id: '/settings/team',
+  path: '/settings/team',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const TrackingIndexRoute = TrackingIndexRouteImport.update({
   id: '/tracking/',
   path: '/tracking/',
@@ -145,6 +157,7 @@ const SettingsStudioCoursesCourseIdRoute =
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/auth': typeof AuthRoute
   '/certificates/$certificateId': typeof CertificatesCertificateIdRoute
   '/certificates/new': typeof CertificatesNewRoute
   '/courses/$courseId': typeof CoursesCourseIdRoute
@@ -152,6 +165,7 @@ export interface FileRoutesByFullPath {
   '/people/$personId': typeof PeoplePersonIdRoute
   '/sessions/$sessionId': typeof SessionsSessionIdRoute
   '/sessions/new': typeof SessionsNewRoute
+  '/settings/team': typeof SettingsTeamRoute
   '/certificates/': typeof CertificatesIndexRoute
   '/courses/': typeof CoursesIndexRoute
   '/organisations/': typeof OrganisationsIndexRoute
@@ -168,6 +182,7 @@ export interface FileRoutesByFullPath {
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/auth': typeof AuthRoute
   '/certificates/$certificateId': typeof CertificatesCertificateIdRoute
   '/certificates/new': typeof CertificatesNewRoute
   '/courses/$courseId': typeof CoursesCourseIdRoute
@@ -175,6 +190,7 @@ export interface FileRoutesByTo {
   '/people/$personId': typeof PeoplePersonIdRoute
   '/sessions/$sessionId': typeof SessionsSessionIdRoute
   '/sessions/new': typeof SessionsNewRoute
+  '/settings/team': typeof SettingsTeamRoute
   '/certificates': typeof CertificatesIndexRoute
   '/courses': typeof CoursesIndexRoute
   '/organisations': typeof OrganisationsIndexRoute
@@ -192,6 +208,7 @@ export interface FileRoutesByTo {
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/auth': typeof AuthRoute
   '/certificates/$certificateId': typeof CertificatesCertificateIdRoute
   '/certificates/new': typeof CertificatesNewRoute
   '/courses/$courseId': typeof CoursesCourseIdRoute
@@ -199,6 +216,7 @@ export interface FileRoutesById {
   '/people/$personId': typeof PeoplePersonIdRoute
   '/sessions/$sessionId': typeof SessionsSessionIdRoute
   '/sessions/new': typeof SessionsNewRoute
+  '/settings/team': typeof SettingsTeamRoute
   '/certificates/': typeof CertificatesIndexRoute
   '/courses/': typeof CoursesIndexRoute
   '/organisations/': typeof OrganisationsIndexRoute
@@ -217,6 +235,7 @@ export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
     | '/'
+    | '/auth'
     | '/certificates/$certificateId'
     | '/certificates/new'
     | '/courses/$courseId'
@@ -224,6 +243,7 @@ export interface FileRouteTypes {
     | '/people/$personId'
     | '/sessions/$sessionId'
     | '/sessions/new'
+    | '/settings/team'
     | '/certificates/'
     | '/courses/'
     | '/organisations/'
@@ -240,6 +260,7 @@ export interface FileRouteTypes {
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
+    | '/auth'
     | '/certificates/$certificateId'
     | '/certificates/new'
     | '/courses/$courseId'
@@ -247,6 +268,7 @@ export interface FileRouteTypes {
     | '/people/$personId'
     | '/sessions/$sessionId'
     | '/sessions/new'
+    | '/settings/team'
     | '/certificates'
     | '/courses'
     | '/organisations'
@@ -263,6 +285,7 @@ export interface FileRouteTypes {
   id:
     | '__root__'
     | '/'
+    | '/auth'
     | '/certificates/$certificateId'
     | '/certificates/new'
     | '/courses/$courseId'
@@ -270,6 +293,7 @@ export interface FileRouteTypes {
     | '/people/$personId'
     | '/sessions/$sessionId'
     | '/sessions/new'
+    | '/settings/team'
     | '/certificates/'
     | '/courses/'
     | '/organisations/'
@@ -287,6 +311,7 @@ export interface FileRouteTypes {
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  AuthRoute: typeof AuthRoute
   CertificatesCertificateIdRoute: typeof CertificatesCertificateIdRoute
   CertificatesNewRoute: typeof CertificatesNewRoute
   CoursesCourseIdRoute: typeof CoursesCourseIdRoute
@@ -294,6 +319,7 @@ export interface RootRouteChildren {
   PeoplePersonIdRoute: typeof PeoplePersonIdRoute
   SessionsSessionIdRoute: typeof SessionsSessionIdRoute
   SessionsNewRoute: typeof SessionsNewRoute
+  SettingsTeamRoute: typeof SettingsTeamRoute
   CertificatesIndexRoute: typeof CertificatesIndexRoute
   CoursesIndexRoute: typeof CoursesIndexRoute
   OrganisationsIndexRoute: typeof OrganisationsIndexRoute
@@ -316,6 +342,13 @@ declare module '@tanstack/react-router' {
       path: '/'
       fullPath: '/'
       preLoaderRoute: typeof IndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/auth': {
+      id: '/auth'
+      path: '/auth'
+      fullPath: '/auth'
+      preLoaderRoute: typeof AuthRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/certificates/': {
@@ -409,6 +442,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof SettingsIndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/settings/team': {
+      id: '/settings/team'
+      path: '/settings/team'
+      fullPath: '/settings/team'
+      preLoaderRoute: typeof SettingsTeamRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/tracking/': {
       id: '/tracking/'
       path: '/tracking'
@@ -463,6 +503,7 @@ declare module '@tanstack/react-router' {
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  AuthRoute: AuthRoute,
   CertificatesCertificateIdRoute: CertificatesCertificateIdRoute,
   CertificatesNewRoute: CertificatesNewRoute,
   CoursesCourseIdRoute: CoursesCourseIdRoute,
@@ -470,6 +511,7 @@ const rootRouteChildren: RootRouteChildren = {
   PeoplePersonIdRoute: PeoplePersonIdRoute,
   SessionsSessionIdRoute: SessionsSessionIdRoute,
   SessionsNewRoute: SessionsNewRoute,
+  SettingsTeamRoute: SettingsTeamRoute,
   CertificatesIndexRoute: CertificatesIndexRoute,
   CoursesIndexRoute: CoursesIndexRoute,
   OrganisationsIndexRoute: OrganisationsIndexRoute,
