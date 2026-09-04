@@ -108,11 +108,10 @@ export function TrainersPanel({ canManage }: { canManage: boolean }) {
       saveFn({
         data: {
           ...form,
-          specialism:
-            courses
-              .filter((c) => form.courseIds.includes(c.id))
-              .map((c) => c.name)
-              .join(", ") || undefined,
+          specialism: courses
+            .filter((c) => form.courseIds.includes(c.id))
+            .map((c) => c.name)
+            .join(", "),
         },
       }),
     onSuccess: () => {
