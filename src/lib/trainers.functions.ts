@@ -7,6 +7,10 @@ export type Trainer = {
   email: string | null;
   phone: string | null;
   specialism: string | null;
+  courseIds: string[];
+  avatarUrl: string | null;
+  recommended: boolean;
+  rating: number;
   status: string;
   notes: string | null;
   createdAt: string;
@@ -20,6 +24,10 @@ const mapTrainer = (r: Row): Trainer => ({
   email: r.email,
   phone: r.phone,
   specialism: r.specialism,
+  courseIds: r.course_ids ?? [],
+  avatarUrl: r.avatar_url,
+  recommended: !!r.recommended,
+  rating: Number(r.rating ?? 0),
   status: r.status,
   notes: r.notes,
   createdAt: r.created_at,
@@ -32,6 +40,8 @@ export const listTrainers = createServerFn({ method: "GET" })
     const { data, error } = await context.supabase
       .from("trainers")
       .select("*")
+        .order("recommended", { ascending: false })
+      .order("rating", { ascending: false })
       .order("full_name");
     if (error) throw new Error(error.message);
     return (data ?? []).map(mapTrainer);
@@ -47,6 +57,10 @@ export const saveTrainer = createServerFn({ method: "POST" })
       email?: string;
       phone?: string;
       specialism?: string;
+      courseIds?: string[];
+      avatarUrl?: string;
+      recommended?: boolean;
+      rating?: number;
       status?: string;
       notes?: string;
     }) => {
@@ -60,6 +74,10 @@ export const saveTrainer = createServerFn({ method: "POST" })
       email: data.email?.trim() || null,
       phone: data.phone?.trim() || null,
       specialism: data.specialism?.trim() || null,
+      course_ids: data.courseIds ?? [],
+      avatar_url: data.avatarUrl?.trim() || null,
+      recommended: data.recommended ?? false,
+      rating: Math.min(5, Math.max(0, data.rating ?? 0)),
       status: data.status || "active",
       notes: data.notes?.trim() || null,
       updated_at: new Date().toISOString(),
