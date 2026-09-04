@@ -788,3 +788,42 @@ export const trackingStatusLabel: Record<TrackingStatus, string> = {
   overdue: "Overdue",
   completed: "Completed",
 };
+
+/** Colour coding for the course catalogue, grouped by category. */
+export const courseCategoryColour: Record<
+  string,
+  { chip: string; dot: string }
+> = {
+  "Care essentials": {
+    chip: "border-seal/25 bg-seal-soft text-seal",
+    dot: "bg-seal",
+  },
+  "Moving & handling": {
+    chip: "border-info/25 bg-info-soft text-info",
+    dot: "bg-info",
+  },
+  "Clinical skills": {
+    chip: "border-success/25 bg-success-soft text-success",
+    dot: "bg-success",
+  },
+  Governance: {
+    chip: "border-border bg-neutral-soft text-muted-foreground",
+    dot: "bg-muted-foreground",
+  },
+  "Behaviour & restraint": {
+    chip: "border-danger/25 bg-danger-soft text-danger",
+    dot: "bg-danger",
+  },
+  Safeguarding: {
+    chip: "border-warning/30 bg-warning-soft text-warning-foreground",
+    dot: "bg-warning",
+  },
+};
+
+const fallbackColour = { chip: "border-border bg-neutral-soft text-muted-foreground", dot: "bg-muted-foreground" };
+
+/** Colour classes for a single course, by its category. */
+export function courseColour(courseId: string) {
+  const course = courses.find((c) => c.id === courseId);
+  return (course && courseCategoryColour[course.category]) || fallbackColour;
+}
