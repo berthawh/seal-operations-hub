@@ -52,20 +52,43 @@ import {
 import { markNotificationsRead } from "@/lib/notifications.functions";
 import { ROLE_LABELS } from "@/lib/team.functions";
 
-const nav = [
-  { label: "Dashboard", to: "/", icon: LayoutDashboard },
-  { label: "Sessions", to: "/sessions", icon: CalendarDays, badge: "6" },
-  { label: "Courses", to: "/courses", icon: GraduationCap },
-  { label: "Certificates", to: "/certificates", icon: ShieldCheck, badge: "2" },
-  { label: "People", to: "/people", icon: Users },
-  { label: "Organisations", to: "/organisations", icon: Building2 },
-  { label: "Bookings", to: "/bookings", icon: Inbox },
-  { label: "Tracking", to: "/tracking", icon: Radar, badge: "!" },
+type NavEntry = {
+  label: string;
+  to: string;
+  icon: React.ComponentType<{ className?: string }>;
+  badge?: string;
+};
+
+const navGroups: { label: string; items: NavEntry[] }[] = [
+  {
+    label: "Overview",
+    items: [{ label: "Dashboard", to: "/", icon: LayoutDashboard }],
+  },
+  {
+    label: "Training",
+    items: [
+      { label: "Bookings", to: "/bookings", icon: Inbox },
+      { label: "Sessions", to: "/sessions", icon: CalendarDays, badge: "6" },
+      { label: "Courses", to: "/courses", icon: GraduationCap },
+    ],
+  },
+  {
+    label: "Directory",
+    items: [
+      { label: "People", to: "/people", icon: Users },
+      { label: "Organisations", to: "/organisations", icon: Building2 },
+    ],
+  },
+  {
+    label: "Compliance",
+    items: [
+      { label: "Certificates", to: "/certificates", icon: ShieldCheck, badge: "2" },
+      { label: "Renewals", to: "/tracking", icon: Radar, badge: "!" },
+    ],
+  },
 ];
 
-const secondary = [
-  { label: "Settings", to: "/settings", icon: Settings },
-];
+const secondary: NavEntry[] = [{ label: "Settings", to: "/settings", icon: Settings }];
 
 /** Partner organisations only ever see their own portal. */
 const partnerNav = [
@@ -128,20 +151,31 @@ function NavList({ onNavigate }: { onNavigate?: (() => void) | undefined }) {
   };
 
   return (
-    <nav className="flex flex-1 flex-col gap-6 px-3">
-      <div className="space-y-1">
-        <p className="px-3 pb-1 text-[10px] font-bold tracking-[0.18em] text-sidebar-foreground/40 uppercase">
-          {isPartner ? "Your organisation" : "Operations"}
-        </p>
-        {(isPartner ? partnerNav : nav).map((entry) => item(entry, entry.to === "/"))}
-      </div>
-      {isPartner ? null : (
+    <nav className="flex flex-1 flex-col gap-5 px-3">
+      {isPartner ? (
         <div className="space-y-1">
           <p className="px-3 pb-1 text-[10px] font-bold tracking-[0.18em] text-sidebar-foreground/40 uppercase">
-            Configure
+            Your organisation
           </p>
-          {secondary.map((entry) => item(entry))}
+          {partnerNav.map((entry) => item(entry, entry.to === "/"))}
         </div>
+      ) : (
+        <>
+          {navGroups.map((group) => (
+            <div key={group.label} className="space-y-1">
+              <p className="px-3 pb-1 text-[10px] font-bold tracking-[0.18em] text-sidebar-foreground/40 uppercase">
+                {group.label}
+              </p>
+              {group.items.map((entry) => item(entry, entry.to === "/"))}
+            </div>
+          ))}
+          <div className="space-y-1">
+            <p className="px-3 pb-1 text-[10px] font-bold tracking-[0.18em] text-sidebar-foreground/40 uppercase">
+              Configure
+            </p>
+            {secondary.map((entry) => item(entry))}
+          </div>
+        </>
       )}
     </nav>
   );
@@ -261,7 +295,14 @@ function GlobalSearch() {
         <CommandList>
           <CommandEmpty>No results found.</CommandEmpty>
           <CommandGroup heading="Go to">
-            {nav.map((n) => (
+            {navGroups.flatMap((g) => g.items).map((n) => (
+              <CommandItem key={n.to} onSelect={() => setOpen(false)} asChild>
+                <Link to={n.to}>
+                  <n.icon className="size-4" /> {n.label}
+                </Link>
+              </CommandItem>
+            ))}
+            {secondary.map((n) => (
               <CommandItem key={n.to} onSelect={() => setOpen(false)} asChild>
                 <Link to={n.to}>
                   <n.icon className="size-4" /> {n.label}
