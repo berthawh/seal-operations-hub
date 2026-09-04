@@ -14,6 +14,65 @@ export type Database = {
   }
   public: {
     Tables: {
+      booking_requests: {
+        Row: {
+          attendees: string | null
+          course_id: string
+          course_name: string
+          created_at: string
+          decided_at: string | null
+          decided_by: string | null
+          decision_note: string | null
+          id: string
+          notes: string | null
+          organisation_id: string
+          preferred_date: string | null
+          requested_by: string | null
+          seats: number
+          status: string
+        }
+        Insert: {
+          attendees?: string | null
+          course_id: string
+          course_name: string
+          created_at?: string
+          decided_at?: string | null
+          decided_by?: string | null
+          decision_note?: string | null
+          id?: string
+          notes?: string | null
+          organisation_id: string
+          preferred_date?: string | null
+          requested_by?: string | null
+          seats?: number
+          status?: string
+        }
+        Update: {
+          attendees?: string | null
+          course_id?: string
+          course_name?: string
+          created_at?: string
+          decided_at?: string | null
+          decided_by?: string | null
+          decision_note?: string | null
+          id?: string
+          notes?: string | null
+          organisation_id?: string
+          preferred_date?: string | null
+          requested_by?: string | null
+          seats?: number
+          status?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "booking_requests_organisation_id_fkey"
+            columns: ["organisation_id"]
+            isOneToOne: false
+            referencedRelation: "organisations"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       notifications: {
         Row: {
           body: string | null
@@ -44,6 +103,142 @@ export type Database = {
           title?: string
           tone?: string
           user_id?: string
+        }
+        Relationships: []
+      }
+      organisation_invites: {
+        Row: {
+          accepted_at: string | null
+          created_at: string
+          email: string
+          id: string
+          invited_by: string | null
+          organisation_id: string
+          portal_role: string
+          status: string
+        }
+        Insert: {
+          accepted_at?: string | null
+          created_at?: string
+          email: string
+          id?: string
+          invited_by?: string | null
+          organisation_id: string
+          portal_role?: string
+          status?: string
+        }
+        Update: {
+          accepted_at?: string | null
+          created_at?: string
+          email?: string
+          id?: string
+          invited_by?: string | null
+          organisation_id?: string
+          portal_role?: string
+          status?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "organisation_invites_organisation_id_fkey"
+            columns: ["organisation_id"]
+            isOneToOne: false
+            referencedRelation: "organisations"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      organisation_members: {
+        Row: {
+          created_at: string
+          id: string
+          organisation_id: string
+          portal_role: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          organisation_id: string
+          portal_role?: string
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          organisation_id?: string
+          portal_role?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "organisation_members_organisation_id_fkey"
+            columns: ["organisation_id"]
+            isOneToOne: false
+            referencedRelation: "organisations"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      organisations: {
+        Row: {
+          can_book_sessions: boolean
+          can_invite_members: boolean
+          can_manage_staff: boolean
+          can_view_certificates: boolean
+          contact_email: string | null
+          contact_phone: string | null
+          created_at: string
+          id: string
+          location: string | null
+          name: string
+          notes: string | null
+          org_type: string
+          portal_enabled: boolean
+          relationship: string
+          sector: string | null
+          short_name: string | null
+          status: string | null
+          updated_at: string
+        }
+        Insert: {
+          can_book_sessions?: boolean
+          can_invite_members?: boolean
+          can_manage_staff?: boolean
+          can_view_certificates?: boolean
+          contact_email?: string | null
+          contact_phone?: string | null
+          created_at?: string
+          id: string
+          location?: string | null
+          name: string
+          notes?: string | null
+          org_type?: string
+          portal_enabled?: boolean
+          relationship?: string
+          sector?: string | null
+          short_name?: string | null
+          status?: string | null
+          updated_at?: string
+        }
+        Update: {
+          can_book_sessions?: boolean
+          can_invite_members?: boolean
+          can_manage_staff?: boolean
+          can_view_certificates?: boolean
+          contact_email?: string | null
+          contact_phone?: string | null
+          created_at?: string
+          id?: string
+          location?: string | null
+          name?: string
+          notes?: string | null
+          org_type?: string
+          portal_enabled?: boolean
+          relationship?: string
+          sector?: string | null
+          short_name?: string | null
+          status?: string | null
+          updated_at?: string
         }
         Relationships: []
       }
@@ -195,6 +390,11 @@ export type Database = {
         Returns: boolean
       }
       is_admin: { Args: { _user_id: string }; Returns: boolean }
+      is_org_member: {
+        Args: { _org_id: string; _user_id: string }
+        Returns: boolean
+      }
+      my_org_ids: { Args: { _user_id: string }; Returns: string[] }
     }
     Enums: {
       app_role: "super_admin" | "admin" | "operations" | "partner"

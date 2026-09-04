@@ -11,6 +11,8 @@
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as AuthRouteImport } from './routes/auth'
+import { Route as PortalRouteImport } from './routes/portal'
+import { Route as BookingsIndexRouteImport } from './routes/bookings.index'
 import { Route as CertificatesIndexRouteImport } from './routes/certificates.index'
 import { Route as CertificatesCertificateIdRouteImport } from './routes/certificates.$certificateId'
 import { Route as CertificatesNewRouteImport } from './routes/certificates.new'
@@ -43,6 +45,16 @@ const IndexRoute = IndexRouteImport.update({
 const AuthRoute = AuthRouteImport.update({
   id: '/auth',
   path: '/auth',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const PortalRoute = PortalRouteImport.update({
+  id: '/portal',
+  path: '/portal',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const BookingsIndexRoute = BookingsIndexRouteImport.update({
+  id: '/bookings/',
+  path: '/bookings/',
   getParentRoute: () => rootRouteImport,
 } as any)
 const CertificatesIndexRoute = CertificatesIndexRouteImport.update({
@@ -170,6 +182,7 @@ const SettingsStudioCoursesCourseIdRoute =
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/auth': typeof AuthRoute
+  '/portal': typeof PortalRoute
   '/certificates/$certificateId': typeof CertificatesCertificateIdRoute
   '/certificates/new': typeof CertificatesNewRoute
   '/courses/$courseId': typeof CoursesCourseIdRoute
@@ -180,6 +193,7 @@ export interface FileRoutesByFullPath {
   '/settings/company': typeof SettingsCompanyRoute
   '/settings/notifications': typeof SettingsNotificationsRoute
   '/settings/team': typeof SettingsTeamRoute
+  '/bookings/': typeof BookingsIndexRoute
   '/certificates/': typeof CertificatesIndexRoute
   '/courses/': typeof CoursesIndexRoute
   '/organisations/': typeof OrganisationsIndexRoute
@@ -197,6 +211,7 @@ export interface FileRoutesByFullPath {
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/auth': typeof AuthRoute
+  '/portal': typeof PortalRoute
   '/certificates/$certificateId': typeof CertificatesCertificateIdRoute
   '/certificates/new': typeof CertificatesNewRoute
   '/courses/$courseId': typeof CoursesCourseIdRoute
@@ -207,6 +222,7 @@ export interface FileRoutesByTo {
   '/settings/company': typeof SettingsCompanyRoute
   '/settings/notifications': typeof SettingsNotificationsRoute
   '/settings/team': typeof SettingsTeamRoute
+  '/bookings': typeof BookingsIndexRoute
   '/certificates': typeof CertificatesIndexRoute
   '/courses': typeof CoursesIndexRoute
   '/organisations': typeof OrganisationsIndexRoute
@@ -225,6 +241,7 @@ export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/auth': typeof AuthRoute
+  '/portal': typeof PortalRoute
   '/certificates/$certificateId': typeof CertificatesCertificateIdRoute
   '/certificates/new': typeof CertificatesNewRoute
   '/courses/$courseId': typeof CoursesCourseIdRoute
@@ -235,6 +252,7 @@ export interface FileRoutesById {
   '/settings/company': typeof SettingsCompanyRoute
   '/settings/notifications': typeof SettingsNotificationsRoute
   '/settings/team': typeof SettingsTeamRoute
+  '/bookings/': typeof BookingsIndexRoute
   '/certificates/': typeof CertificatesIndexRoute
   '/courses/': typeof CoursesIndexRoute
   '/organisations/': typeof OrganisationsIndexRoute
@@ -254,6 +272,7 @@ export interface FileRouteTypes {
   fullPaths:
     | '/'
     | '/auth'
+    | '/portal'
     | '/certificates/$certificateId'
     | '/certificates/new'
     | '/courses/$courseId'
@@ -264,6 +283,7 @@ export interface FileRouteTypes {
     | '/settings/company'
     | '/settings/notifications'
     | '/settings/team'
+    | '/bookings/'
     | '/certificates/'
     | '/courses/'
     | '/organisations/'
@@ -281,6 +301,7 @@ export interface FileRouteTypes {
   to:
     | '/'
     | '/auth'
+    | '/portal'
     | '/certificates/$certificateId'
     | '/certificates/new'
     | '/courses/$courseId'
@@ -291,6 +312,7 @@ export interface FileRouteTypes {
     | '/settings/company'
     | '/settings/notifications'
     | '/settings/team'
+    | '/bookings'
     | '/certificates'
     | '/courses'
     | '/organisations'
@@ -308,6 +330,7 @@ export interface FileRouteTypes {
     | '__root__'
     | '/'
     | '/auth'
+    | '/portal'
     | '/certificates/$certificateId'
     | '/certificates/new'
     | '/courses/$courseId'
@@ -318,6 +341,7 @@ export interface FileRouteTypes {
     | '/settings/company'
     | '/settings/notifications'
     | '/settings/team'
+    | '/bookings/'
     | '/certificates/'
     | '/courses/'
     | '/organisations/'
@@ -336,6 +360,7 @@ export interface FileRouteTypes {
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   AuthRoute: typeof AuthRoute
+  PortalRoute: typeof PortalRoute
   CertificatesCertificateIdRoute: typeof CertificatesCertificateIdRoute
   CertificatesNewRoute: typeof CertificatesNewRoute
   CoursesCourseIdRoute: typeof CoursesCourseIdRoute
@@ -346,6 +371,7 @@ export interface RootRouteChildren {
   SettingsCompanyRoute: typeof SettingsCompanyRoute
   SettingsNotificationsRoute: typeof SettingsNotificationsRoute
   SettingsTeamRoute: typeof SettingsTeamRoute
+  BookingsIndexRoute: typeof BookingsIndexRoute
   CertificatesIndexRoute: typeof CertificatesIndexRoute
   CoursesIndexRoute: typeof CoursesIndexRoute
   OrganisationsIndexRoute: typeof OrganisationsIndexRoute
@@ -375,6 +401,20 @@ declare module '@tanstack/react-router' {
       path: '/auth'
       fullPath: '/auth'
       preLoaderRoute: typeof AuthRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/portal': {
+      id: '/portal'
+      path: '/portal'
+      fullPath: '/portal'
+      preLoaderRoute: typeof PortalRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/bookings/': {
+      id: '/bookings/'
+      path: '/bookings'
+      fullPath: '/bookings/'
+      preLoaderRoute: typeof BookingsIndexRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/certificates/': {
@@ -544,6 +584,7 @@ declare module '@tanstack/react-router' {
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AuthRoute: AuthRoute,
+  PortalRoute: PortalRoute,
   CertificatesCertificateIdRoute: CertificatesCertificateIdRoute,
   CertificatesNewRoute: CertificatesNewRoute,
   CoursesCourseIdRoute: CoursesCourseIdRoute,
@@ -554,6 +595,7 @@ const rootRouteChildren: RootRouteChildren = {
   SettingsCompanyRoute: SettingsCompanyRoute,
   SettingsNotificationsRoute: SettingsNotificationsRoute,
   SettingsTeamRoute: SettingsTeamRoute,
+  BookingsIndexRoute: BookingsIndexRoute,
   CertificatesIndexRoute: CertificatesIndexRoute,
   CoursesIndexRoute: CoursesIndexRoute,
   OrganisationsIndexRoute: OrganisationsIndexRoute,
