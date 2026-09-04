@@ -67,9 +67,24 @@ const secondary = [
   { label: "Settings", to: "/settings", icon: Settings },
 ];
 
+/** Partner organisations only ever see their own portal. */
+const partnerNav = [
+  { label: "Portal", to: "/portal", icon: LayoutDashboard },
+  { label: "Book a session", to: "/portal/book", icon: CalendarDays },
+  { label: "Courses", to: "/courses", icon: GraduationCap },
+];
+
+/** True when the signed-in person belongs to a partner organisation only. */
+export function useIsPartner() {
+  const access = useMyAccess();
+  const roles = access.data?.roles ?? [];
+  return roles.length > 0 && roles.every((r) => r === "partner");
+}
+
 
 function NavList({ onNavigate }: { onNavigate?: (() => void) | undefined }) {
   const pathname = useRouterState({ select: (s) => s.location.pathname });
+  const isPartner = useIsPartner();
   const item = (
     entry: { label: string; to: string; icon: React.ComponentType<{ className?: string }>; badge?: string },
     exact = false,
@@ -116,16 +131,18 @@ function NavList({ onNavigate }: { onNavigate?: (() => void) | undefined }) {
     <nav className="flex flex-1 flex-col gap-6 px-3">
       <div className="space-y-1">
         <p className="px-3 pb-1 text-[10px] font-bold tracking-[0.18em] text-sidebar-foreground/40 uppercase">
-          Operations
+          {isPartner ? "Your organisation" : "Operations"}
         </p>
-        {nav.map((entry) => item(entry, entry.to === "/"))}
+        {(isPartner ? partnerNav : nav).map((entry) => item(entry, entry.to === "/"))}
       </div>
-      <div className="space-y-1">
-        <p className="px-3 pb-1 text-[10px] font-bold tracking-[0.18em] text-sidebar-foreground/40 uppercase">
-          Configure
-        </p>
-        {secondary.map((entry) => item(entry))}
-      </div>
+      {isPartner ? null : (
+        <div className="space-y-1">
+          <p className="px-3 pb-1 text-[10px] font-bold tracking-[0.18em] text-sidebar-foreground/40 uppercase">
+            Configure
+          </p>
+          {secondary.map((entry) => item(entry))}
+        </div>
+      )}
     </nav>
   );
 }
