@@ -149,6 +149,7 @@ function NavList({ onNavigate }: { onNavigate?: (() => void) | undefined }) {
 
 function SidebarInner({ onNavigate }: { onNavigate?: (() => void) | undefined }) {
   const workspace = useWorkspace();
+  const isPartner = useIsPartner();
   const brand = workspace.data?.companyName ?? "Seal";
   const logo = workspace.data?.logoUrl;
   return (
@@ -171,6 +172,7 @@ function SidebarInner({ onNavigate }: { onNavigate?: (() => void) | undefined })
         </span>
       </Link>
       <NavList onNavigate={onNavigate} />
+      {isPartner ? null : (
       <div className="mt-6 px-3">
         <div className="rounded-xl border border-sidebar-border/70 bg-sidebar-accent/60 px-3 py-3">
           <div className="flex items-center gap-2 text-sidebar-accent-foreground">
@@ -188,11 +190,22 @@ function SidebarInner({ onNavigate }: { onNavigate?: (() => void) | undefined })
           </p>
         </div>
       </div>
+      )}
     </div>
   );
 }
 
 export function CreateMenu({ className }: { className?: string }) {
+  const isPartner = useIsPartner();
+  if (isPartner) {
+    return (
+      <Button variant="seal" className={className} asChild>
+        <Link to="/portal/book">
+          <Plus className="size-4" /> Book a session
+        </Link>
+      </Button>
+    );
+  }
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>

@@ -338,7 +338,11 @@ export const getMyPortal = createServerFn({ method: "GET" })
       .select("*")
       .eq("id", membership.organisation_id)
       .maybeSingle();
-    return { org: org ? mapOrg(org) : null, portalRole: membership.portal_role };
+    const { count } = await context.supabase
+      .from("organisation_members")
+      .select("id", { count: "exact", head: true })
+      .eq("organisation_id", membership.organisation_id);
+    return { org: org ? mapOrg(org, count ?? 0) : null, portalRole: membership.portal_role };
   });
 
 const mapBooking = (r: Row, orgName: string): BookingRequest => ({
