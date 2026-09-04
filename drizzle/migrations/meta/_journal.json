@@ -8,6 +8,13 @@
       "when": 1788519493001,
       "tag": "0000_team_access_roles",
       "breakpoints": true
+    },
+    {
+      "idx": 1,
+      "version": "7",
+      "when": 1788521132071,
+      "tag": "0001_workspace_settings_and_notifications",
+      "breakpoints": true
     }
   ]
 }
