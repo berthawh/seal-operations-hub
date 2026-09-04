@@ -1,7 +1,7 @@
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { useServerFn } from "@tanstack/react-start";
-import { GraduationCap, Plus, Sparkles, Star, Trash2 } from "lucide-react";
+import { GraduationCap, Globe, Linkedin, Plus, Sparkles, Star, Trash2, Upload } from "lucide-react";
 import { toast } from "sonner";
 import { Panel, PanelHeader } from "@/components/seal/primitives";
 import { StatusChip } from "@/components/seal/status-chip";
@@ -12,12 +12,15 @@ import { Switch } from "@/components/ui/switch";
 import { cn } from "@/lib/utils";
 import { courseColour, courses } from "@/lib/seal-data";
 import { listTrainers, removeTrainer, saveTrainer } from "@/lib/trainers.functions";
+import { supabase } from "@/integrations/supabase/client";
 
 const EMPTY = {
   fullName: "",
   email: "",
   phone: "",
   avatarUrl: "",
+  linkedinUrl: "",
+  websiteUrl: "",
   courseIds: [] as string[],
   recommended: false,
   rating: 0,
@@ -30,6 +33,63 @@ const initials = (name: string) =>
     .slice(0, 2)
     .map((p) => p[0]?.toUpperCase())
     .join("");
+
+/** Resolves a stored photo: an external link is used as-is, an uploaded file gets a signed link. */
+function useTrainerPhoto(value: string | null | undefined) {
+  const [url, setUrl] = useState<string | null>(null);
+  useEffect(() => {
+    let active = true;
+    if (!value) {
+      setUrl(null);
+      return;
+    }
+    if (/^https?:\/\//.test(value)) {
+      setUrl(value);
+      return;
+    }
+    void supabase.storage
+      .from("trainer-photos")
+      .createSignedUrl(value, 60 * 60)
+      .then(({ data }) => {
+        if (active) setUrl(data?.signedUrl ?? null);
+      });
+    return () => {
+      active = false;
+    };
+  }, [value]);
+  return url;
+}
+
+function TrainerAvatar({
+  name,
+  photo,
+  className,
+}: {
+  name: string;
+  photo: string | null | undefined;
+  className?: string;
+}) {
+  const url = useTrainerPhoto(photo);
+  return (
+    <span
+      className={cn(
+        "grid size-10 shrink-0 place-items-center overflow-hidden rounded-full bg-neutral-soft text-xs font-semibold text-muted-foreground",
+        className,
+      )}
+    >
+      {url ? (
+        <img
+          src={url}
+          alt={`${name} profile photo`}
+          loading="lazy"
+          className="size-full object-cover"
+        />
+      ) : (
+        initials(name) || "?"
+      )}
+    </span>
+  );
+}
 
 /** Small coloured chip for a course, colour-coded by catalogue category. */
 function CourseChip({ courseId, className }: { courseId: string; className?: string }) {
@@ -95,6 +155,27 @@ export function TrainersPanel({ canManage }: { canManage: boolean }) {
   const saveFn = useServerFn(saveTrainer);
   const removeFn = useServerFn(removeTrainer);
   const [form, setForm] = useState(EMPTY);
+  const [uploading, setUploading] = useState(false);
+  const fileRef = useRef<HTMLInputElement>(null);
+
+  const uploadPhoto = async (file: File) => {
+    if (file.size > 5 * 1024 * 1024) {
+      toast.error("That photo is larger than 5MB.");
+      return;
+    }
+    setUploading(true);
+    const ext = file.name.split(".").pop()?.toLowerCase() || "jpg";
+    const path = `${crypto.randomUUID()}.${ext}`;
+    const { error } = await supabase.storage
+      .from("trainer-photos")
+      .upload(path, file, { contentType: file.type, upsert: false });
+    setUploading(false);
+    if (error) {
+      toast.error(error.message);
+      return;
+    }
+    setForm((f) => ({ ...f, avatarUrl: path }));
+  };
 
   const trainers = useQuery({
     queryKey: ["trainers"],
@@ -162,18 +243,7 @@ export function TrainersPanel({ canManage }: { canManage: boolean }) {
           ) : (
             rows.map((t) => (
               <div key={t.id} className="flex flex-wrap items-start gap-4 px-5 py-4">
-                <span className="grid size-10 shrink-0 place-items-center overflow-hidden rounded-full bg-neutral-soft text-xs font-semibold text-muted-foreground">
-                  {t.avatarUrl ? (
-                    <img
-                      src={t.avatarUrl}
-                      alt={`${t.fullName} profile photo`}
-                      loading="lazy"
-                      className="size-full object-cover"
-                    />
-                  ) : (
-                    initials(t.fullName)
-                  )}
-                </span>
+                <TrainerAvatar name={t.fullName} photo={t.avatarUrl} />
                 <div className="min-w-0 flex-1">
                   <div className="flex flex-wrap items-center gap-2">
                     <p className="text-sm font-medium">{t.fullName}</p>
@@ -187,6 +257,30 @@ export function TrainersPanel({ canManage }: { canManage: boolean }) {
                   <p className="truncate text-xs text-muted-foreground">
                     {[t.email, t.phone].filter(Boolean).join(" · ") || "No contact details yet"}
                   </p>
+                  {t.linkedinUrl || t.websiteUrl ? (
+                    <div className="mt-1 flex flex-wrap items-center gap-3">
+                      {t.linkedinUrl ? (
+                        <a
+                          href={t.linkedinUrl}
+                          target="_blank"
+                          rel="noreferrer"
+                          className="inline-flex items-center gap-1 text-[11px] text-muted-foreground underline-offset-2 hover:text-foreground hover:underline"
+                        >
+                          <Linkedin className="size-3" /> LinkedIn
+                        </a>
+                      ) : null}
+                      {t.websiteUrl ? (
+                        <a
+                          href={t.websiteUrl}
+                          target="_blank"
+                          rel="noreferrer"
+                          className="inline-flex items-center gap-1 text-[11px] text-muted-foreground underline-offset-2 hover:text-foreground hover:underline"
+                        >
+                          <Globe className="size-3" /> Profile
+                        </a>
+                      ) : null}
+                    </div>
+                  ) : null}
                   <div className="mt-2 flex flex-wrap gap-1.5">
                     {t.courseIds.length > 0 ? (
                       t.courseIds.map((id) => <CourseChip key={id} courseId={id} />)
@@ -227,27 +321,43 @@ export function TrainersPanel({ canManage }: { canManage: boolean }) {
           }}
         >
           <div className="flex items-center gap-3">
-            <span className="grid size-12 shrink-0 place-items-center overflow-hidden rounded-full bg-neutral-soft text-xs font-semibold text-muted-foreground">
-              {form.avatarUrl ? (
-                <img
-                  src={form.avatarUrl}
-                  alt="Trainer profile preview"
-                  className="size-full object-cover"
-                />
-              ) : (
-                initials(form.fullName) || "?"
-              )}
-            </span>
+            <TrainerAvatar name={form.fullName} photo={form.avatarUrl} className="size-12" />
             <div className="flex-1 space-y-1.5">
-              <Label htmlFor="t-avatar" className="text-xs">
-                Profile photo link
-              </Label>
-              <Input
-                id="t-avatar"
-                placeholder="https://…"
-                value={form.avatarUrl}
-                onChange={(e) => setForm({ ...form, avatarUrl: e.target.value })}
+              <Label className="text-xs">Profile photo</Label>
+              <input
+                ref={fileRef}
+                type="file"
+                accept="image/*"
+                className="sr-only"
+                onChange={(e) => {
+                  const file = e.target.files?.[0];
+                  if (file) void uploadPhoto(file);
+                  e.target.value = "";
+                }}
               />
+              <div className="flex flex-wrap items-center gap-2">
+                <Button
+                  type="button"
+                  variant="outline"
+                  size="sm"
+                  disabled={!canManage || uploading}
+                  onClick={() => fileRef.current?.click()}
+                >
+                  <Upload className="size-3.5" />
+                  {uploading ? "Uploading…" : form.avatarUrl ? "Replace photo" : "Upload photo"}
+                </Button>
+                {form.avatarUrl ? (
+                  <Button
+                    type="button"
+                    variant="ghost"
+                    size="sm"
+                    onClick={() => setForm((f) => ({ ...f, avatarUrl: "" }))}
+                  >
+                    Remove
+                  </Button>
+                ) : null}
+              </div>
+              <p className="text-[11px] text-muted-foreground">JPG or PNG, up to 5MB.</p>
             </div>
           </div>
 
@@ -315,6 +425,31 @@ export function TrainersPanel({ canManage }: { canManage: boolean }) {
                 id="t-phone"
                 value={form.phone}
                 onChange={(e) => setForm({ ...form, phone: e.target.value })}
+              />
+            </div>
+          </div>
+
+          <div className="grid gap-3 sm:grid-cols-2">
+            <div className="space-y-1.5">
+              <Label htmlFor="t-linkedin" className="text-xs">
+                LinkedIn (optional)
+              </Label>
+              <Input
+                id="t-linkedin"
+                placeholder="https://linkedin.com/in/…"
+                value={form.linkedinUrl}
+                onChange={(e) => setForm({ ...form, linkedinUrl: e.target.value })}
+              />
+            </div>
+            <div className="space-y-1.5">
+              <Label htmlFor="t-website" className="text-xs">
+                Other profile (optional)
+              </Label>
+              <Input
+                id="t-website"
+                placeholder="https://…"
+                value={form.websiteUrl}
+                onChange={(e) => setForm({ ...form, websiteUrl: e.target.value })}
               />
             </div>
           </div>
