@@ -1,6 +1,8 @@
-import { createFileRoute, Link, notFound } from "@tanstack/react-router";
+import { createFileRoute, Link } from "@tanstack/react-router";
 import { Building2, CalendarDays, MapPin, ShieldCheck, Users } from "lucide-react";
 import { AppShell } from "@/components/seal/app-shell";
+import { OrgAccessPanel } from "@/components/seal/org-access-panel";
+
 import {
   Avatar,
   Bar,
@@ -30,9 +32,9 @@ import {
 export const Route = createFileRoute("/organisations/$orgId")({
   loader: ({ params }) => {
     const org = organisations.find((o) => o.id === params.orgId);
-    if (!org) throw notFound();
-    return { name: org.name };
+    return { name: org?.name ?? "Organisation" };
   },
+
   head: ({ loaderData }) => ({
     meta: [
       { title: loaderData ? `${loaderData.name} — Organisation · Seal` : "Organisation — Seal" },
@@ -60,10 +62,22 @@ export const Route = createFileRoute("/organisations/$orgId")({
 
 function OrganisationDetail() {
   const { orgId } = Route.useParams();
-  const org = organisations.find((o) => o.id === orgId)!;
+  const known = organisations.find((o) => o.id === orgId);
+  const org = known ?? {
+    id: orgId,
+    name: "Organisation",
+    shortName: "Organisation",
+    sector: "Not set",
+    location: "Not set",
+    compliance: 0,
+    people: 0,
+    sessions: 0,
+    certificates: 0,
+  };
   const orgPeople = people.filter((p) => p.organisationId === org.id);
   const orgSessions = sessions.filter((s) => s.organisationId === org.id);
   const orgCerts = certificates.filter((c) => c.organisationId === org.id);
+
 
   return (
     <AppShell>
@@ -123,6 +137,10 @@ function OrganisationDetail() {
             />
           </Panel>
         </div>
+
+        <OrgAccessPanel orgId={orgId} />
+
+
 
         <div className="grid gap-5 lg:grid-cols-[1fr_340px]">
           <Panel>
