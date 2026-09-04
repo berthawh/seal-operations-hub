@@ -151,20 +151,31 @@ function NavList({ onNavigate }: { onNavigate?: (() => void) | undefined }) {
   };
 
   return (
-    <nav className="flex flex-1 flex-col gap-6 px-3">
-      <div className="space-y-1">
-        <p className="px-3 pb-1 text-[10px] font-bold tracking-[0.18em] text-sidebar-foreground/40 uppercase">
-          {isPartner ? "Your organisation" : "Operations"}
-        </p>
-        {(isPartner ? partnerNav : nav).map((entry) => item(entry, entry.to === "/"))}
-      </div>
-      {isPartner ? null : (
+    <nav className="flex flex-1 flex-col gap-5 px-3">
+      {isPartner ? (
         <div className="space-y-1">
           <p className="px-3 pb-1 text-[10px] font-bold tracking-[0.18em] text-sidebar-foreground/40 uppercase">
-            Configure
+            Your organisation
           </p>
-          {secondary.map((entry) => item(entry))}
+          {partnerNav.map((entry) => item(entry, entry.to === "/"))}
         </div>
+      ) : (
+        <>
+          {navGroups.map((group) => (
+            <div key={group.label} className="space-y-1">
+              <p className="px-3 pb-1 text-[10px] font-bold tracking-[0.18em] text-sidebar-foreground/40 uppercase">
+                {group.label}
+              </p>
+              {group.items.map((entry) => item(entry, entry.to === "/"))}
+            </div>
+          ))}
+          <div className="space-y-1">
+            <p className="px-3 pb-1 text-[10px] font-bold tracking-[0.18em] text-sidebar-foreground/40 uppercase">
+              Configure
+            </p>
+            {secondary.map((entry) => item(entry))}
+          </div>
+        </>
       )}
     </nav>
   );
