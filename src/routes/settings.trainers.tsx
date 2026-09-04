@@ -76,12 +76,11 @@ function TrainersPage() {
           crumbs={[
             { label: "Seal", to: "/" },
             { label: "Settings", to: "/settings" },
-            { label: "Team & access", to: "/settings/team" },
             { label: "Trainers" },
           ]}
           actions={
             <Button variant="outline" size="sm" asChild>
-              <Link to="/settings/team">Back to team</Link>
+              <Link to="/settings">Back to settings</Link>
             </Button>
           }
         />
