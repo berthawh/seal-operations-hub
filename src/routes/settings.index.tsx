@@ -36,21 +36,21 @@ function SettingsPage() {
 
         <div className="grid gap-5 lg:grid-cols-[220px_1fr]">
           <nav className="surface-card h-fit p-2 text-sm">
-            {[
-              { label: "Workspace", icon: Building2, active: true },
-              { label: "Certificates", icon: FileBadge },
-              { label: "Notifications", icon: Bell },
-            ].map((s) => (
-              <button
-                key={s.label}
-                className={
-                  "flex w-full items-center gap-2.5 rounded-lg px-3 py-2 text-left transition-colors " +
-                  (s.active ? "bg-muted font-medium" : "text-muted-foreground hover:bg-muted/60")
-                }
-              >
-                <s.icon className="size-4" /> {s.label}
-              </button>
-            ))}
+            <Link
+              to="/settings/company"
+              className="flex w-full items-center gap-2.5 rounded-lg bg-muted px-3 py-2 font-medium transition-colors"
+            >
+              <Building2 className="size-4" /> Workspace
+            </Link>
+            <button className="flex w-full items-center gap-2.5 rounded-lg px-3 py-2 text-left text-muted-foreground transition-colors hover:bg-muted/60">
+              <FileBadge className="size-4" /> Certificates
+            </button>
+            <Link
+              to="/settings/notifications"
+              className="flex w-full items-center gap-2.5 rounded-lg px-3 py-2 text-muted-foreground transition-colors hover:bg-muted/60"
+            >
+              <Bell className="size-4" /> Notifications
+            </Link>
             <Link
               to="/settings/team"
               className="flex w-full items-center gap-2.5 rounded-lg px-3 py-2 text-muted-foreground transition-colors hover:bg-muted/60"
