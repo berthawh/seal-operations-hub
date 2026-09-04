@@ -11,6 +11,7 @@ import { Label } from "@/components/ui/label";
 import { Switch } from "@/components/ui/switch";
 import { cn } from "@/lib/utils";
 import { courseColour, courses } from "@/lib/seal-data";
+import { CourseMultiSelect } from "@/components/seal/course-multi-select";
 import { listTrainers, removeTrainer, saveTrainer } from "@/lib/trainers.functions";
 import { supabase } from "@/integrations/supabase/client";
 
@@ -119,7 +120,11 @@ function Stars({
   onChange?: (v: number) => void;
 }) {
   return (
-    <span className="inline-flex items-center gap-0.5">
+    <span
+      className="inline-flex items-center gap-0.5"
+      role={onChange ? "group" : undefined}
+      aria-label={onChange ? "Star rating" : `Rated ${value} out of 5`}
+    >
       {[1, 2, 3, 4, 5].map((n) => {
         const filled = value >= n;
         const star = (
@@ -135,7 +140,8 @@ function Stars({
             key={n}
             type="button"
             aria-label={`Rate ${n} out of 5`}
-            className="rounded p-0.5 transition-transform hover:scale-110"
+            aria-pressed={value >= n}
+            className="rounded p-0.5 transition-transform hover:scale-110 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background"
             onClick={() => onChange(value === n ? 0 : n)}
           >
             {star}
@@ -213,13 +219,6 @@ export function TrainersPanel({ canManage }: { canManage: boolean }) {
   });
 
   const rows = trainers.data ?? [];
-  const toggleCourse = (id: string) =>
-    setForm((f) => ({
-      ...f,
-      courseIds: f.courseIds.includes(id)
-        ? f.courseIds.filter((c) => c !== id)
-        : [...f.courseIds, id],
-    }));
 
   return (
     <div className="grid gap-5 lg:grid-cols-[1fr_360px]">
@@ -283,7 +282,23 @@ export function TrainersPanel({ canManage }: { canManage: boolean }) {
                   ) : null}
                   <div className="mt-2 flex flex-wrap gap-1.5">
                     {t.courseIds.length > 0 ? (
-                      t.courseIds.map((id) => <CourseChip key={id} courseId={id} />)
+                      <>
+                        {t.courseIds.slice(0, 4).map((id) => (
+                          <CourseChip key={id} courseId={id} />
+                        ))}
+                        {t.courseIds.length > 4 ? (
+                          <span
+                            className="inline-flex items-center rounded-full border border-dashed border-border px-2 py-0.5 text-[11px] font-medium text-muted-foreground"
+                            title={t.courseIds
+                              .slice(4)
+                              .map((id) => courses.find((c) => c.id === id)?.name)
+                              .filter(Boolean)
+                              .join(", ")}
+                          >
+                            +{t.courseIds.length - 4} more
+                          </span>
+                        ) : null}
+                      </>
                     ) : (
                       <span className="text-[11px] text-muted-foreground">
                         {t.specialism || "No courses assigned yet"}
@@ -373,52 +388,11 @@ export function TrainersPanel({ canManage }: { canManage: boolean }) {
             />
           </div>
 
-          <div className="space-y-1.5">
-            <div className="flex items-center justify-between gap-2">
-              <Label>Courses they deliver</Label>
-              <button
-                type="button"
-                className="text-[11px] font-medium text-seal underline-offset-2 hover:underline"
-                onClick={() =>
-                  setForm((f) => ({
-                    ...f,
-                    courseIds:
-                      f.courseIds.length === courses.length ? [] : courses.map((c) => c.id),
-                  }))
-                }
-              >
-                {form.courseIds.length === courses.length ? "Clear all" : "Select all"}
-              </button>
-            </div>
-            <div className="max-h-52 overflow-y-auto rounded-xl border border-border p-2">
-              <div className="flex flex-wrap gap-1.5">
-                {courses.map((c) => {
-                  const on = form.courseIds.includes(c.id);
-                  const colour = courseColour(c.id);
-                  return (
-                    <button
-                      key={c.id}
-                      type="button"
-                      aria-pressed={on}
-                      onClick={() => toggleCourse(c.id)}
-                      className={cn(
-                        "inline-flex items-center gap-1.5 rounded-full border px-2 py-1 text-[11px] font-medium transition-colors",
-                        on
-                          ? colour.chip
-                          : "border-border bg-transparent text-muted-foreground hover:bg-muted/60",
-                      )}
-                    >
-                      <span className={cn("size-1.5 rounded-full", colour.dot)} />
-                      {c.name}
-                    </button>
-                  );
-                })}
-              </div>
-            </div>
-            <p className="text-[11px] text-muted-foreground">
-              {form.courseIds.length} selected — colours match the course catalogue.
-            </p>
-          </div>
+          <CourseMultiSelect
+            value={form.courseIds}
+            onChange={(courseIds) => setForm((f) => ({ ...f, courseIds }))}
+            disabled={!canManage}
+          />
 
           <div className="grid gap-3 sm:grid-cols-2">
             <div className="space-y-1.5">
