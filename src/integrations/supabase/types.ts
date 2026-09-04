@@ -186,19 +186,25 @@ export type Database = {
           can_manage_staff: boolean
           can_view_certificates: boolean
           contact_email: string | null
+          contact_landline: string | null
+          contact_mobile: string | null
+          contact_name: string | null
           contact_phone: string | null
           created_at: string
           id: string
           location: string | null
+          logo_url: string | null
           name: string
           notes: string | null
           org_type: string
           portal_enabled: boolean
+          preferred_course_ids: string[]
           relationship: string
           sector: string | null
           short_name: string | null
           status: string | null
           updated_at: string
+          website: string | null
         }
         Insert: {
           can_book_sessions?: boolean
@@ -206,19 +212,25 @@ export type Database = {
           can_manage_staff?: boolean
           can_view_certificates?: boolean
           contact_email?: string | null
+          contact_landline?: string | null
+          contact_mobile?: string | null
+          contact_name?: string | null
           contact_phone?: string | null
           created_at?: string
           id: string
           location?: string | null
+          logo_url?: string | null
           name: string
           notes?: string | null
           org_type?: string
           portal_enabled?: boolean
+          preferred_course_ids?: string[]
           relationship?: string
           sector?: string | null
           short_name?: string | null
           status?: string | null
           updated_at?: string
+          website?: string | null
         }
         Update: {
           can_book_sessions?: boolean
@@ -226,19 +238,25 @@ export type Database = {
           can_manage_staff?: boolean
           can_view_certificates?: boolean
           contact_email?: string | null
+          contact_landline?: string | null
+          contact_mobile?: string | null
+          contact_name?: string | null
           contact_phone?: string | null
           created_at?: string
           id?: string
           location?: string | null
+          logo_url?: string | null
           name?: string
           notes?: string | null
           org_type?: string
           portal_enabled?: boolean
+          preferred_course_ids?: string[]
           relationship?: string
           sector?: string | null
           short_name?: string | null
           status?: string | null
           updated_at?: string
+          website?: string | null
         }
         Relationships: []
       }
@@ -263,6 +281,45 @@ export type Database = {
           full_name?: string | null
           id?: string
           job_title?: string | null
+        }
+        Relationships: []
+      }
+      trainers: {
+        Row: {
+          created_at: string
+          created_by: string | null
+          email: string | null
+          full_name: string
+          id: string
+          notes: string | null
+          phone: string | null
+          specialism: string | null
+          status: string
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          created_by?: string | null
+          email?: string | null
+          full_name: string
+          id?: string
+          notes?: string | null
+          phone?: string | null
+          specialism?: string | null
+          status?: string
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          created_by?: string | null
+          email?: string | null
+          full_name?: string
+          id?: string
+          notes?: string | null
+          phone?: string | null
+          specialism?: string | null
+          status?: string
+          updated_at?: string
         }
         Relationships: []
       }
