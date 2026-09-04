@@ -292,6 +292,8 @@ export type Database = {
       }
       trainers: {
         Row: {
+          avatar_url: string | null
+          course_ids: string[]
           created_at: string
           created_by: string | null
           email: string | null
@@ -299,11 +301,15 @@ export type Database = {
           id: string
           notes: string | null
           phone: string | null
+          rating: number
+          recommended: boolean
           specialism: string | null
           status: string
           updated_at: string
         }
         Insert: {
+          avatar_url?: string | null
+          course_ids?: string[]
           created_at?: string
           created_by?: string | null
           email?: string | null
@@ -311,11 +317,15 @@ export type Database = {
           id?: string
           notes?: string | null
           phone?: string | null
+          rating?: number
+          recommended?: boolean
           specialism?: string | null
           status?: string
           updated_at?: string
         }
         Update: {
+          avatar_url?: string | null
+          course_ids?: string[]
           created_at?: string
           created_by?: string | null
           email?: string | null
@@ -323,6 +333,8 @@ export type Database = {
           id?: string
           notes?: string | null
           phone?: string | null
+          rating?: number
+          recommended?: boolean
           specialism?: string | null
           status?: string
           updated_at?: string
