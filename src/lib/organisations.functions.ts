@@ -121,13 +121,17 @@ export const listOrganisations = createServerFn({ method: "GET" })
 export const getOrganisation = createServerFn({ method: "GET" })
   .middleware([requireSupabaseAuth])
   .inputValidator((input: { id: string }) => input)
-  .handler(async ({ data, context }): Promise<{ org: Organisation | null; members: OrgMember[] }> => {
+  .handler(
+    async ({
+      data,
+      context,
+    }): Promise<{ org: Organisation | null; members: OrgMember[]; bookings: BookingRequest[] }> => {
     const { data: org } = await context.supabase
       .from("organisations")
       .select("*")
       .eq("id", data.id)
       .maybeSingle();
-    if (!org) return { org: null, members: [] };
+    if (!org) return { org: null, members: [], bookings: [] };
     const { data: memberRows } = await context.supabase
       .from("organisation_members")
       .select("*")
@@ -148,8 +152,15 @@ export const getOrganisation = createServerFn({ method: "GET" })
         createdAt: m.created_at,
       };
     });
-    return { org: mapOrg(org, members.length), members };
-  });
+    const { data: bookingRows } = await context.supabase
+      .from("booking_requests")
+      .select("*")
+      .eq("organisation_id", data.id)
+      .order("created_at", { ascending: false });
+    const bookings = (bookingRows ?? []).map((b: Row) => mapBooking(b, org.name));
+    return { org: mapOrg(org, members.length), members, bookings };
+  },
+  );
 
 /** Create or update an organisation record. Admins only. */
 export const saveOrganisation = createServerFn({ method: "POST" })
