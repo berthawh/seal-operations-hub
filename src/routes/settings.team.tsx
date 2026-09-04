@@ -18,6 +18,8 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { supabase } from "@/integrations/supabase/client";
+import { updateMyProfile } from "@/lib/workspace.functions";
+import { useRefreshGlobal } from "@/hooks/use-seal-session";
 import {
   ROLE_HINTS,
   ROLE_LABELS,
@@ -50,6 +52,10 @@ function TeamPage() {
   const queryClient = useQueryClient();
   const [signedIn, setSignedIn] = useState<boolean | null>(null);
 
+  const refreshGlobal = useRefreshGlobal();
+  const updateProfileFn = useServerFn(updateMyProfile);
+  const [profileForm, setProfileForm] = useState({ fullName: "", jobTitle: "" });
+  const [profileLoaded, setProfileLoaded] = useState(false);
   const myAccessFn = useServerFn(getMyAccess);
   const listTeamFn = useServerFn(listTeam);
   const setRolesFn = useServerFn(setMemberRoles);
@@ -68,6 +74,25 @@ function TeamPage() {
     queryKey: ["my-access"],
     queryFn: () => myAccessFn(),
     enabled: signedIn === true,
+  });
+
+  useEffect(() => {
+    if (access.data && !profileLoaded) {
+      setProfileForm({
+        fullName: access.data.fullName ?? "",
+        jobTitle: access.data.jobTitle ?? "",
+      });
+      setProfileLoaded(true);
+    }
+  }, [access.data, profileLoaded]);
+
+  const profileMutation = useMutation({
+    mutationFn: () => updateProfileFn({ data: profileForm }),
+    onSuccess: () => {
+      refreshGlobal();
+      toast.success("Your details are updated everywhere.");
+    },
+    onError: (e: Error) => toast.error(e.message),
   });
 
   const team = useQuery({
@@ -162,6 +187,39 @@ function TeamPage() {
           <Link to="/settings" className="text-xs text-muted-foreground hover:text-foreground">
             Back to settings
           </Link>
+        </Panel>
+
+        <Panel>
+          <PanelHeader title="Your details" subtitle="Shown across the workspace wherever you appear" />
+          <div className="grid gap-4 px-5 pb-5 sm:grid-cols-[1fr_1fr_auto] sm:items-end">
+            <div className="space-y-1.5">
+              <Label htmlFor="my-name" className="text-xs text-muted-foreground">
+                Full name
+              </Label>
+              <Input
+                id="my-name"
+                value={profileForm.fullName}
+                onChange={(e) => setProfileForm((f) => ({ ...f, fullName: e.target.value }))}
+              />
+            </div>
+            <div className="space-y-1.5">
+              <Label htmlFor="my-title" className="text-xs text-muted-foreground">
+                Job title
+              </Label>
+              <Input
+                id="my-title"
+                value={profileForm.jobTitle}
+                onChange={(e) => setProfileForm((f) => ({ ...f, jobTitle: e.target.value }))}
+              />
+            </div>
+            <Button
+              variant="seal"
+              disabled={profileMutation.isPending}
+              onClick={() => profileMutation.mutate()}
+            >
+              Save details
+            </Button>
+          </div>
         </Panel>
 
         {isAdmin === false ? (

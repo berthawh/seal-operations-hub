@@ -1,5 +1,7 @@
 import { useState } from "react";
-import { Link, useRouterState } from "@tanstack/react-router";
+import { Link, useNavigate, useRouterState } from "@tanstack/react-router";
+import { useMutation } from "@tanstack/react-query";
+import { useServerFn } from "@tanstack/react-start";
 import {
   Bell,
   Building2,
@@ -38,6 +40,16 @@ import {
 } from "@/components/ui/command";
 import { StatusChip } from "./status-chip";
 import { Avatar } from "./primitives";
+import { supabase } from "@/integrations/supabase/client";
+import {
+  initialsFrom,
+  useMyAccess,
+  useNotifications,
+  useRefreshGlobal,
+  useWorkspace,
+} from "@/hooks/use-seal-session";
+import { markNotificationsRead } from "@/lib/notifications.functions";
+import { ROLE_LABELS } from "@/lib/team.functions";
 
 const nav = [
   { label: "Dashboard", to: "/", icon: LayoutDashboard },
@@ -53,26 +65,6 @@ const secondary = [
   { label: "Settings", to: "/settings", icon: Settings },
 ];
 
-const notifications = [
-  {
-    title: "Certificate awaiting approval",
-    detail: "SEAL-2026-0421 · Sofia Marchetti",
-    tone: "warning" as const,
-    time: "12m",
-  },
-  {
-    title: "Tracking item overdue",
-    detail: "Attendance confirmation · SES-2465",
-    tone: "danger" as const,
-    time: "6d",
-  },
-  {
-    title: "Session completed",
-    detail: "SES-2470 · Harbourline Logistics",
-    tone: "success" as const,
-    time: "1w",
-  },
-];
 
 function NavList({ onNavigate }: { onNavigate?: (() => void) | undefined }) {
   const pathname = useRouterState({ select: (s) => s.location.pathname });
@@ -137,15 +129,22 @@ function NavList({ onNavigate }: { onNavigate?: (() => void) | undefined }) {
 }
 
 function SidebarInner({ onNavigate }: { onNavigate?: (() => void) | undefined }) {
+  const workspace = useWorkspace();
+  const brand = workspace.data?.companyName ?? "Seal";
+  const logo = workspace.data?.logoUrl;
   return (
     <div className="flex h-full flex-col bg-sidebar py-4">
       <Link to="/" onClick={onNavigate} className="mb-5 flex items-center gap-2.5 px-5">
-        <span className="grid size-8 place-items-center rounded-lg bg-gradient-seal text-[13px] font-semibold text-seal-foreground">
-          S
-        </span>
+        {logo ? (
+          <img src={logo} alt={`${brand} logo`} className="size-8 rounded-lg object-contain" />
+        ) : (
+          <span className="grid size-8 place-items-center rounded-lg bg-gradient-seal text-[13px] font-semibold text-seal-foreground">
+            S
+          </span>
+        )}
         <span>
-          <span className="block text-[15px] font-semibold tracking-tight text-sidebar-accent-foreground">
-            Seal
+          <span className="block max-w-[130px] truncate text-[15px] font-semibold tracking-tight text-sidebar-accent-foreground">
+            {brand}
           </span>
           <span className="block text-[10px] tracking-[0.14em] text-sidebar-foreground/50 uppercase">
             Training ops
@@ -258,6 +257,24 @@ function GlobalSearch() {
 
 export function AppShell({ children }: { children: React.ReactNode }) {
   const [mobileOpen, setMobileOpen] = useState(false);
+  const navigate = useNavigate();
+  const access = useMyAccess();
+  const notifications = useNotifications();
+  const refreshGlobal = useRefreshGlobal();
+  const markRead = useServerFn(markNotificationsRead);
+  const items = notifications.data ?? [];
+  const unread = items.filter((n) => !n.readAt).length;
+  const markAll = useMutation({
+    mutationFn: () => markRead({ data: {} }),
+    onSuccess: refreshGlobal,
+  });
+  const displayName = access.data?.fullName || access.data?.email || "Signed out";
+  const roleLabel = access.data?.roles?.[0] ? ROLE_LABELS[access.data.roles[0]] : null;
+  const signOut = async () => {
+    await supabase.auth.signOut();
+    refreshGlobal();
+    void navigate({ to: "/auth" });
+  };
 
   return (
     <div className="min-h-screen bg-background">
@@ -290,34 +307,56 @@ export function AppShell({ children }: { children: React.ReactNode }) {
                 <PopoverTrigger asChild>
                   <Button variant="outline" size="icon" className="relative">
                     <Bell className="size-4" />
-                    <span className="absolute top-1.5 right-1.5 size-2 animate-[sheen_2.4s_ease-in-out_infinite] rounded-full bg-seal" />
+                    {unread > 0 ? (
+                      <span className="absolute -top-1 -right-1 grid min-w-4 place-items-center rounded-full bg-seal px-1 text-[10px] font-semibold text-seal-foreground">
+                        {unread}
+                      </span>
+                    ) : null}
                   </Button>
                 </PopoverTrigger>
                 <PopoverContent align="end" className="w-80 rounded-2xl p-0 shadow-pop">
                   <div className="flex items-center justify-between border-b border-border px-4 py-3">
                     <p className="text-sm font-semibold">Notifications</p>
-                    <Button variant="link" size="sm" className="h-auto p-0">
+                    <Button
+                      variant="link"
+                      size="sm"
+                      className="h-auto p-0"
+                      disabled={!unread || markAll.isPending}
+                      onClick={() => markAll.mutate()}
+                    >
                       Mark all read
                     </Button>
                   </div>
                   <div className="max-h-80 divide-y divide-border overflow-auto">
-                    {notifications.map((n) => (
-                      <div
-                        key={n.title}
-                        className="flex gap-3 px-4 py-3 transition-colors hover:bg-muted/60"
-                      >
-                        <span className={cn("mt-1.5 size-2 shrink-0 rounded-full", `bg-${n.tone}`)} />
-                        <div className="min-w-0 flex-1">
-                          <p className="truncate text-sm font-medium">{n.title}</p>
-                          <p className="truncate text-xs text-muted-foreground">{n.detail}</p>
+                    {items.length === 0 ? (
+                      <p className="px-4 py-8 text-center text-xs text-muted-foreground">
+                        {access.data ? "No notifications yet." : "Sign in to see your notifications."}
+                      </p>
+                    ) : (
+                      items.map((n) => (
+                        <div
+                          key={n.id}
+                          className="flex gap-3 px-4 py-3 transition-colors hover:bg-muted/60"
+                        >
+                          <span
+                            className={cn(
+                              "mt-1.5 size-2 shrink-0 rounded-full",
+                              n.readAt ? "bg-border" : "bg-seal",
+                            )}
+                          />
+                          <div className="min-w-0 flex-1">
+                            <p className="truncate text-sm font-medium">{n.title}</p>
+                            {n.body ? (
+                              <p className="truncate text-xs text-muted-foreground">{n.body}</p>
+                            ) : null}
+                          </div>
                         </div>
-                        <span className="text-[11px] text-muted-foreground">{n.time}</span>
-                      </div>
-                    ))}
+                      ))
+                    )}
                   </div>
                   <div className="border-t border-border p-2">
                     <Button variant="ghost" size="sm" className="w-full" asChild>
-                      <Link to="/tracking">View tracking workspace</Link>
+                      <Link to="/settings/notifications">Open notifications</Link>
                     </Button>
                   </div>
                 </PopoverContent>
@@ -328,29 +367,43 @@ export function AppShell({ children }: { children: React.ReactNode }) {
               <DropdownMenu>
                 <DropdownMenuTrigger asChild>
                   <button className="flex items-center gap-2 rounded-xl border border-border bg-surface py-1 pr-2 pl-1 shadow-card transition-colors hover:border-seal/40">
-                    <Avatar initials="PN" className="size-7 rounded-lg" />
+                    <Avatar
+                      initials={initialsFrom(access.data?.fullName, access.data?.email)}
+                      className="size-7 rounded-lg"
+                    />
                     <ChevronDown className="size-3.5 text-muted-foreground" />
                   </button>
                 </DropdownMenuTrigger>
                 <DropdownMenuContent align="end" className="w-56 rounded-xl shadow-pop">
                   <div className="px-2 py-2">
-                    <p className="text-sm font-semibold">Priya Nandan</p>
-                    <p className="text-xs text-muted-foreground">Operations Manager</p>
-                    <StatusChip tone="seal" size="sm" className="mt-2">
-                      Admin workspace
-                    </StatusChip>
+                    <p className="truncate text-sm font-semibold">{displayName}</p>
+                    <p className="truncate text-xs text-muted-foreground">
+                      {access.data?.jobTitle || access.data?.email || "Not signed in"}
+                    </p>
+                    {roleLabel ? (
+                      <StatusChip tone="seal" size="sm" className="mt-2">
+                        {roleLabel}
+                      </StatusChip>
+                    ) : null}
                   </div>
                   <DropdownMenuSeparator />
                   <DropdownMenuItem asChild>
-                    <Link to="/people/$personId" params={{ personId: "per-6" }}>
-                      My profile
-                    </Link>
+                    <Link to="/settings/team">My profile</Link>
+                  </DropdownMenuItem>
+                  <DropdownMenuItem asChild>
+                    <Link to="/settings/company">My company</Link>
                   </DropdownMenuItem>
                   <DropdownMenuItem asChild>
                     <Link to="/settings">Workspace settings</Link>
                   </DropdownMenuItem>
                   <DropdownMenuSeparator />
-                  <DropdownMenuItem>Sign out</DropdownMenuItem>
+                  {access.data ? (
+                    <DropdownMenuItem onSelect={() => void signOut()}>Sign out</DropdownMenuItem>
+                  ) : (
+                    <DropdownMenuItem asChild>
+                      <Link to="/auth">Sign in</Link>
+                    </DropdownMenuItem>
+                  )}
                 </DropdownMenuContent>
               </DropdownMenu>
             </div>

@@ -24,6 +24,8 @@ import { Route as SessionsIndexRouteImport } from './routes/sessions.index'
 import { Route as SessionsSessionIdRouteImport } from './routes/sessions.$sessionId'
 import { Route as SessionsNewRouteImport } from './routes/sessions.new'
 import { Route as SettingsIndexRouteImport } from './routes/settings.index'
+import { Route as SettingsCompanyRouteImport } from './routes/settings.company'
+import { Route as SettingsNotificationsRouteImport } from './routes/settings.notifications'
 import { Route as SettingsTeamRouteImport } from './routes/settings.team'
 import { Route as TrackingIndexRouteImport } from './routes/tracking.index'
 import { Route as SettingsAutomationsIndexRouteImport } from './routes/settings.automations.index'
@@ -109,6 +111,16 @@ const SettingsIndexRoute = SettingsIndexRouteImport.update({
   path: '/settings/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const SettingsCompanyRoute = SettingsCompanyRouteImport.update({
+  id: '/settings/company',
+  path: '/settings/company',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const SettingsNotificationsRoute = SettingsNotificationsRouteImport.update({
+  id: '/settings/notifications',
+  path: '/settings/notifications',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const SettingsTeamRoute = SettingsTeamRouteImport.update({
   id: '/settings/team',
   path: '/settings/team',
@@ -165,6 +177,8 @@ export interface FileRoutesByFullPath {
   '/people/$personId': typeof PeoplePersonIdRoute
   '/sessions/$sessionId': typeof SessionsSessionIdRoute
   '/sessions/new': typeof SessionsNewRoute
+  '/settings/company': typeof SettingsCompanyRoute
+  '/settings/notifications': typeof SettingsNotificationsRoute
   '/settings/team': typeof SettingsTeamRoute
   '/certificates/': typeof CertificatesIndexRoute
   '/courses/': typeof CoursesIndexRoute
@@ -190,6 +204,8 @@ export interface FileRoutesByTo {
   '/people/$personId': typeof PeoplePersonIdRoute
   '/sessions/$sessionId': typeof SessionsSessionIdRoute
   '/sessions/new': typeof SessionsNewRoute
+  '/settings/company': typeof SettingsCompanyRoute
+  '/settings/notifications': typeof SettingsNotificationsRoute
   '/settings/team': typeof SettingsTeamRoute
   '/certificates': typeof CertificatesIndexRoute
   '/courses': typeof CoursesIndexRoute
@@ -216,6 +232,8 @@ export interface FileRoutesById {
   '/people/$personId': typeof PeoplePersonIdRoute
   '/sessions/$sessionId': typeof SessionsSessionIdRoute
   '/sessions/new': typeof SessionsNewRoute
+  '/settings/company': typeof SettingsCompanyRoute
+  '/settings/notifications': typeof SettingsNotificationsRoute
   '/settings/team': typeof SettingsTeamRoute
   '/certificates/': typeof CertificatesIndexRoute
   '/courses/': typeof CoursesIndexRoute
@@ -243,6 +261,8 @@ export interface FileRouteTypes {
     | '/people/$personId'
     | '/sessions/$sessionId'
     | '/sessions/new'
+    | '/settings/company'
+    | '/settings/notifications'
     | '/settings/team'
     | '/certificates/'
     | '/courses/'
@@ -268,6 +288,8 @@ export interface FileRouteTypes {
     | '/people/$personId'
     | '/sessions/$sessionId'
     | '/sessions/new'
+    | '/settings/company'
+    | '/settings/notifications'
     | '/settings/team'
     | '/certificates'
     | '/courses'
@@ -293,6 +315,8 @@ export interface FileRouteTypes {
     | '/people/$personId'
     | '/sessions/$sessionId'
     | '/sessions/new'
+    | '/settings/company'
+    | '/settings/notifications'
     | '/settings/team'
     | '/certificates/'
     | '/courses/'
@@ -319,6 +343,8 @@ export interface RootRouteChildren {
   PeoplePersonIdRoute: typeof PeoplePersonIdRoute
   SessionsSessionIdRoute: typeof SessionsSessionIdRoute
   SessionsNewRoute: typeof SessionsNewRoute
+  SettingsCompanyRoute: typeof SettingsCompanyRoute
+  SettingsNotificationsRoute: typeof SettingsNotificationsRoute
   SettingsTeamRoute: typeof SettingsTeamRoute
   CertificatesIndexRoute: typeof CertificatesIndexRoute
   CoursesIndexRoute: typeof CoursesIndexRoute
@@ -442,6 +468,20 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof SettingsIndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/settings/company': {
+      id: '/settings/company'
+      path: '/settings/company'
+      fullPath: '/settings/company'
+      preLoaderRoute: typeof SettingsCompanyRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/settings/notifications': {
+      id: '/settings/notifications'
+      path: '/settings/notifications'
+      fullPath: '/settings/notifications'
+      preLoaderRoute: typeof SettingsNotificationsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/settings/team': {
       id: '/settings/team'
       path: '/settings/team'
@@ -511,6 +551,8 @@ const rootRouteChildren: RootRouteChildren = {
   PeoplePersonIdRoute: PeoplePersonIdRoute,
   SessionsSessionIdRoute: SessionsSessionIdRoute,
   SessionsNewRoute: SessionsNewRoute,
+  SettingsCompanyRoute: SettingsCompanyRoute,
+  SettingsNotificationsRoute: SettingsNotificationsRoute,
   SettingsTeamRoute: SettingsTeamRoute,
   CertificatesIndexRoute: CertificatesIndexRoute,
   CoursesIndexRoute: CoursesIndexRoute,

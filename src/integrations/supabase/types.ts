@@ -14,6 +14,39 @@ export type Database = {
   }
   public: {
     Tables: {
+      notifications: {
+        Row: {
+          body: string | null
+          created_at: string
+          id: string
+          link: string | null
+          read_at: string | null
+          title: string
+          tone: string
+          user_id: string
+        }
+        Insert: {
+          body?: string | null
+          created_at?: string
+          id?: string
+          link?: string | null
+          read_at?: string | null
+          title: string
+          tone?: string
+          user_id: string
+        }
+        Update: {
+          body?: string | null
+          created_at?: string
+          id?: string
+          link?: string | null
+          read_at?: string | null
+          title?: string
+          tone?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
       profiles: {
         Row: {
           created_at: string
@@ -56,6 +89,96 @@ export type Database = {
           id?: string
           role?: Database["public"]["Enums"]["app_role"]
           user_id?: string
+        }
+        Relationships: []
+      }
+      workspace_settings: {
+        Row: {
+          account_name: string | null
+          account_number: string | null
+          address_line1: string | null
+          address_line2: string | null
+          bank_name: string | null
+          certificate_prefix: string
+          city: string | null
+          company_name: string
+          company_number: string | null
+          country: string
+          default_validity_months: number
+          email: string | null
+          id: string
+          invoice_email: string | null
+          invoice_prefix: string
+          legal_name: string | null
+          logo_url: string | null
+          payment_terms: string
+          phone: string | null
+          postcode: string | null
+          region: string
+          singleton: boolean
+          sort_code: string | null
+          updated_at: string
+          updated_by: string | null
+          vat_number: string | null
+          website: string | null
+        }
+        Insert: {
+          account_name?: string | null
+          account_number?: string | null
+          address_line1?: string | null
+          address_line2?: string | null
+          bank_name?: string | null
+          certificate_prefix?: string
+          city?: string | null
+          company_name?: string
+          company_number?: string | null
+          country?: string
+          default_validity_months?: number
+          email?: string | null
+          id?: string
+          invoice_email?: string | null
+          invoice_prefix?: string
+          legal_name?: string | null
+          logo_url?: string | null
+          payment_terms?: string
+          phone?: string | null
+          postcode?: string | null
+          region?: string
+          singleton?: boolean
+          sort_code?: string | null
+          updated_at?: string
+          updated_by?: string | null
+          vat_number?: string | null
+          website?: string | null
+        }
+        Update: {
+          account_name?: string | null
+          account_number?: string | null
+          address_line1?: string | null
+          address_line2?: string | null
+          bank_name?: string | null
+          certificate_prefix?: string
+          city?: string | null
+          company_name?: string
+          company_number?: string | null
+          country?: string
+          default_validity_months?: number
+          email?: string | null
+          id?: string
+          invoice_email?: string | null
+          invoice_prefix?: string
+          legal_name?: string | null
+          logo_url?: string | null
+          payment_terms?: string
+          phone?: string | null
+          postcode?: string | null
+          region?: string
+          singleton?: boolean
+          sort_code?: string | null
+          updated_at?: string
+          updated_by?: string | null
+          vat_number?: string | null
+          website?: string | null
         }
         Relationships: []
       }

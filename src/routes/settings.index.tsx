@@ -6,6 +6,7 @@ import { StatusChip } from "@/components/seal/status-chip";
 import { Button } from "@/components/ui/button";
 import { Switch } from "@/components/ui/switch";
 import { automations } from "@/lib/seal-data";
+import { useWorkspace } from "@/hooks/use-seal-session";
 
 export const Route = createFileRoute("/settings/")({
   head: () => ({
@@ -24,6 +25,10 @@ export const Route = createFileRoute("/settings/")({
 
 function SettingsPage() {
   const enabled = automations.filter((a) => a.enabled).length;
+  const workspace = useWorkspace().data;
+  const address = [workspace?.addressLine1, workspace?.city, workspace?.postcode]
+    .filter(Boolean)
+    .join(", ");
 
   return (
     <AppShell>
@@ -36,21 +41,21 @@ function SettingsPage() {
 
         <div className="grid gap-5 lg:grid-cols-[220px_1fr]">
           <nav className="surface-card h-fit p-2 text-sm">
-            {[
-              { label: "Workspace", icon: Building2, active: true },
-              { label: "Certificates", icon: FileBadge },
-              { label: "Notifications", icon: Bell },
-            ].map((s) => (
-              <button
-                key={s.label}
-                className={
-                  "flex w-full items-center gap-2.5 rounded-lg px-3 py-2 text-left transition-colors " +
-                  (s.active ? "bg-muted font-medium" : "text-muted-foreground hover:bg-muted/60")
-                }
-              >
-                <s.icon className="size-4" /> {s.label}
-              </button>
-            ))}
+            <Link
+              to="/settings/company"
+              className="flex w-full items-center gap-2.5 rounded-lg bg-muted px-3 py-2 font-medium transition-colors"
+            >
+              <Building2 className="size-4" /> Workspace
+            </Link>
+            <button className="flex w-full items-center gap-2.5 rounded-lg px-3 py-2 text-left text-muted-foreground transition-colors hover:bg-muted/60">
+              <FileBadge className="size-4" /> Certificates
+            </button>
+            <Link
+              to="/settings/notifications"
+              className="flex w-full items-center gap-2.5 rounded-lg px-3 py-2 text-muted-foreground transition-colors hover:bg-muted/60"
+            >
+              <Bell className="size-4" /> Notifications
+            </Link>
             <Link
               to="/settings/team"
               className="flex w-full items-center gap-2.5 rounded-lg px-3 py-2 text-muted-foreground transition-colors hover:bg-muted/60"
@@ -80,12 +85,27 @@ function SettingsPage() {
 
           <div className="space-y-5">
             <Panel>
-              <PanelHeader title="Workspace" subtitle="Identity used across certificates and emails" />
+              <PanelHeader
+                title="Workspace"
+                subtitle="Your company identity, used across certificates and emails"
+                action={
+                  <Button variant="outline" size="sm" asChild>
+                    <Link to="/settings/company">
+                      <Building2 className="size-4" /> My company
+                    </Link>
+                  </Button>
+                }
+              />
               <div className="grid gap-5 px-5 pb-5 sm:grid-cols-2">
-                <Field label="Workspace name" value="Seal Training Operations" />
-                <Field label="Region" value="United Kingdom" />
-                <Field label="Certificate prefix" value="SEAL" />
-                <Field label="Default validity" value="24 months" />
+                <Field label="Company name" value={workspace?.companyName ?? "Not set yet"} />
+                <Field label="Registered address" value={address || "Not set yet"} />
+                <Field label="Certificate prefix" value={workspace?.certificatePrefix ?? "—"} />
+                <Field
+                  label="Default validity"
+                  value={workspace ? `${workspace.defaultValidityMonths} months` : "—"}
+                />
+                <Field label="Invoice email" value={workspace?.invoiceEmail ?? "Not set yet"} />
+                <Field label="VAT number" value={workspace?.vatNumber ?? "Not set yet"} />
               </div>
             </Panel>
 
