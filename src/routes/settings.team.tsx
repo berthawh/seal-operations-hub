@@ -6,6 +6,7 @@ import { LockKeyhole, ShieldCheck, UserPlus, Users } from "lucide-react";
 import { toast } from "sonner";
 import { AppShell } from "@/components/seal/app-shell";
 import { PageHeader, Panel, PanelHeader } from "@/components/seal/primitives";
+import { TrainersPanel } from "@/components/seal/trainers-panel";
 import { StatusChip } from "@/components/seal/status-chip";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -365,6 +366,8 @@ function TeamPage() {
             </div>
           </div>
         )}
+
+        <TrainersPanel canManage={isAdmin === true} />
       </div>
     </AppShell>
   );
