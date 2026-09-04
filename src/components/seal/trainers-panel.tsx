@@ -374,7 +374,22 @@ export function TrainersPanel({ canManage }: { canManage: boolean }) {
           </div>
 
           <div className="space-y-1.5">
-            <Label className="text-xs">Courses they deliver</Label>
+            <div className="flex items-center justify-between gap-2">
+              <Label>Courses they deliver</Label>
+              <button
+                type="button"
+                className="text-[11px] font-medium text-seal underline-offset-2 hover:underline"
+                onClick={() =>
+                  setForm((f) => ({
+                    ...f,
+                    courseIds:
+                      f.courseIds.length === courses.length ? [] : courses.map((c) => c.id),
+                  }))
+                }
+              >
+                {form.courseIds.length === courses.length ? "Clear all" : "Select all"}
+              </button>
+            </div>
             <div className="max-h-52 overflow-y-auto rounded-xl border border-border p-2">
               <div className="flex flex-wrap gap-1.5">
                 {courses.map((c) => {
