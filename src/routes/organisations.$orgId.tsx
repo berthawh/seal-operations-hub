@@ -1,6 +1,8 @@
-import { createFileRoute, Link, notFound } from "@tanstack/react-router";
+import { createFileRoute, Link } from "@tanstack/react-router";
 import { Building2, CalendarDays, MapPin, ShieldCheck, Users } from "lucide-react";
 import { AppShell } from "@/components/seal/app-shell";
+import { OrgAccessPanel } from "@/components/seal/org-access-panel";
+
 import {
   Avatar,
   Bar,
