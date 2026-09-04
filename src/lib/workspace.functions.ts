@@ -148,11 +148,11 @@ export const updateWorkspace = createServerFn({ method: "POST" })
     const result = existing.data
       ? await supabase
           .from("workspace_settings")
-          .update(patch)
+          .update(patch as never)
           .eq("id", existing.data.id)
           .select("*")
           .single()
-      : await supabase.from("workspace_settings").insert(patch).select("*").single();
+      : await supabase.from("workspace_settings").insert(patch as never).select("*").single();
 
     if (result.error) throw new Error(result.error.message);
     return toWorkspace(result.data as Row);
