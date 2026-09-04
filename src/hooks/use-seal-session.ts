@@ -31,10 +31,11 @@ export function useHasSession() {
 /** Signed-in user, roles and profile. Shared by every screen so edits appear everywhere. */
 export function useMyAccess() {
   const fn = useServerFn(getMyAccess);
+  const hasSession = useHasSession();
   return useQuery({
     queryKey: ["my-access"],
     queryFn: () => fn(),
-    enabled: clientOnly,
+    enabled: clientOnly && hasSession,
     retry: false,
     staleTime: 30_000,
   });
@@ -43,10 +44,11 @@ export function useMyAccess() {
 /** The company record shown across settings, certificates and the shell. */
 export function useWorkspace() {
   const fn = useServerFn(getWorkspace);
+  const hasSession = useHasSession();
   return useQuery({
     queryKey: ["workspace"],
     queryFn: () => fn(),
-    enabled: clientOnly,
+    enabled: clientOnly && hasSession,
     retry: false,
     staleTime: 30_000,
   });
@@ -55,10 +57,11 @@ export function useWorkspace() {
 /** The signed-in user's notifications. Polled so new ones arrive without a refresh. */
 export function useNotifications() {
   const fn = useServerFn(listNotifications);
+  const hasSession = useHasSession();
   return useQuery({
     queryKey: ["notifications"],
     queryFn: () => fn(),
-    enabled: clientOnly,
+    enabled: clientOnly && hasSession,
     retry: false,
     refetchInterval: 60_000,
   });
