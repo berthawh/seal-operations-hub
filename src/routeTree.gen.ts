@@ -10,6 +10,7 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as AuthRouteImport } from './routes/auth'
 import { Route as CertificatesIndexRouteImport } from './routes/certificates.index'
 import { Route as CertificatesCertificateIdRouteImport } from './routes/certificates.$certificateId'
 import { Route as CertificatesNewRouteImport } from './routes/certificates.new'
@@ -34,6 +35,11 @@ import { Route as SettingsStudioCoursesCourseIdRouteImport } from './routes/sett
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AuthRoute = AuthRouteImport.update({
+  id: '/auth',
+  path: '/auth',
   getParentRoute: () => rootRouteImport,
 } as any)
 const CertificatesIndexRoute = CertificatesIndexRouteImport.update({
@@ -145,6 +151,7 @@ const SettingsStudioCoursesCourseIdRoute =
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/auth': typeof AuthRoute
   '/certificates/$certificateId': typeof CertificatesCertificateIdRoute
   '/certificates/new': typeof CertificatesNewRoute
   '/courses/$courseId': typeof CoursesCourseIdRoute
@@ -168,6 +175,7 @@ export interface FileRoutesByFullPath {
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/auth': typeof AuthRoute
   '/certificates/$certificateId': typeof CertificatesCertificateIdRoute
   '/certificates/new': typeof CertificatesNewRoute
   '/courses/$courseId': typeof CoursesCourseIdRoute
@@ -192,6 +200,7 @@ export interface FileRoutesByTo {
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/auth': typeof AuthRoute
   '/certificates/$certificateId': typeof CertificatesCertificateIdRoute
   '/certificates/new': typeof CertificatesNewRoute
   '/courses/$courseId': typeof CoursesCourseIdRoute
@@ -217,6 +226,7 @@ export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
     | '/'
+    | '/auth'
     | '/certificates/$certificateId'
     | '/certificates/new'
     | '/courses/$courseId'
@@ -240,6 +250,7 @@ export interface FileRouteTypes {
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
+    | '/auth'
     | '/certificates/$certificateId'
     | '/certificates/new'
     | '/courses/$courseId'
@@ -263,6 +274,7 @@ export interface FileRouteTypes {
   id:
     | '__root__'
     | '/'
+    | '/auth'
     | '/certificates/$certificateId'
     | '/certificates/new'
     | '/courses/$courseId'
@@ -287,6 +299,7 @@ export interface FileRouteTypes {
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  AuthRoute: typeof AuthRoute
   CertificatesCertificateIdRoute: typeof CertificatesCertificateIdRoute
   CertificatesNewRoute: typeof CertificatesNewRoute
   CoursesCourseIdRoute: typeof CoursesCourseIdRoute
@@ -316,6 +329,13 @@ declare module '@tanstack/react-router' {
       path: '/'
       fullPath: '/'
       preLoaderRoute: typeof IndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/auth': {
+      id: '/auth'
+      path: '/auth'
+      fullPath: '/auth'
+      preLoaderRoute: typeof AuthRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/certificates/': {
@@ -463,6 +483,7 @@ declare module '@tanstack/react-router' {
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  AuthRoute: AuthRoute,
   CertificatesCertificateIdRoute: CertificatesCertificateIdRoute,
   CertificatesNewRoute: CertificatesNewRoute,
   CoursesCourseIdRoute: CoursesCourseIdRoute,
