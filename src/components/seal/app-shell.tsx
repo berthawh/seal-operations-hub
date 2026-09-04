@@ -295,7 +295,14 @@ function GlobalSearch() {
         <CommandList>
           <CommandEmpty>No results found.</CommandEmpty>
           <CommandGroup heading="Go to">
-            {nav.map((n) => (
+            {navGroups.flatMap((g) => g.items).map((n) => (
+              <CommandItem key={n.to} onSelect={() => setOpen(false)} asChild>
+                <Link to={n.to}>
+                  <n.icon className="size-4" /> {n.label}
+                </Link>
+              </CommandItem>
+            ))}
+            {secondary.map((n) => (
               <CommandItem key={n.to} onSelect={() => setOpen(false)} asChild>
                 <Link to={n.to}>
                   <n.icon className="size-4" /> {n.label}
