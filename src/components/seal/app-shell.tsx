@@ -1,5 +1,7 @@
 import { useState } from "react";
-import { Link, useRouterState } from "@tanstack/react-router";
+import { Link, useNavigate, useRouterState } from "@tanstack/react-router";
+import { useMutation } from "@tanstack/react-query";
+import { useServerFn } from "@tanstack/react-start";
 import {
   Bell,
   Building2,
@@ -38,6 +40,16 @@ import {
 } from "@/components/ui/command";
 import { StatusChip } from "./status-chip";
 import { Avatar } from "./primitives";
+import { supabase } from "@/integrations/supabase/client";
+import {
+  initialsFrom,
+  useMyAccess,
+  useNotifications,
+  useRefreshGlobal,
+  useWorkspace,
+} from "@/hooks/use-seal-session";
+import { markNotificationsRead } from "@/lib/notifications.functions";
+import { ROLE_LABELS } from "@/lib/team.functions";
 
 const nav = [
   { label: "Dashboard", to: "/", icon: LayoutDashboard },
@@ -53,26 +65,6 @@ const secondary = [
   { label: "Settings", to: "/settings", icon: Settings },
 ];
 
-const notifications = [
-  {
-    title: "Certificate awaiting approval",
-    detail: "SEAL-2026-0421 · Sofia Marchetti",
-    tone: "warning" as const,
-    time: "12m",
-  },
-  {
-    title: "Tracking item overdue",
-    detail: "Attendance confirmation · SES-2465",
-    tone: "danger" as const,
-    time: "6d",
-  },
-  {
-    title: "Session completed",
-    detail: "SES-2470 · Harbourline Logistics",
-    tone: "success" as const,
-    time: "1w",
-  },
-];
 
 function NavList({ onNavigate }: { onNavigate?: (() => void) | undefined }) {
   const pathname = useRouterState({ select: (s) => s.location.pathname });
@@ -137,15 +129,22 @@ function NavList({ onNavigate }: { onNavigate?: (() => void) | undefined }) {
 }
 
 function SidebarInner({ onNavigate }: { onNavigate?: (() => void) | undefined }) {
+  const workspace = useWorkspace();
+  const brand = workspace.data?.companyName ?? "Seal";
+  const logo = workspace.data?.logoUrl;
   return (
     <div className="flex h-full flex-col bg-sidebar py-4">
       <Link to="/" onClick={onNavigate} className="mb-5 flex items-center gap-2.5 px-5">
-        <span className="grid size-8 place-items-center rounded-lg bg-gradient-seal text-[13px] font-semibold text-seal-foreground">
-          S
-        </span>
+        {logo ? (
+          <img src={logo} alt={`${brand} logo`} className="size-8 rounded-lg object-contain" />
+        ) : (
+          <span className="grid size-8 place-items-center rounded-lg bg-gradient-seal text-[13px] font-semibold text-seal-foreground">
+            S
+          </span>
+        )}
         <span>
-          <span className="block text-[15px] font-semibold tracking-tight text-sidebar-accent-foreground">
-            Seal
+          <span className="block max-w-[130px] truncate text-[15px] font-semibold tracking-tight text-sidebar-accent-foreground">
+            {brand}
           </span>
           <span className="block text-[10px] tracking-[0.14em] text-sidebar-foreground/50 uppercase">
             Training ops
