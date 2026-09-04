@@ -55,7 +55,7 @@ export const saveTrainer = createServerFn({ method: "POST" })
     },
   )
   .handler(async ({ data, context }) => {
-    const payload: Record<string, unknown> = {
+    const payload: any = {
       full_name: data.fullName.trim(),
       email: data.email?.trim() || null,
       phone: data.phone?.trim() || null,
