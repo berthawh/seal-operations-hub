@@ -38,7 +38,7 @@ import {
   sessionStatusLabel,
   sessions,
 } from "@/lib/seal-data";
-import { getOrganisation } from "@/lib/organisations.functions";
+import { getOrganisation, trainingPosition } from "@/lib/organisations.functions";
 
 export const Route = createFileRoute("/organisations/$orgId")({
   head: () => ({
@@ -186,7 +186,22 @@ function OrganisationDetail() {
             />
           </Panel>
           <Panel className="p-5">
-            <Metric label="Usual courses" value={preferred.length} hint="on their list" />
+            <Metric
+              label="Training position"
+              value={`${trainingPosition(org.preferredCourseIds, bookings)}%`}
+              hint={
+                preferred.length
+                  ? `${preferred.length} usual course${preferred.length === 1 ? "" : "s"} covered`
+                  : "of their requests confirmed"
+              }
+              tone={
+                trainingPosition(org.preferredCourseIds, bookings) >= 80
+                  ? "success"
+                  : trainingPosition(org.preferredCourseIds, bookings) >= 50
+                    ? "warning"
+                    : "danger"
+              }
+            />
           </Panel>
         </div>
 
@@ -216,7 +231,8 @@ function OrganisationDetail() {
                         <p className="truncate text-sm font-semibold">{b.courseName}</p>
                         <p className="text-xs text-muted-foreground">
                           {b.seats} place{b.seats === 1 ? "" : "s"}
-                          {b.preferredDate ? ` · prefers ${b.preferredDate}` : ""} ·{" "}
+                          {b.preferredDate ? ` · ${b.preferredDate}` : ""} · {b.preferredTime}–
+                          {b.endTime} ·{" "}
                           {relativeTime(b.createdAt)}
                         </p>
                       </div>
@@ -471,7 +487,8 @@ function OrganisationDetail() {
                           · {b.courseName}
                         </p>
                         <p className="truncate text-xs text-muted-foreground">
-                          {b.seats} place{b.seats === 1 ? "" : "s"} · {relativeTime(b.createdAt)}
+                          {b.seats} place{b.seats === 1 ? "" : "s"} · {b.preferredTime}–{b.endTime} ·{" "}
+                          {relativeTime(b.createdAt)}
                         </p>
                       </div>
                     </li>

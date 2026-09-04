@@ -23,10 +23,12 @@ export type Database = {
           decided_at: string | null
           decided_by: string | null
           decision_note: string | null
+          end_time: string
           id: string
           notes: string | null
           organisation_id: string
           preferred_date: string | null
+          preferred_time: string
           requested_by: string | null
           seats: number
           status: string
@@ -39,10 +41,12 @@ export type Database = {
           decided_at?: string | null
           decided_by?: string | null
           decision_note?: string | null
+          end_time?: string
           id?: string
           notes?: string | null
           organisation_id: string
           preferred_date?: string | null
+          preferred_time?: string
           requested_by?: string | null
           seats?: number
           status?: string
@@ -55,10 +59,12 @@ export type Database = {
           decided_at?: string | null
           decided_by?: string | null
           decision_note?: string | null
+          end_time?: string
           id?: string
           notes?: string | null
           organisation_id?: string
           preferred_date?: string | null
+          preferred_time?: string
           requested_by?: string | null
           seats?: number
           status?: string

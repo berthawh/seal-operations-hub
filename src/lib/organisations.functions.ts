@@ -60,6 +60,8 @@ export type BookingRequest = {
   courseId: string;
   courseName: string;
   preferredDate: string | null;
+  preferredTime: string;
+  endTime: string;
   seats: number;
   attendees: string | null;
   notes: string | null;
@@ -336,7 +338,11 @@ export const getMyPortal = createServerFn({ method: "GET" })
       .select("*")
       .eq("id", membership.organisation_id)
       .maybeSingle();
-    return { org: org ? mapOrg(org) : null, portalRole: membership.portal_role };
+    const { count } = await context.supabase
+      .from("organisation_members")
+      .select("id", { count: "exact", head: true })
+      .eq("organisation_id", membership.organisation_id);
+    return { org: org ? mapOrg(org, count ?? 0) : null, portalRole: membership.portal_role };
   });
 
 const mapBooking = (r: Row, orgName: string): BookingRequest => ({
@@ -346,6 +352,8 @@ const mapBooking = (r: Row, orgName: string): BookingRequest => ({
   courseId: r.course_id,
   courseName: r.course_name,
   preferredDate: r.preferred_date,
+  preferredTime: r.preferred_time ?? "09:00",
+  endTime: r.end_time ?? "17:00",
   seats: r.seats,
   attendees: r.attendees,
   notes: r.notes,
@@ -377,12 +385,16 @@ export const createBookingRequest = createServerFn({ method: "POST" })
       courseId: string;
       courseName: string;
       preferredDate?: string;
+      preferredTime?: string;
+      endTime?: string;
       seats: number;
       attendees?: string;
       notes?: string;
     }) => {
       if (!input.courseId) throw new Error("Choose a course.");
+      if (!input.preferredDate) throw new Error("Choose a date.");
       if (input.seats < 1) throw new Error("Request at least one place.");
+      if (input.seats > 20) throw new Error("Classroom sessions take up to 20 people.");
       return input;
     },
   )
@@ -392,6 +404,8 @@ export const createBookingRequest = createServerFn({ method: "POST" })
       course_id: data.courseId,
       course_name: data.courseName,
       preferred_date: data.preferredDate || null,
+      preferred_time: data.preferredTime || "09:00",
+      end_time: data.endTime || "17:00",
       seats: data.seats,
       attendees: data.attendees ?? null,
       notes: data.notes ?? null,
@@ -418,3 +432,21 @@ export const decideBookingRequest = createServerFn({ method: "POST" })
     if (error) throw new Error(error.message);
     return { ok: true };
   });
+
+/**
+ * Training position for an organisation: the share of the courses they usually
+ * take that already have a confirmed booking. No usual courses set yet means
+ * we fall back to the share of their requests we have confirmed.
+ */
+export function trainingPosition(
+  preferredCourseIds: string[],
+  bookings: { courseId: string; status: string }[],
+) {
+  const confirmed = bookings.filter((b) => b.status === "confirmed");
+  if (preferredCourseIds.length) {
+    const covered = preferredCourseIds.filter((id) => confirmed.some((b) => b.courseId === id));
+    return Math.round((covered.length / preferredCourseIds.length) * 100);
+  }
+  if (!bookings.length) return 0;
+  return Math.round((confirmed.length / bookings.length) * 100);
+}

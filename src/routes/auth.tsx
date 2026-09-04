@@ -7,6 +7,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { supabase } from "@/integrations/supabase/client";
+import { getMyAccess } from "@/lib/team.functions";
 
 export const Route = createFileRoute("/auth")({
   validateSearch: (search: Record<string, unknown>): { redirect?: string } =>
@@ -35,13 +36,28 @@ function AuthPage() {
   const [password, setPassword] = useState("");
   const [busy, setBusy] = useState(false);
 
-  const destination = search.redirect?.startsWith("/") ? search.redirect : "/settings/team";
+  const requested = search.redirect?.startsWith("/") ? search.redirect : null;
+
+  /** Partner organisations land in their own portal; the internal team lands on the dashboard. */
+  const landing = async () => {
+    if (requested) return requested;
+    try {
+      const access = await getMyAccess();
+      const partnerOnly = access.roles.includes("partner") && !access.roles.some((r) => r !== "partner");
+      return partnerOnly ? "/portal" : "/";
+    } catch {
+      return "/";
+    }
+  };
+
+  const go = async () => navigate({ to: await landing(), replace: true });
 
   useEffect(() => {
     supabase.auth.getSession().then(({ data }) => {
-      if (data.session) navigate({ to: destination, replace: true });
+      if (data.session) void go();
     });
-  }, [destination, navigate]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   async function onSubmit(e: React.FormEvent) {
     e.preventDefault();
@@ -49,7 +65,7 @@ function AuthPage() {
     try {
       const { error } = await supabase.auth.signInWithPassword({ email, password });
       if (error) throw error;
-      navigate({ to: destination, replace: true });
+      await go();
     } catch (error) {
       toast.error(error instanceof Error ? error.message : "Those sign-in details were not accepted.");
     } finally {

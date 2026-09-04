@@ -11,7 +11,6 @@
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as AuthRouteImport } from './routes/auth'
-import { Route as PortalRouteImport } from './routes/portal'
 import { Route as BookingsIndexRouteImport } from './routes/bookings.index'
 import { Route as CertificatesIndexRouteImport } from './routes/certificates.index'
 import { Route as CertificatesCertificateIdRouteImport } from './routes/certificates.$certificateId'
@@ -22,6 +21,8 @@ import { Route as OrganisationsIndexRouteImport } from './routes/organisations.i
 import { Route as OrganisationsOrgIdRouteImport } from './routes/organisations.$orgId'
 import { Route as PeopleIndexRouteImport } from './routes/people.index'
 import { Route as PeoplePersonIdRouteImport } from './routes/people.$personId'
+import { Route as PortalIndexRouteImport } from './routes/portal.index'
+import { Route as PortalBookRouteImport } from './routes/portal.book'
 import { Route as SessionsIndexRouteImport } from './routes/sessions.index'
 import { Route as SessionsSessionIdRouteImport } from './routes/sessions.$sessionId'
 import { Route as SessionsNewRouteImport } from './routes/sessions.new'
@@ -45,11 +46,6 @@ const IndexRoute = IndexRouteImport.update({
 const AuthRoute = AuthRouteImport.update({
   id: '/auth',
   path: '/auth',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const PortalRoute = PortalRouteImport.update({
-  id: '/portal',
-  path: '/portal',
   getParentRoute: () => rootRouteImport,
 } as any)
 const BookingsIndexRoute = BookingsIndexRouteImport.update({
@@ -101,6 +97,16 @@ const PeopleIndexRoute = PeopleIndexRouteImport.update({
 const PeoplePersonIdRoute = PeoplePersonIdRouteImport.update({
   id: '/people/$personId',
   path: '/people/$personId',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const PortalIndexRoute = PortalIndexRouteImport.update({
+  id: '/portal/',
+  path: '/portal/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const PortalBookRoute = PortalBookRouteImport.update({
+  id: '/portal/book',
+  path: '/portal/book',
   getParentRoute: () => rootRouteImport,
 } as any)
 const SessionsIndexRoute = SessionsIndexRouteImport.update({
@@ -182,12 +188,12 @@ const SettingsStudioCoursesCourseIdRoute =
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/auth': typeof AuthRoute
-  '/portal': typeof PortalRoute
   '/certificates/$certificateId': typeof CertificatesCertificateIdRoute
   '/certificates/new': typeof CertificatesNewRoute
   '/courses/$courseId': typeof CoursesCourseIdRoute
   '/organisations/$orgId': typeof OrganisationsOrgIdRoute
   '/people/$personId': typeof PeoplePersonIdRoute
+  '/portal/book': typeof PortalBookRoute
   '/sessions/$sessionId': typeof SessionsSessionIdRoute
   '/sessions/new': typeof SessionsNewRoute
   '/settings/company': typeof SettingsCompanyRoute
@@ -198,6 +204,7 @@ export interface FileRoutesByFullPath {
   '/courses/': typeof CoursesIndexRoute
   '/organisations/': typeof OrganisationsIndexRoute
   '/people/': typeof PeopleIndexRoute
+  '/portal/': typeof PortalIndexRoute
   '/sessions/': typeof SessionsIndexRoute
   '/settings/': typeof SettingsIndexRoute
   '/tracking/': typeof TrackingIndexRoute
@@ -211,12 +218,12 @@ export interface FileRoutesByFullPath {
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/auth': typeof AuthRoute
-  '/portal': typeof PortalRoute
   '/certificates/$certificateId': typeof CertificatesCertificateIdRoute
   '/certificates/new': typeof CertificatesNewRoute
   '/courses/$courseId': typeof CoursesCourseIdRoute
   '/organisations/$orgId': typeof OrganisationsOrgIdRoute
   '/people/$personId': typeof PeoplePersonIdRoute
+  '/portal/book': typeof PortalBookRoute
   '/sessions/$sessionId': typeof SessionsSessionIdRoute
   '/sessions/new': typeof SessionsNewRoute
   '/settings/company': typeof SettingsCompanyRoute
@@ -227,6 +234,7 @@ export interface FileRoutesByTo {
   '/courses': typeof CoursesIndexRoute
   '/organisations': typeof OrganisationsIndexRoute
   '/people': typeof PeopleIndexRoute
+  '/portal': typeof PortalIndexRoute
   '/sessions': typeof SessionsIndexRoute
   '/settings': typeof SettingsIndexRoute
   '/tracking': typeof TrackingIndexRoute
@@ -241,12 +249,12 @@ export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/auth': typeof AuthRoute
-  '/portal': typeof PortalRoute
   '/certificates/$certificateId': typeof CertificatesCertificateIdRoute
   '/certificates/new': typeof CertificatesNewRoute
   '/courses/$courseId': typeof CoursesCourseIdRoute
   '/organisations/$orgId': typeof OrganisationsOrgIdRoute
   '/people/$personId': typeof PeoplePersonIdRoute
+  '/portal/book': typeof PortalBookRoute
   '/sessions/$sessionId': typeof SessionsSessionIdRoute
   '/sessions/new': typeof SessionsNewRoute
   '/settings/company': typeof SettingsCompanyRoute
@@ -257,6 +265,7 @@ export interface FileRoutesById {
   '/courses/': typeof CoursesIndexRoute
   '/organisations/': typeof OrganisationsIndexRoute
   '/people/': typeof PeopleIndexRoute
+  '/portal/': typeof PortalIndexRoute
   '/sessions/': typeof SessionsIndexRoute
   '/settings/': typeof SettingsIndexRoute
   '/tracking/': typeof TrackingIndexRoute
@@ -272,12 +281,12 @@ export interface FileRouteTypes {
   fullPaths:
     | '/'
     | '/auth'
-    | '/portal'
     | '/certificates/$certificateId'
     | '/certificates/new'
     | '/courses/$courseId'
     | '/organisations/$orgId'
     | '/people/$personId'
+    | '/portal/book'
     | '/sessions/$sessionId'
     | '/sessions/new'
     | '/settings/company'
@@ -288,6 +297,7 @@ export interface FileRouteTypes {
     | '/courses/'
     | '/organisations/'
     | '/people/'
+    | '/portal/'
     | '/sessions/'
     | '/settings/'
     | '/tracking/'
@@ -301,12 +311,12 @@ export interface FileRouteTypes {
   to:
     | '/'
     | '/auth'
-    | '/portal'
     | '/certificates/$certificateId'
     | '/certificates/new'
     | '/courses/$courseId'
     | '/organisations/$orgId'
     | '/people/$personId'
+    | '/portal/book'
     | '/sessions/$sessionId'
     | '/sessions/new'
     | '/settings/company'
@@ -317,6 +327,7 @@ export interface FileRouteTypes {
     | '/courses'
     | '/organisations'
     | '/people'
+    | '/portal'
     | '/sessions'
     | '/settings'
     | '/tracking'
@@ -330,12 +341,12 @@ export interface FileRouteTypes {
     | '__root__'
     | '/'
     | '/auth'
-    | '/portal'
     | '/certificates/$certificateId'
     | '/certificates/new'
     | '/courses/$courseId'
     | '/organisations/$orgId'
     | '/people/$personId'
+    | '/portal/book'
     | '/sessions/$sessionId'
     | '/sessions/new'
     | '/settings/company'
@@ -346,6 +357,7 @@ export interface FileRouteTypes {
     | '/courses/'
     | '/organisations/'
     | '/people/'
+    | '/portal/'
     | '/sessions/'
     | '/settings/'
     | '/tracking/'
@@ -360,12 +372,12 @@ export interface FileRouteTypes {
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   AuthRoute: typeof AuthRoute
-  PortalRoute: typeof PortalRoute
   CertificatesCertificateIdRoute: typeof CertificatesCertificateIdRoute
   CertificatesNewRoute: typeof CertificatesNewRoute
   CoursesCourseIdRoute: typeof CoursesCourseIdRoute
   OrganisationsOrgIdRoute: typeof OrganisationsOrgIdRoute
   PeoplePersonIdRoute: typeof PeoplePersonIdRoute
+  PortalBookRoute: typeof PortalBookRoute
   SessionsSessionIdRoute: typeof SessionsSessionIdRoute
   SessionsNewRoute: typeof SessionsNewRoute
   SettingsCompanyRoute: typeof SettingsCompanyRoute
@@ -376,6 +388,7 @@ export interface RootRouteChildren {
   CoursesIndexRoute: typeof CoursesIndexRoute
   OrganisationsIndexRoute: typeof OrganisationsIndexRoute
   PeopleIndexRoute: typeof PeopleIndexRoute
+  PortalIndexRoute: typeof PortalIndexRoute
   SessionsIndexRoute: typeof SessionsIndexRoute
   SettingsIndexRoute: typeof SettingsIndexRoute
   TrackingIndexRoute: typeof TrackingIndexRoute
@@ -401,13 +414,6 @@ declare module '@tanstack/react-router' {
       path: '/auth'
       fullPath: '/auth'
       preLoaderRoute: typeof AuthRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/portal': {
-      id: '/portal'
-      path: '/portal'
-      fullPath: '/portal'
-      preLoaderRoute: typeof PortalRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/bookings/': {
@@ -478,6 +484,20 @@ declare module '@tanstack/react-router' {
       path: '/people/$personId'
       fullPath: '/people/$personId'
       preLoaderRoute: typeof PeoplePersonIdRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/portal/': {
+      id: '/portal/'
+      path: '/portal'
+      fullPath: '/portal/'
+      preLoaderRoute: typeof PortalIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/portal/book': {
+      id: '/portal/book'
+      path: '/portal/book'
+      fullPath: '/portal/book'
+      preLoaderRoute: typeof PortalBookRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/sessions/': {
@@ -584,12 +604,12 @@ declare module '@tanstack/react-router' {
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AuthRoute: AuthRoute,
-  PortalRoute: PortalRoute,
   CertificatesCertificateIdRoute: CertificatesCertificateIdRoute,
   CertificatesNewRoute: CertificatesNewRoute,
   CoursesCourseIdRoute: CoursesCourseIdRoute,
   OrganisationsOrgIdRoute: OrganisationsOrgIdRoute,
   PeoplePersonIdRoute: PeoplePersonIdRoute,
+  PortalBookRoute: PortalBookRoute,
   SessionsSessionIdRoute: SessionsSessionIdRoute,
   SessionsNewRoute: SessionsNewRoute,
   SettingsCompanyRoute: SettingsCompanyRoute,
@@ -600,6 +620,7 @@ const rootRouteChildren: RootRouteChildren = {
   CoursesIndexRoute: CoursesIndexRoute,
   OrganisationsIndexRoute: OrganisationsIndexRoute,
   PeopleIndexRoute: PeopleIndexRoute,
+  PortalIndexRoute: PortalIndexRoute,
   SessionsIndexRoute: SessionsIndexRoute,
   SettingsIndexRoute: SettingsIndexRoute,
   TrackingIndexRoute: TrackingIndexRoute,

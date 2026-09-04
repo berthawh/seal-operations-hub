@@ -44,6 +44,8 @@ function BookingsPage() {
     onSuccess: (_r, input) => {
       toast.success(input.status === "confirmed" ? "Booking confirmed" : "Request declined");
       void queryClient.invalidateQueries({ queryKey: ["booking-requests"] });
+      void queryClient.invalidateQueries({ queryKey: ["organisation"] });
+      void queryClient.invalidateQueries({ queryKey: ["my-portal"] });
     },
     onError: (error: Error) => toast.error(error.message),
   });
@@ -96,7 +98,8 @@ function BookingsPage() {
                         <p className="truncate text-sm font-semibold">{r.courseName}</p>
                         <p className="text-xs text-muted-foreground">
                           {r.organisationName} · {r.seats} place{r.seats === 1 ? "" : "s"}
-                          {r.preferredDate ? ` · prefers ${r.preferredDate}` : ""}
+                          {r.preferredDate ? ` · ${r.preferredDate}` : " · no date given"} ·{" "}
+                          {r.preferredTime}–{r.endTime}
                         </p>
                         {r.attendees ? (
                           <p className="mt-1 text-xs text-muted-foreground">Staff: {r.attendees}</p>
@@ -139,6 +142,8 @@ function BookingsPage() {
                         <p className="truncate text-sm font-medium">{r.courseName}</p>
                         <p className="text-xs text-muted-foreground">
                           {r.organisationName} · {r.seats} place{r.seats === 1 ? "" : "s"}
+                          {r.preferredDate ? ` · ${r.preferredDate}` : ""} · {r.preferredTime}–
+                          {r.endTime}
                         </p>
                       </div>
                       <StatusChip tone={toneFor(r.status)} size="sm">

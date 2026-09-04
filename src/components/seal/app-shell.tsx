@@ -67,9 +67,24 @@ const secondary = [
   { label: "Settings", to: "/settings", icon: Settings },
 ];
 
+/** Partner organisations only ever see their own portal. */
+const partnerNav = [
+  { label: "Portal", to: "/portal", icon: LayoutDashboard },
+  { label: "Book a session", to: "/portal/book", icon: CalendarDays },
+  { label: "Courses", to: "/courses", icon: GraduationCap },
+];
+
+/** True when the signed-in person belongs to a partner organisation only. */
+export function useIsPartner() {
+  const access = useMyAccess();
+  const roles = access.data?.roles ?? [];
+  return roles.length > 0 && roles.every((r) => r === "partner");
+}
+
 
 function NavList({ onNavigate }: { onNavigate?: (() => void) | undefined }) {
   const pathname = useRouterState({ select: (s) => s.location.pathname });
+  const isPartner = useIsPartner();
   const item = (
     entry: { label: string; to: string; icon: React.ComponentType<{ className?: string }>; badge?: string },
     exact = false,
@@ -116,22 +131,25 @@ function NavList({ onNavigate }: { onNavigate?: (() => void) | undefined }) {
     <nav className="flex flex-1 flex-col gap-6 px-3">
       <div className="space-y-1">
         <p className="px-3 pb-1 text-[10px] font-bold tracking-[0.18em] text-sidebar-foreground/40 uppercase">
-          Operations
+          {isPartner ? "Your organisation" : "Operations"}
         </p>
-        {nav.map((entry) => item(entry, entry.to === "/"))}
+        {(isPartner ? partnerNav : nav).map((entry) => item(entry, entry.to === "/"))}
       </div>
-      <div className="space-y-1">
-        <p className="px-3 pb-1 text-[10px] font-bold tracking-[0.18em] text-sidebar-foreground/40 uppercase">
-          Configure
-        </p>
-        {secondary.map((entry) => item(entry))}
-      </div>
+      {isPartner ? null : (
+        <div className="space-y-1">
+          <p className="px-3 pb-1 text-[10px] font-bold tracking-[0.18em] text-sidebar-foreground/40 uppercase">
+            Configure
+          </p>
+          {secondary.map((entry) => item(entry))}
+        </div>
+      )}
     </nav>
   );
 }
 
 function SidebarInner({ onNavigate }: { onNavigate?: (() => void) | undefined }) {
   const workspace = useWorkspace();
+  const isPartner = useIsPartner();
   const brand = workspace.data?.companyName ?? "Seal";
   const logo = workspace.data?.logoUrl;
   return (
@@ -154,6 +172,7 @@ function SidebarInner({ onNavigate }: { onNavigate?: (() => void) | undefined })
         </span>
       </Link>
       <NavList onNavigate={onNavigate} />
+      {isPartner ? null : (
       <div className="mt-6 px-3">
         <div className="rounded-xl border border-sidebar-border/70 bg-sidebar-accent/60 px-3 py-3">
           <div className="flex items-center gap-2 text-sidebar-accent-foreground">
@@ -171,11 +190,22 @@ function SidebarInner({ onNavigate }: { onNavigate?: (() => void) | undefined })
           </p>
         </div>
       </div>
+      )}
     </div>
   );
 }
 
 export function CreateMenu({ className }: { className?: string }) {
+  const isPartner = useIsPartner();
+  if (isPartner) {
+    return (
+      <Button variant="seal" className={className} asChild>
+        <Link to="/portal/book">
+          <Plus className="size-4" /> Book a session
+        </Link>
+      </Button>
+    );
+  }
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
