@@ -367,7 +367,20 @@ function TeamPage() {
           </div>
         )}
 
-        <TrainersPanel canManage={isAdmin === true} />
+        <Panel className="flex flex-wrap items-center gap-4 p-5">
+          <span className="grid size-9 place-items-center rounded-xl bg-neutral-soft text-muted-foreground">
+            <GraduationCap className="size-4" />
+          </span>
+          <div className="min-w-0 flex-1">
+            <p className="text-sm font-semibold">Trainers</p>
+            <p className="text-xs text-muted-foreground">
+              The people who deliver your sessions — kept separately from sign-in accounts.
+            </p>
+          </div>
+          <Button variant="outline" size="sm" asChild>
+            <Link to="/settings/trainers">Manage trainers</Link>
+          </Button>
+        </Panel>
       </div>
     </AppShell>
   );

@@ -30,6 +30,7 @@ import { Route as SettingsIndexRouteImport } from './routes/settings.index'
 import { Route as SettingsCompanyRouteImport } from './routes/settings.company'
 import { Route as SettingsNotificationsRouteImport } from './routes/settings.notifications'
 import { Route as SettingsTeamRouteImport } from './routes/settings.team'
+import { Route as SettingsTrainersRouteImport } from './routes/settings.trainers'
 import { Route as TrackingIndexRouteImport } from './routes/tracking.index'
 import { Route as SettingsAutomationsIndexRouteImport } from './routes/settings.automations.index'
 import { Route as SettingsAutomationsAutomationIdRouteImport } from './routes/settings.automations.$automationId'
@@ -144,6 +145,11 @@ const SettingsTeamRoute = SettingsTeamRouteImport.update({
   path: '/settings/team',
   getParentRoute: () => rootRouteImport,
 } as any)
+const SettingsTrainersRoute = SettingsTrainersRouteImport.update({
+  id: '/settings/trainers',
+  path: '/settings/trainers',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const TrackingIndexRoute = TrackingIndexRouteImport.update({
   id: '/tracking/',
   path: '/tracking/',
@@ -199,6 +205,7 @@ export interface FileRoutesByFullPath {
   '/settings/company': typeof SettingsCompanyRoute
   '/settings/notifications': typeof SettingsNotificationsRoute
   '/settings/team': typeof SettingsTeamRoute
+  '/settings/trainers': typeof SettingsTrainersRoute
   '/bookings/': typeof BookingsIndexRoute
   '/certificates/': typeof CertificatesIndexRoute
   '/courses/': typeof CoursesIndexRoute
@@ -229,6 +236,7 @@ export interface FileRoutesByTo {
   '/settings/company': typeof SettingsCompanyRoute
   '/settings/notifications': typeof SettingsNotificationsRoute
   '/settings/team': typeof SettingsTeamRoute
+  '/settings/trainers': typeof SettingsTrainersRoute
   '/bookings': typeof BookingsIndexRoute
   '/certificates': typeof CertificatesIndexRoute
   '/courses': typeof CoursesIndexRoute
@@ -260,6 +268,7 @@ export interface FileRoutesById {
   '/settings/company': typeof SettingsCompanyRoute
   '/settings/notifications': typeof SettingsNotificationsRoute
   '/settings/team': typeof SettingsTeamRoute
+  '/settings/trainers': typeof SettingsTrainersRoute
   '/bookings/': typeof BookingsIndexRoute
   '/certificates/': typeof CertificatesIndexRoute
   '/courses/': typeof CoursesIndexRoute
@@ -292,6 +301,7 @@ export interface FileRouteTypes {
     | '/settings/company'
     | '/settings/notifications'
     | '/settings/team'
+    | '/settings/trainers'
     | '/bookings/'
     | '/certificates/'
     | '/courses/'
@@ -322,6 +332,7 @@ export interface FileRouteTypes {
     | '/settings/company'
     | '/settings/notifications'
     | '/settings/team'
+    | '/settings/trainers'
     | '/bookings'
     | '/certificates'
     | '/courses'
@@ -352,6 +363,7 @@ export interface FileRouteTypes {
     | '/settings/company'
     | '/settings/notifications'
     | '/settings/team'
+    | '/settings/trainers'
     | '/bookings/'
     | '/certificates/'
     | '/courses/'
@@ -383,6 +395,7 @@ export interface RootRouteChildren {
   SettingsCompanyRoute: typeof SettingsCompanyRoute
   SettingsNotificationsRoute: typeof SettingsNotificationsRoute
   SettingsTeamRoute: typeof SettingsTeamRoute
+  SettingsTrainersRoute: typeof SettingsTrainersRoute
   BookingsIndexRoute: typeof BookingsIndexRoute
   CertificatesIndexRoute: typeof CertificatesIndexRoute
   CoursesIndexRoute: typeof CoursesIndexRoute
@@ -549,6 +562,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof SettingsTeamRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/settings/trainers': {
+      id: '/settings/trainers'
+      path: '/settings/trainers'
+      fullPath: '/settings/trainers'
+      preLoaderRoute: typeof SettingsTrainersRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/tracking/': {
       id: '/tracking/'
       path: '/tracking'
@@ -615,6 +635,7 @@ const rootRouteChildren: RootRouteChildren = {
   SettingsCompanyRoute: SettingsCompanyRoute,
   SettingsNotificationsRoute: SettingsNotificationsRoute,
   SettingsTeamRoute: SettingsTeamRoute,
+  SettingsTrainersRoute: SettingsTrainersRoute,
   BookingsIndexRoute: BookingsIndexRoute,
   CertificatesIndexRoute: CertificatesIndexRoute,
   CoursesIndexRoute: CoursesIndexRoute,
