@@ -1,5 +1,5 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
-import { Bell, Building2, FileBadge, LockKeyhole, Users, Workflow } from "lucide-react";
+import { Bell, Building2, FileBadge, GraduationCap, LockKeyhole, Users, Workflow } from "lucide-react";
 import { AppShell } from "@/components/seal/app-shell";
 import { Field, PageHeader, Panel, PanelHeader } from "@/components/seal/primitives";
 import { StatusChip } from "@/components/seal/status-chip";
@@ -61,6 +61,12 @@ function SettingsPage() {
               className="flex w-full items-center gap-2.5 rounded-lg px-3 py-2 text-muted-foreground transition-colors hover:bg-muted/60"
             >
               <Users className="size-4" /> Team & access
+            </Link>
+            <Link
+              to="/settings/trainers"
+              className="flex w-full items-center gap-2.5 rounded-lg px-3 py-2 text-muted-foreground transition-colors hover:bg-muted/60"
+            >
+              <GraduationCap className="size-4" /> Trainers
             </Link>
             <Link
               to="/settings/automations"

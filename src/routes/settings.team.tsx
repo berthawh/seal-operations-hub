@@ -2,11 +2,10 @@ import { useEffect, useState } from "react";
 import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { useServerFn } from "@tanstack/react-start";
-import { LockKeyhole, ShieldCheck, UserPlus, Users } from "lucide-react";
+import { GraduationCap, LockKeyhole, ShieldCheck, UserPlus, Users } from "lucide-react";
 import { toast } from "sonner";
 import { AppShell } from "@/components/seal/app-shell";
 import { PageHeader, Panel, PanelHeader } from "@/components/seal/primitives";
-import { TrainersPanel } from "@/components/seal/trainers-panel";
 import { StatusChip } from "@/components/seal/status-chip";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -367,7 +366,20 @@ function TeamPage() {
           </div>
         )}
 
-        <TrainersPanel canManage={isAdmin === true} />
+        <Panel className="flex flex-wrap items-center gap-4 p-5">
+          <span className="grid size-9 place-items-center rounded-xl bg-neutral-soft text-muted-foreground">
+            <GraduationCap className="size-4" />
+          </span>
+          <div className="min-w-0 flex-1">
+            <p className="text-sm font-semibold">Trainers</p>
+            <p className="text-xs text-muted-foreground">
+              The people who deliver your sessions — kept separately from sign-in accounts.
+            </p>
+          </div>
+          <Button variant="outline" size="sm" asChild>
+            <Link to="/settings/trainers">Manage trainers</Link>
+          </Button>
+        </Panel>
       </div>
     </AppShell>
   );
