@@ -2,7 +2,7 @@ import { useState } from "react";
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { useServerFn } from "@tanstack/react-start";
-import { Building2, Inbox, KeyRound, MapPin, Plus } from "lucide-react";
+import { Building2, Globe, Inbox, KeyRound, MapPin, Phone, Plus, Wand2 } from "lucide-react";
 import { toast } from "sonner";
 import { AppShell } from "@/components/seal/app-shell";
 import { Avatar, EmptyState, ListSkeleton, PageHeader, Panel } from "@/components/seal/primitives";
@@ -20,6 +20,8 @@ import {
   DialogTitle,
 } from "@/components/ui/dialog";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { Checkbox } from "@/components/ui/checkbox";
+import { courses } from "@/lib/seal-data";
 import {
   ORG_RELATIONSHIPS,
   ORG_STATUSES,
@@ -46,6 +48,12 @@ export const Route = createFileRoute("/organisations/")({
 
 const NONE = "__none";
 
+/** Best-effort logo pulled from a company's own website. */
+export function faviconFor(website: string) {
+  const host = website.trim().replace(/^https?:\/\//, "").replace(/\/.*$/, "");
+  return host ? `https://www.google.com/s2/favicons?domain=${host}&sz=128` : "";
+}
+
 function OrganisationsPage() {
   const queryClient = useQueryClient();
   const listFn = useServerFn(listOrganisations);
@@ -59,6 +67,12 @@ function OrganisationsPage() {
     status: NONE,
     location: "",
     contactEmail: "",
+    contactName: "",
+    contactMobile: "",
+    contactLandline: "",
+    website: "",
+    logoUrl: "",
+    preferredCourseIds: [] as string[],
     notes: "",
   });
 
@@ -80,6 +94,12 @@ function OrganisationsPage() {
           status: form.status === NONE ? null : form.status,
           location: form.location,
           contactEmail: form.contactEmail,
+          contactName: form.contactName,
+          contactMobile: form.contactMobile,
+          contactLandline: form.contactLandline,
+          website: form.website,
+          logoUrl: form.logoUrl,
+          preferredCourseIds: form.preferredCourseIds,
           notes: form.notes,
         },
       }),
@@ -94,6 +114,12 @@ function OrganisationsPage() {
         status: NONE,
         location: "",
         contactEmail: "",
+        contactName: "",
+        contactMobile: "",
+        contactLandline: "",
+        website: "",
+        logoUrl: "",
+        preferredCourseIds: [] as string[],
         notes: "",
       });
       void queryClient.invalidateQueries({ queryKey: ["organisations"] });
@@ -149,9 +175,27 @@ function OrganisationsPage() {
                 style={{ animation: `rise 0.45s cubic-bezier(0.22,1,0.36,1) ${i * 50}ms both` }}
               >
                 <div className="flex min-w-0 flex-1 items-start gap-4">
-                  <Avatar initials={o.shortName ?? "OR"} className="size-12 rounded-2xl text-sm" />
+                  {o.logoUrl ? (
+                    <img
+                      src={o.logoUrl}
+                      alt=""
+                      className="size-12 shrink-0 rounded-2xl border border-border bg-surface object-contain p-1.5"
+                    />
+                  ) : (
+                    <Avatar initials={o.shortName ?? "OR"} className="size-12 rounded-2xl text-sm" />
+                  )}
                   <div className="min-w-0">
                     <p className="truncate text-base font-semibold">{o.name}</p>
+                    {o.website ? (
+                      <p className="flex items-center gap-1.5 text-xs text-muted-foreground">
+                        <Globe className="size-3" /> {o.website}
+                      </p>
+                    ) : null}
+                    {o.contactMobile || o.contactLandline ? (
+                      <p className="flex items-center gap-1.5 text-xs text-muted-foreground">
+                        <Phone className="size-3" /> {o.contactMobile || o.contactLandline}
+                      </p>
+                    ) : null}
                     {o.location ? (
                       <p className="flex items-center gap-1.5 text-xs text-muted-foreground">
                         <MapPin className="size-3" /> {o.location}
@@ -288,6 +332,109 @@ function OrganisationsPage() {
                 />
               </div>
             </div>
+            <div className="grid gap-4 sm:grid-cols-2">
+              <div className="grid gap-2">
+                <Label htmlFor="org-contact">Main person to contact</Label>
+                <Input
+                  id="org-contact"
+                  value={form.contactName}
+                  onChange={(e) => setForm({ ...form, contactName: e.target.value })}
+                  placeholder="Ruby Adeyemi"
+                />
+              </div>
+              <div className="grid gap-2">
+                <Label htmlFor="org-mobile">Mobile</Label>
+                <Input
+                  id="org-mobile"
+                  value={form.contactMobile}
+                  onChange={(e) => setForm({ ...form, contactMobile: e.target.value })}
+                  placeholder="07700 900123"
+                />
+              </div>
+            </div>
+            <div className="grid gap-4 sm:grid-cols-2">
+              <div className="grid gap-2">
+                <Label htmlFor="org-landline">Landline</Label>
+                <Input
+                  id="org-landline"
+                  value={form.contactLandline}
+                  onChange={(e) => setForm({ ...form, contactLandline: e.target.value })}
+                  placeholder="0113 496 0000"
+                />
+              </div>
+              <div className="grid gap-2">
+                <Label htmlFor="org-website">Website</Label>
+                <Input
+                  id="org-website"
+                  value={form.website}
+                  onChange={(e) => setForm({ ...form, website: e.target.value })}
+                  placeholder="rubyscare.co.uk"
+                />
+              </div>
+            </div>
+
+            <div className="grid gap-2">
+              <Label htmlFor="org-logo">Profile picture</Label>
+              <div className="flex items-center gap-3">
+                {form.logoUrl ? (
+                  <img
+                    src={form.logoUrl}
+                    alt=""
+                    className="size-10 shrink-0 rounded-xl border border-border object-contain p-1"
+                  />
+                ) : (
+                  <span className="grid size-10 shrink-0 place-items-center rounded-xl border border-dashed border-border text-muted-foreground">
+                    <Building2 className="size-4" />
+                  </span>
+                )}
+                <Input
+                  id="org-logo"
+                  value={form.logoUrl}
+                  onChange={(e) => setForm({ ...form, logoUrl: e.target.value })}
+                  placeholder="Paste an image link"
+                />
+                <Button
+                  type="button"
+                  variant="outline"
+                  onClick={() => setForm({ ...form, logoUrl: faviconFor(form.website) })}
+                  disabled={!form.website.trim()}
+                >
+                  <Wand2 className="size-4" /> From website
+                </Button>
+              </div>
+            </div>
+
+            <div className="grid gap-2">
+              <Label>Courses they usually take</Label>
+              <p className="text-xs text-muted-foreground">
+                Pick only the ones they normally book, not the whole catalogue.
+              </p>
+              <div className="grid max-h-48 gap-1.5 overflow-y-auto rounded-xl border border-border p-3 sm:grid-cols-2">
+                {courses.map((c) => {
+                  const checked = form.preferredCourseIds.includes(c.id);
+                  return (
+                    <label
+                      key={c.id}
+                      className="flex cursor-pointer items-start gap-2 rounded-lg px-1.5 py-1 text-xs hover:bg-muted/50"
+                    >
+                      <Checkbox
+                        checked={checked}
+                        onCheckedChange={(v) =>
+                          setForm({
+                            ...form,
+                            preferredCourseIds: v
+                              ? [...form.preferredCourseIds, c.id]
+                              : form.preferredCourseIds.filter((id) => id !== c.id),
+                          })
+                        }
+                      />
+                      <span className="leading-snug">{c.name}</span>
+                    </label>
+                  );
+                })}
+              </div>
+            </div>
+
             <div className="grid gap-2">
               <Label htmlFor="org-notes">Notes</Label>
               <Textarea

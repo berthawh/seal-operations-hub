@@ -28,6 +28,12 @@ export type Organisation = {
   location: string | null;
   contactEmail: string | null;
   contactPhone: string | null;
+  contactName: string | null;
+  contactMobile: string | null;
+  contactLandline: string | null;
+  website: string | null;
+  logoUrl: string | null;
+  preferredCourseIds: string[];
   notes: string | null;
   portalEnabled: boolean;
   canInviteMembers: boolean;
@@ -76,6 +82,12 @@ const mapOrg = (r: Row, memberCount = 0): Organisation => ({
   location: r.location,
   contactEmail: r.contact_email,
   contactPhone: r.contact_phone,
+  contactName: r.contact_name ?? null,
+  contactMobile: r.contact_mobile ?? null,
+  contactLandline: r.contact_landline ?? null,
+  website: r.website ?? null,
+  logoUrl: r.logo_url ?? null,
+  preferredCourseIds: r.preferred_course_ids ?? [],
   notes: r.notes,
   portalEnabled: r.portal_enabled,
   canInviteMembers: r.can_invite_members,
@@ -109,13 +121,17 @@ export const listOrganisations = createServerFn({ method: "GET" })
 export const getOrganisation = createServerFn({ method: "GET" })
   .middleware([requireSupabaseAuth])
   .inputValidator((input: { id: string }) => input)
-  .handler(async ({ data, context }): Promise<{ org: Organisation | null; members: OrgMember[] }> => {
+  .handler(
+    async ({
+      data,
+      context,
+    }): Promise<{ org: Organisation | null; members: OrgMember[]; bookings: BookingRequest[] }> => {
     const { data: org } = await context.supabase
       .from("organisations")
       .select("*")
       .eq("id", data.id)
       .maybeSingle();
-    if (!org) return { org: null, members: [] };
+    if (!org) return { org: null, members: [], bookings: [] };
     const { data: memberRows } = await context.supabase
       .from("organisation_members")
       .select("*")
@@ -136,8 +152,15 @@ export const getOrganisation = createServerFn({ method: "GET" })
         createdAt: m.created_at,
       };
     });
-    return { org: mapOrg(org, members.length), members };
-  });
+    const { data: bookingRows } = await context.supabase
+      .from("booking_requests")
+      .select("*")
+      .eq("organisation_id", data.id)
+      .order("created_at", { ascending: false });
+    const bookings = (bookingRows ?? []).map((b: Row) => mapBooking(b, org.name));
+    return { org: mapOrg(org, members.length), members, bookings };
+  },
+  );
 
 /** Create or update an organisation record. Admins only. */
 export const saveOrganisation = createServerFn({ method: "POST" })
@@ -154,6 +177,12 @@ export const saveOrganisation = createServerFn({ method: "POST" })
       location?: string;
       contactEmail?: string;
       contactPhone?: string;
+      contactName?: string;
+      contactMobile?: string;
+      contactLandline?: string;
+      website?: string;
+      logoUrl?: string;
+      preferredCourseIds?: string[];
       notes?: string;
       portalEnabled?: boolean;
       canInviteMembers?: boolean;
@@ -185,6 +214,14 @@ export const saveOrganisation = createServerFn({ method: "POST" })
       location: data.location ?? null,
       contact_email: data.contactEmail ?? null,
       contact_phone: data.contactPhone ?? null,
+      contact_name: data.contactName ?? null,
+      contact_mobile: data.contactMobile ?? null,
+      contact_landline: data.contactLandline ?? null,
+      website: data.website ?? null,
+      logo_url: data.logoUrl ?? null,
+      ...(data.preferredCourseIds === undefined
+        ? {}
+        : { preferred_course_ids: data.preferredCourseIds }),
       notes: data.notes ?? null,
       ...(data.portalEnabled === undefined ? {} : { portal_enabled: data.portalEnabled }),
       ...(data.canInviteMembers === undefined ? {} : { can_invite_members: data.canInviteMembers }),

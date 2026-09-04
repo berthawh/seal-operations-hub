@@ -3,6 +3,8 @@ import { createFileRoute } from "@tanstack/react-router";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { useServerFn } from "@tanstack/react-start";
 import { CalendarPlus, KeyRound, ShieldCheck, Users } from "lucide-react";
+import { Avatar } from "@/components/seal/primitives";
+import { certificateTone } from "@/components/seal/status-chip";
 import { toast } from "sonner";
 import { AppShell } from "@/components/seal/app-shell";
 import { EmptyState, ListSkeleton, Metric, PageHeader, Panel, PanelHeader } from "@/components/seal/primitives";
@@ -12,7 +14,14 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { courses } from "@/lib/seal-data";
+import {
+  certificateStatusLabel,
+  certificates,
+  courseOf,
+  courses,
+  people,
+  personOf,
+} from "@/lib/seal-data";
 import { createBookingRequest, getMyPortal, listBookingRequests } from "@/lib/organisations.functions";
 
 export const Route = createFileRoute("/portal")({
@@ -107,6 +116,8 @@ function PortalPage() {
   }
 
   const myRequests = requests.data ?? [];
+  const orgPeople = people.filter((p) => p.organisationId === org.id);
+  const orgCerts = certificates.filter((c) => c.organisationId === org.id);
 
   return (
     <AppShell>
@@ -243,6 +254,56 @@ function PortalPage() {
                 Booking is not enabled for your organisation yet. Contact the training team.
               </p>
             )}
+          </Panel>
+        </div>
+
+        <div className="grid gap-6 lg:grid-cols-2">
+          <Panel>
+            <PanelHeader title="Your staff" subtitle="People we hold training records for" />
+            <div className="divide-y">
+              {orgPeople.length ? (
+                orgPeople.map((p) => (
+                  <div key={p.id} className="flex items-center gap-3 p-4">
+                    <Avatar initials={p.initials} />
+                    <div className="min-w-0 flex-1">
+                      <p className="truncate text-sm font-medium">{p.name}</p>
+                      <p className="truncate text-xs text-muted-foreground">{p.jobTitle}</p>
+                    </div>
+                  </div>
+                ))
+              ) : (
+                <div className="p-6 text-sm text-muted-foreground">
+                  No staff recorded yet. Add names when you request places.
+                </div>
+              )}
+            </div>
+          </Panel>
+
+          <Panel>
+            <PanelHeader title="Certificates" subtitle="Issued to your staff" />
+            <div className="divide-y">
+              {org.canViewCertificates && orgCerts.length ? (
+                orgCerts.map((c) => (
+                  <div key={c.id} className="flex items-center justify-between gap-3 p-4">
+                    <div className="min-w-0">
+                      <p className="truncate text-sm font-medium">{personOf(c.personId)?.name}</p>
+                      <p className="truncate text-xs text-muted-foreground">
+                        {courseOf(c.courseId)?.name}
+                      </p>
+                    </div>
+                    <StatusChip tone={certificateTone[c.status]} size="sm">
+                      {certificateStatusLabel[c.status]}
+                    </StatusChip>
+                  </div>
+                ))
+              ) : (
+                <div className="p-6 text-sm text-muted-foreground">
+                  {org.canViewCertificates
+                    ? "No certificates issued yet."
+                    : "Certificates are shared by the training team on request."}
+                </div>
+              )}
+            </div>
           </Panel>
         </div>
 
