@@ -24,6 +24,7 @@ import { Route as SessionsIndexRouteImport } from './routes/sessions.index'
 import { Route as SessionsSessionIdRouteImport } from './routes/sessions.$sessionId'
 import { Route as SessionsNewRouteImport } from './routes/sessions.new'
 import { Route as SettingsIndexRouteImport } from './routes/settings.index'
+import { Route as SettingsTeamRouteImport } from './routes/settings.team'
 import { Route as TrackingIndexRouteImport } from './routes/tracking.index'
 import { Route as SettingsAutomationsIndexRouteImport } from './routes/settings.automations.index'
 import { Route as SettingsAutomationsAutomationIdRouteImport } from './routes/settings.automations.$automationId'
@@ -108,6 +109,11 @@ const SettingsIndexRoute = SettingsIndexRouteImport.update({
   path: '/settings/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const SettingsTeamRoute = SettingsTeamRouteImport.update({
+  id: '/settings/team',
+  path: '/settings/team',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const TrackingIndexRoute = TrackingIndexRouteImport.update({
   id: '/tracking/',
   path: '/tracking/',
@@ -159,6 +165,7 @@ export interface FileRoutesByFullPath {
   '/people/$personId': typeof PeoplePersonIdRoute
   '/sessions/$sessionId': typeof SessionsSessionIdRoute
   '/sessions/new': typeof SessionsNewRoute
+  '/settings/team': typeof SettingsTeamRoute
   '/certificates/': typeof CertificatesIndexRoute
   '/courses/': typeof CoursesIndexRoute
   '/organisations/': typeof OrganisationsIndexRoute
@@ -183,6 +190,7 @@ export interface FileRoutesByTo {
   '/people/$personId': typeof PeoplePersonIdRoute
   '/sessions/$sessionId': typeof SessionsSessionIdRoute
   '/sessions/new': typeof SessionsNewRoute
+  '/settings/team': typeof SettingsTeamRoute
   '/certificates': typeof CertificatesIndexRoute
   '/courses': typeof CoursesIndexRoute
   '/organisations': typeof OrganisationsIndexRoute
@@ -208,6 +216,7 @@ export interface FileRoutesById {
   '/people/$personId': typeof PeoplePersonIdRoute
   '/sessions/$sessionId': typeof SessionsSessionIdRoute
   '/sessions/new': typeof SessionsNewRoute
+  '/settings/team': typeof SettingsTeamRoute
   '/certificates/': typeof CertificatesIndexRoute
   '/courses/': typeof CoursesIndexRoute
   '/organisations/': typeof OrganisationsIndexRoute
@@ -234,6 +243,7 @@ export interface FileRouteTypes {
     | '/people/$personId'
     | '/sessions/$sessionId'
     | '/sessions/new'
+    | '/settings/team'
     | '/certificates/'
     | '/courses/'
     | '/organisations/'
@@ -258,6 +268,7 @@ export interface FileRouteTypes {
     | '/people/$personId'
     | '/sessions/$sessionId'
     | '/sessions/new'
+    | '/settings/team'
     | '/certificates'
     | '/courses'
     | '/organisations'
@@ -282,6 +293,7 @@ export interface FileRouteTypes {
     | '/people/$personId'
     | '/sessions/$sessionId'
     | '/sessions/new'
+    | '/settings/team'
     | '/certificates/'
     | '/courses/'
     | '/organisations/'
@@ -307,6 +319,7 @@ export interface RootRouteChildren {
   PeoplePersonIdRoute: typeof PeoplePersonIdRoute
   SessionsSessionIdRoute: typeof SessionsSessionIdRoute
   SessionsNewRoute: typeof SessionsNewRoute
+  SettingsTeamRoute: typeof SettingsTeamRoute
   CertificatesIndexRoute: typeof CertificatesIndexRoute
   CoursesIndexRoute: typeof CoursesIndexRoute
   OrganisationsIndexRoute: typeof OrganisationsIndexRoute
@@ -429,6 +442,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof SettingsIndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/settings/team': {
+      id: '/settings/team'
+      path: '/settings/team'
+      fullPath: '/settings/team'
+      preLoaderRoute: typeof SettingsTeamRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/tracking/': {
       id: '/tracking/'
       path: '/tracking'
@@ -491,6 +511,7 @@ const rootRouteChildren: RootRouteChildren = {
   PeoplePersonIdRoute: PeoplePersonIdRoute,
   SessionsSessionIdRoute: SessionsSessionIdRoute,
   SessionsNewRoute: SessionsNewRoute,
+  SettingsTeamRoute: SettingsTeamRoute,
   CertificatesIndexRoute: CertificatesIndexRoute,
   CoursesIndexRoute: CoursesIndexRoute,
   OrganisationsIndexRoute: OrganisationsIndexRoute,
