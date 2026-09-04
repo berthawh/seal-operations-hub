@@ -43,6 +43,13 @@
       "when": 1788525754145,
       "tag": "0005_trainer_profile_fields",
       "breakpoints": true
+    },
+    {
+      "idx": 6,
+      "version": "7",
+      "when": 1788526064982,
+      "tag": "0006_trainer_social_links",
+      "breakpoints": true
     }
   ]
 }
