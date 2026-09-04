@@ -9,6 +9,8 @@ export type Trainer = {
   specialism: string | null;
   courseIds: string[];
   avatarUrl: string | null;
+  linkedinUrl: string | null;
+  websiteUrl: string | null;
   recommended: boolean;
   rating: number;
   status: string;
@@ -26,6 +28,8 @@ const mapTrainer = (r: Row): Trainer => ({
   specialism: r.specialism,
   courseIds: r.course_ids ?? [],
   avatarUrl: r.avatar_url,
+  linkedinUrl: r.linkedin_url ?? null,
+  websiteUrl: r.website_url ?? null,
   recommended: !!r.recommended,
   rating: Number(r.rating ?? 0),
   status: r.status,
@@ -59,6 +63,8 @@ export const saveTrainer = createServerFn({ method: "POST" })
       specialism?: string;
       courseIds?: string[];
       avatarUrl?: string;
+      linkedinUrl?: string;
+      websiteUrl?: string;
       recommended?: boolean;
       rating?: number;
       status?: string;
@@ -76,6 +82,8 @@ export const saveTrainer = createServerFn({ method: "POST" })
       specialism: data.specialism?.trim() || null,
       course_ids: data.courseIds ?? [],
       avatar_url: data.avatarUrl?.trim() || null,
+      linkedin_url: data.linkedinUrl?.trim() || null,
+      website_url: data.websiteUrl?.trim() || null,
       recommended: data.recommended ?? false,
       rating: Math.min(5, Math.max(0, data.rating ?? 0)),
       status: data.status || "active",
