@@ -140,6 +140,13 @@ function AuthPage() {
         >
           {mode === "signin" ? "No account yet? Create one" : "Already have an account? Sign in"}
         </button>
+
+        <Link
+          to="/"
+          className="mt-3 block w-full text-center text-[11px] text-muted-foreground hover:text-foreground"
+        >
+          ← Back to Seal
+        </Link>
       </Panel>
     </main>
   );
